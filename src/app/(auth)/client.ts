@@ -6,8 +6,10 @@ export async function client_sign_out(
       redirect?: boolean }={ redirect: true}
 ) {
   const redirectTo = options.redirectTo ?? window.location.href // 没有设置 redirectTo 时默认为当前页面
-  const baseUrl = "https://api.nahida-aa.us.kg/api/py/auth"
-  const csrfToken = await getPyCsrfToken()
+  // const baseUrl = "https://api.nahida-aa.us.kg/api/py/auth"
+  // const baseUrl = "http://127.0.0.1:8000/api/py/auth"
+  const baseUrl = "/api/py/auth"
+  const csrfToken = await getPyCsrfToken(baseUrl)
   console.log(`signOut::csrfToken: ${csrfToken}`)
   const res = await fetch(`${baseUrl}/signout`, {
     method: "post",
@@ -35,8 +37,10 @@ export async function client_sign_out(
   return data
   // return signOut(options)
 }
-export async function getPyCsrfToken() {
-  const res = await fetch("https://api.nahida-aa.us.kg/api/py/auth/csrf")
+export async function getPyCsrfToken(baseUrl: string) {
+  const res = await fetch(`${baseUrl}/csrf`, {
+    credentials: "include",
+  })
   const data = await res.json()
   return data?.csrfToken ?? ""
 }

@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
   images: {
 		remotePatterns: [
@@ -11,6 +13,17 @@ const nextConfig: NextConfig = {
 		  }
 		],
 	},
+  async rewrites() {
+    return [
+      {
+        source: '/api/py/:path*',
+        destination: 
+          isDev
+            ? "http://127.0.0.1:8000/api/py/:path*"
+            : 'https://api.nahida-aa.us.kg/api/py/:path*', // 代理到外部 API
+      },
+    ];
+  },
 };
 
 export default nextConfig;

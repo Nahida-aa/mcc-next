@@ -28,6 +28,10 @@ export function UserSidebarToggle({
   const { toggleSidebar } = useSidebar();
   const img_src = user?.image ?? `https://avatar.vercel.sh/${user?.email}`
 
+  const imageLoader = ({ src, width, quality }: { src: string; width: number; quality?: number }) => {
+    // return `https://example.com/${src}?w=${width}&q=${quality || 75}`
+    return src
+  } // next 15
   return (
     <BetterTooltip content="Toggle Sidebar" align="start">
       <Button
@@ -36,6 +40,7 @@ export function UserSidebarToggle({
         className="p-1 md:h-fit relative size-10 rounded-full hover:bg-opacity "
       >
         <Image
+          loader={imageLoader}
           src={img_src}
           alt={user?.email ?? 'User Avatar'}
           width={32}

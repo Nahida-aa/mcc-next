@@ -15,6 +15,7 @@ export async function server_auth(){
   const padding = '='.repeat((4 - (payload.length % 4)) % 4);
   const decodedPayload = atob(base64 + padding);
   const user = JSON.parse(decodedPayload);
+  console.log(`app/(auth)/auth.ts::server_auth: user: ${JSON.stringify(user)}`);
   return { user:
     { id: user.id, name: user.name, email: user.email, image: user.image, nickname: user.nickname }
    };
