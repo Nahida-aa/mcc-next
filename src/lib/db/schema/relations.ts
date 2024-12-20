@@ -1,54 +1,20 @@
-import { relations } from "drizzle-orm/relations";
+import { relations } from "drizzle-orm/relations"
 
-import { home, idCardInfo, identity, user, userPlatformInfo } from "./user";
-import { linkGroupFollow, linkGroupIdentity, linkGroupProj, linkGroupResource, linkUserFollow, linkUserIdentity, linkUserPlatformInfoTag, linkUserProj, linkUserResource, linkUserGroup } from "./link";
+import { home, idCardInfo, identity, user } from "./user";
+import { linkGroupFollow, linkGroupIdentity, linkGroupProj, linkGroupResource, linkUserFollow, linkUserIdentity, linkUserProj, linkUserResource, linkUserGroup } from "./link";
 import { group } from "./group";
 import { tag } from "./tag";
 import { proj } from "./proj";
 import { resource } from "./resource";
 
-export const homeRelations = relations(home, ({one}) => ({
-	user: one(user, {
-		fields: [home.userId],
-		references: [user.id]
-	}),
-}));
 
-export const userRelations = relations(user, ({many}) => ({
-	homes: many(home),
-	idCardInfos: many(idCardInfo),
-	userPlatformInfos: many(userPlatformInfo),
-	linkGroupFollows: many(linkGroupFollow),
-	linkUserFollows_followedId: many(linkUserFollow, {
-		relationName: "linkUserFollow_followedId_user_id"
-	}),
-	linkUserFollows_followerId: many(linkUserFollow, {
-		relationName: "linkUserFollow_followerId_user_id"
-	}),
-	linkUserProjs: many(linkUserProj),
-	linkUserResources: many(linkUserResource),
-	linkUserGroups: many(linkUserGroup),
-	linkUserIdentities: many(linkUserIdentity),
-}));
 
-export const idCardInfoRelations = relations(idCardInfo, ({one}) => ({
-	user: one(user, {
-		fields: [idCardInfo.userId],
-		references: [user.id]
-	}),
-}));
 
-export const userPlatformInfoRelations = relations(userPlatformInfo, ({one, many}) => ({
-	user: one(user, {
-		fields: [userPlatformInfo.userId],
-		references: [user.id]
-	}),
-	linkUserPlatformInfoTags: many(linkUserPlatformInfoTag),
-}));
+
 
 export const linkGroupFollowRelations = relations(linkGroupFollow, ({one}) => ({
-	group: one(group, {
-		fields: [linkGroupFollow.groupId],
+	targetGroup: one(group, {
+		fields: [linkGroupFollow.targetGroupId],
 		references: [group.id]
 	}),
 	user: one(user, {
@@ -56,6 +22,8 @@ export const linkGroupFollowRelations = relations(linkGroupFollow, ({one}) => ({
 		references: [user.id]
 	}),
 }));
+
+
 
 export const groupRelations = relations(group, ({many}) => ({
 	linkGroupFollows: many(linkGroupFollow),
@@ -65,33 +33,9 @@ export const groupRelations = relations(group, ({many}) => ({
 	linkGroupIdentities: many(linkGroupIdentity),
 }));
 
-export const linkUserFollowRelations = relations(linkUserFollow, ({one}) => ({
-	user_followedId: one(user, {
-		fields: [linkUserFollow.followedId],
-		references: [user.id],
-		relationName: "linkUserFollow_followedId_user_id"
-	}),
-	user_followerId: one(user, {
-		fields: [linkUserFollow.followerId],
-		references: [user.id],
-		relationName: "linkUserFollow_followerId_user_id"
-	}),
-}));
 
-export const linkUserPlatformInfoTagRelations = relations(linkUserPlatformInfoTag, ({one}) => ({
-	tag: one(tag, {
-		fields: [linkUserPlatformInfoTag.tagId],
-		references: [tag.id]
-	}),
-	userPlatformInfo: one(userPlatformInfo, {
-		fields: [linkUserPlatformInfoTag.userPlatformInfoId],
-		references: [userPlatformInfo.id]
-	}),
-}));
 
-export const tagRelations = relations(tag, ({many}) => ({
-	linkUserPlatformInfoTags: many(linkUserPlatformInfoTag),
-}));
+
 
 export const linkGroupProjRelations = relations(linkGroupProj, ({one}) => ({
 	proj: one(proj, {

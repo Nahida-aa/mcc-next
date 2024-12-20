@@ -5,5 +5,6 @@ import { timestamps, uuidCommon } from "./columnsHelpers"
 export const proj = pgTable("Proj", {
   ...uuidCommon
 }, (table) => [
-  index("ix_Proj_name").using("btree", table.name.asc().nullsLast().op("text_ops")),
+  // index("ix_Proj_name").using("btree", table.name.asc().nullsLast().op("text_ops")),
+  index("ix_Proj_name").on(table.name),
 ]);

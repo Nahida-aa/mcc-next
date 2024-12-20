@@ -1,69 +1,64 @@
-import { pgTable, varchar, index, timestamp, serial, integer, uniqueIndex, boolean, foreignKey, primaryKey } from "drizzle-orm/pg-core"
+import { pgTable, varchar, index, timestamp, serial, integer, uniqueIndex, boolean, foreignKey, primaryKey, uuid } from "drizzle-orm/pg-core"
+import { relations } from "drizzle-orm/relations"
 import { group } from "./group";
-import { identity, user, userPlatformInfo } from "./user";
+import { identity, user } from "./user";
 import { tag } from "./tag";
 import { proj } from "./proj";
 import { resource } from "./resource";
 import { timestamps, uuidCommon } from "./columnsHelpers"
 
 export const linkGroupFollow = pgTable("LinkGroupFollow", {
-	userId: integer("user_id").notNull(),
-	groupId: integer("group_id").notNull(),
-	createdAt: timestamp("created_at", { mode: 'string' }).notNull(),
+	userId: uuid("user_id").notNull(),
+	targetGroupId: uuid("group_id").notNull(),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
 }, (table) => [
 	foreignKey({
-			columns: [table.groupId],
+			columns: [table.targetGroupId],
 			foreignColumns: [group.id],
-			name: "LinkGroupFollow_group_id_fkey"
+			name: "LinkGroupFollow_target_group_id_fkey"
 		}),
 	foreignKey({
 			columns: [table.userId],
 			foreignColumns: [user.id],
 			name: "LinkGroupFollow_user_id_fkey"
 		}),
-	primaryKey({ columns: [table.userId, table.groupId], name: "LinkGroupFollow_pkey"}),
+	primaryKey({ columns: [table.userId, table.targetGroupId], name: "LinkGroupFollow_pkey"}),
 ]);
 
 export const linkUserFollow = pgTable("LinkUserFollow", {
-	followerId: integer("follower_id").notNull(),
-	followedId: integer("followed_id").notNull(),
-	createdAt: timestamp("created_at", { mode: 'string' }).notNull(),
+  userId: uuid("user_id").notNull(), // 原 followerId
+  targetUserId: uuid("target_user_id").notNull(), // 原 followedId
+	createdAt: timestamp("created_at").defaultNow().notNull(),
 }, (table) => [
 	foreignKey({
-			columns: [table.followedId],
+			columns: [table.targetUserId],
 			foreignColumns: [user.id],
-			name: "LinkUserFollow_followed_id_fkey"
+			name: "LinkUserFollow_target_user_id_fkey"
 		}),
 	foreignKey({
-			columns: [table.followerId],
+			columns: [table.userId],
 			foreignColumns: [user.id],
-			name: "LinkUserFollow_follower_id_fkey"
+			name: "LinkUserFollow_user_id_fkey"
 		}),
-	primaryKey({ columns: [table.followerId, table.followedId], name: "LinkUserFollow_pkey"}),
+	primaryKey({ columns: [table.userId, table.targetUserId], name: "LinkUserFollow_pkey"}),
 ]);
-
-export const linkUserPlatformInfoTag = pgTable("LinkUserPlatformInfoTag", {
-	...timestamps,
-	userPlatformInfoId: integer("user_platform_info_id").notNull(),
-	tagId: integer("tag_id").notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.tagId],
-			foreignColumns: [tag.id],
-			name: "LinkUserPlatformInfoTag_tag_id_fkey"
-		}),
-	foreignKey({
-			columns: [table.userPlatformInfoId],
-			foreignColumns: [userPlatformInfo.id],
-			name: "LinkUserPlatformInfoTag_user_platform_info_id_fkey"
-		}),
-	primaryKey({ columns: [table.userPlatformInfoId, table.tagId], name: "LinkUserPlatformInfoTag_pkey"}),
-]);
+export const linkUserFollowRelations = relations(linkUserFollow, ({one}) => ({
+	targetUser: one(user, {
+		fields: [linkUserFollow.targetUserId],
+		references: [user.id],
+		relationName: "linkUserFollow_target_user_id"
+	}),
+	user: one(user, {
+		fields: [linkUserFollow.userId],
+		references: [user.id],
+		relationName: "linkUserFollow_user_id"
+	}),
+}));
 
 export const linkGroupProj = pgTable("LinkGroupProj", {
 	...timestamps,
-	groupId: integer("group_id").notNull(),
-	projId: integer("proj_id").notNull(),
+	groupId: uuid("group_id").notNull(),
+	projId: uuid("proj_id").notNull(),
 	role: varchar().notNull(),
 }, (table) => [
 	foreignKey({
@@ -81,8 +76,8 @@ export const linkGroupProj = pgTable("LinkGroupProj", {
 
 export const linkGroupResource = pgTable("LinkGroupResource", {
 	...timestamps,
-	groupId: integer("group_id").notNull(),
-	resourceId: integer("resource_id").notNull(),
+	groupId: uuid("group_id").notNull(),
+	resourceId: uuid("resource_id").notNull(),
 	role: varchar().notNull(),
 }, (table) => [
 	foreignKey({
@@ -100,8 +95,8 @@ export const linkGroupResource = pgTable("LinkGroupResource", {
 
 export const linkUserProj = pgTable("LinkUserProj", {
 	...timestamps,
-	userId: integer("user_id").notNull(),
-	projId: integer("proj_id").notNull(),
+	userId: uuid("user_id").notNull(),
+	projId: uuid("proj_id").notNull(),
 	role: varchar().notNull(),
 }, (table) => [
 	foreignKey({
@@ -119,8 +114,8 @@ export const linkUserProj = pgTable("LinkUserProj", {
 
 export const linkUserResource = pgTable("LinkUserResource", {
 	...timestamps,
-	userId: integer("user_id").notNull(),
-	resourceId: integer("resource_id").notNull(),
+	userId: uuid("user_id").notNull(),
+	resourceId: uuid("resource_id").notNull(),
 	role: varchar().notNull(),
 }, (table) => [
 	foreignKey({
@@ -138,8 +133,8 @@ export const linkUserResource = pgTable("LinkUserResource", {
 
 export const linkUserGroup = pgTable("LinkUserGroup", {
 	...timestamps,
-	userId: integer("user_id").notNull(),
-	groupId: integer("group_id").notNull(),
+	userId: uuid("user_id").notNull(),
+	groupId: uuid("group_id").notNull(),
 	role: varchar().notNull(),
 }, (table) => [
 	foreignKey({
@@ -157,8 +152,8 @@ export const linkUserGroup = pgTable("LinkUserGroup", {
 
 export const linkGroupIdentity = pgTable("LinkGroupIdentity", {
 	...timestamps,
-	groupId: integer("group_id").notNull(),
-	identityId: integer("identity_id").notNull(),
+	groupId: uuid("group_id").notNull(),
+	identityId: uuid("identity_id").notNull(),
 	level: integer().notNull(),
 	status: varchar().notNull(),
 	motivation: varchar().notNull(),
@@ -178,8 +173,8 @@ export const linkGroupIdentity = pgTable("LinkGroupIdentity", {
 
 export const linkUserIdentity = pgTable("LinkUserIdentity", {
 	...timestamps,
-	userId: integer("user_id").notNull(),
-	identityId: integer("identity_id").notNull(),
+	userId: uuid("user_id").notNull(),
+	identityId: uuid("identity_id").notNull(),
 	level: integer().notNull(),
 	status: varchar().notNull(),
 	motivation: varchar().notNull(),

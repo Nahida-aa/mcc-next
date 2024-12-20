@@ -1,5 +1,69 @@
 // "use server";
+
+import { compare } from 'bcrypt-ts';
+import NextAuth, { type User, type Session } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import { authConfig } from './auth.config';
+export const guestUserId = '93a35827-8b95-4a34-adec-1860657534df'
+
+interface ExtendedSession extends Session {
+  user: User;
+}
+
+export const {
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
+} = NextAuth({
+  ...authConfig,
+  providers: [
+    Credentials({
+      credentials: {},
+      async authorize({ name, password }: any) {
+        const users = await QUser.getByName(name);
+        if (users.length === 0) return null;
+        // biome-ignore lint: Forbidden non-null assertion.
+        const passwordsMatch = await compare(password, users[0].password!);
+        if (!passwordsMatch) return null;
+        return users[0] as any;
+      },
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+
+      return token;
+    },
+    async session({
+      session,
+      token,
+    }: {
+      session: ExtendedSession;
+      token: any;
+    }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }else {
+        // 设置游客的 userId
+        session.user = {
+          id: guestUserId,
+          email: 'guest@example.com',
+          name: 'Guest',
+        } as User;
+      }
+
+      return session;
+    },
+  },
+});
+
+
 import { cookies } from 'next/headers'
+import { QUser } from '@/lib/db/q/qUser';
 // import { redirect } from "next/navigation";
 
 export async function server_auth(){
@@ -18,7 +82,7 @@ export async function server_auth(){
   console.log(`app/(auth)/auth.ts::server_auth: user: ${JSON.stringify(user)}`);
   return { user:
     { id: user.id, name: user.name, email: user.email, image: user.image, nickname: user.nickname }
-   };
+  };
 }
 
 export interface AuthConfig {
