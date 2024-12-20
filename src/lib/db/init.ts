@@ -1,5 +1,9 @@
 'server-only';
-import { db } from './index';
+import 'dotenv/config';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+const client = postgres(`${process.env.DATABASE_URL!}`);
+const db = drizzle(client);
 import { user as usersTable, identity, idCardInfo as idCardInfoTable, home  } from './schema/user';
 import { linkUserFollow, linkGroupFollow, linkUserProj, linkUserResource, linkUserGroup, linkUserIdentity } from './schema/link';
 import { proj } from './schema/proj';
