@@ -17,6 +17,15 @@ const eslintConfig = [
       "prefer-const": "warn", // 将 prefer-const 规则的错误级别降低为警告
       // 你可以在这里添加更多规则覆盖
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        {
+          'ts-expect-error': 'allow-with-description',
+          'ts-ignore': true,
+          'ts-nocheck': true,
+          'ts-check': false,
+        },
+      ],
     },
   },
 ];
