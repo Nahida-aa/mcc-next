@@ -1,5 +1,5 @@
 // "use server";
-
+import { QUser } from '@/lib/db/q/qUser';
 import { compare } from 'bcrypt-ts';
 import NextAuth, { type User, type Session } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
@@ -10,6 +10,14 @@ interface ExtendedSession extends Session {
   user: User;
 }
 
+interface Token {
+  id?: string;
+  [key: string]: any;
+}
+interface AuthorizeCredentials {
+  name: string;
+  password: string;
+}
 export const {
   handlers: { GET, POST },
   auth,
@@ -19,14 +27,22 @@ export const {
   ...authConfig,
   providers: [
     Credentials({
-      credentials: {},
-      async authorize({ name, password }: any) {
+      credentials: {
+        name: { label: "Name", type: "text" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials: Record<string, unknown>, req: Request): Promise<User | null> {
+        const { name, password } = credentials as unknown as AuthorizeCredentials;
+        if (!name || !password) {
+          return null;
+        }
+        // const name = credentials?.name as string;
         const users = await QUser.getByName(name);
         if (users.length === 0) return null;
         // biome-ignore lint: Forbidden non-null assertion.
         const passwordsMatch = await compare(password, users[0].password!);
         if (!passwordsMatch) return null;
-        return users[0] as any;
+        return users[0];
       },
     }),
   ],
@@ -43,7 +59,7 @@ export const {
       token,
     }: {
       session: ExtendedSession;
-      token: any;
+      token: Token;
     }) {
       if (session.user) {
         session.user.id = token.id as string;
@@ -63,7 +79,8 @@ export const {
 
 
 import { cookies } from 'next/headers'
-import { QUser } from '@/lib/db/q/qUser';
+import { NextApiRequest } from 'next';
+
 // import { redirect } from "next/navigation";
 
 export async function server_auth(){
