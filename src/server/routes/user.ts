@@ -122,12 +122,16 @@ router.openapi(createRoute({
   path: '/users/{id}',
   method: 'patch',
   request: {
-    params: IdUUIDParamsSchema
+    params: IdUUIDParamsSchema,
+    body: jsonContent(
+      userInsertSchema,
+      'update user'
+    )
   },
   responses: {
     [httpStatus.OK]: jsonContent(
       userSelectSchema,
-      'get user'
+      'update user'
     ),
     [httpStatus.NOT_FOUND]: jsonContent(
       z.object({
