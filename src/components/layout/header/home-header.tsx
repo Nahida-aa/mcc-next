@@ -14,7 +14,7 @@ import { UserMeta, UserSidebarToggle } from '../sidebar/user-side-toggle';
 import { ModeToggle } from '@/components/common/ModeToggle';
 
 export function HomeHeader(
-  { user }: { user: UserMeta | undefined }
+  { user, className }: { user: UserMeta | undefined, className?: string; }
   // { selectedModelId }: { selectedModelId: string }
 ) {
   const router = useRouter();
@@ -31,7 +31,7 @@ export function HomeHeader(
     user_status = "未登录"
   }
   return (
-    <header className="flex sticky  py-1.5 items-center px-2 md:px-2 gap-2 justify-between">
+    <header className={`flex sticky  py-1.5 items-center px-2 md:px-2 gap-2 justify-between ${className}`}>
       <div className='flex gap-2 items-center'>
         <UserSidebarToggle user={user} status={user_status} />
         <div>

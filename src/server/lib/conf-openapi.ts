@@ -8,6 +8,9 @@ export default function configOpenAPI(app: AppOpenAPI) {
     info: {
       title: 'Hono API',
       version: packageJson.version,
+      description: `
+      [去 swagger-ui](/docs)
+      `,
     }
   });
 

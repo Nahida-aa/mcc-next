@@ -22,8 +22,10 @@ export default async function Layout({
     {/* 模糊背景 */}
       <AppSidebar user={session?.user} />
       <SidebarInset className='h-screen bg-opacity'>
-        <HomeHeader user={session?.user} />
-        <div>
+        {/* <HomeHeader user={session?.user} /> */}
+        <HomeHeader user={session?.user} className='sticky top-0 z-10' />
+        {/* <div> */}
+        <div className='overflow-auto h-full'>
         {children}
         </div>
       </SidebarInset>

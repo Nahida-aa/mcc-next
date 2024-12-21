@@ -2,6 +2,8 @@ import { relations, type InferSelectModel } from 'drizzle-orm';
 import { pgTable, varchar, index, timestamp, serial, integer, uniqueIndex, boolean, foreignKey, primaryKey, uuid, json, jsonb } from "drizzle-orm/pg-core"
 import { timestamps, uuidCommon } from "./columnsHelpers"
 import { linkGroupFollow, linkUserFollow, linkUserGroup, linkUserIdentity, linkUserProj, linkUserResource } from './link';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { z } from '@hono/zod-openapi';
 
 const platformInfoDefault = {
   startYear: null as number | null, // > 2009, 第一次玩 mc 的年份
@@ -11,6 +13,7 @@ const platformInfoDefault = {
   desiredPartners: [] as string[], // 想在平台内结识怎样的伙伴
 }
 type PlatformInfo = typeof platformInfoDefault;
+
 export const user = pgTable("User", {
   ...uuidCommon,
   password: varchar("password", { length: 64 }).notNull(),
@@ -38,6 +41,8 @@ export const user = pgTable("User", {
 ]);
 
 export type User = InferSelectModel<typeof user>;
+
+
 
 export const idCardInfo = pgTable("IDCardInfo", {
 	id: uuid('id').primaryKey().notNull().defaultRandom(),
@@ -107,3 +112,54 @@ export const homeRelations = relations(home, ({one}) => ({
 		references: [user.id]
 	}),
 }));
+
+export const platformInfoSchema = z.object({
+  startYear: z.number().nullable().optional().default(null),
+  playReason: z.string().optional().default(""),
+  serverType: z.array(z.string()).optional().default([]),
+  favorite_content: z.array(z.string()).optional().default([]),
+  desiredPartners: z.array(z.string()).optional().default([]),
+});
+export const idCardInfoSelectSchema = createSelectSchema(idCardInfo)
+  // .extend({
+  //   idCardNumber: z.string(),
+  //   idCardHolder: z.string().nullable(),
+  //   frontImageUrl: z.string().nullable(),
+  //   backImageUrl: z.string().nullable(),
+  // });
+export const userSelectSchema = createSelectSchema(user)
+  .extend({
+    // createdAt: z.string(), // 将 createdAt 定义为字符串类型
+    platformInfo: platformInfoSchema.nullable(),
+    idCardInfo: idCardInfoSelectSchema.nullable(),
+  });
+
+export const idCardInfoInsertSchema = createInsertSchema(idCardInfo)
+  .omit({id: true, userId: true, isRealName: true})
+  .required({
+    idCardNumber: true,
+  })
+  .extend({
+    idCardHolder: z.string().default("self"),
+    frontImageUrl: z.string().optional(),
+    backImageUrl: z.string().optional(),
+  });
+export const userInsertSchema = createInsertSchema(user,
+  {
+    name: schema => schema.min(1),
+    password: schema => schema.min(6),
+    phone: schema => schema.min(1),
+  }
+)
+  .omit({id: true, createdAt: true, updatedAt: true, lastLogin: true, 
+    followersCount: true, followingCount: true, 
+    isSuperuser: true, isStaff: true, isActive: true})
+  .required({
+    phone: true,
+  })
+  .extend({
+    gender: z.string().nullable().default(null),
+    age: z.number().nullable().default(null).openapi({example: null}),
+    platformInfo: platformInfoSchema.nullable().optional(),
+    idCardInfo: idCardInfoInsertSchema,
+  })
