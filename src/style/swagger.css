@@ -24,7 +24,7 @@
     @apply text-[grey] dark:text-slate-400;
 }
 .swagger-ui .json-schema-2020-12-expand-deep-button {
-    @apply !text-[#505050] dark:text-slate-300;
+    @apply !text-[#505050] dark:!text-slate-400;
 }
 .swagger-ui .json-schema-2020-12__attribute--primary {
     @apply text-violet-400 dark:text-violet-400
@@ -33,7 +33,7 @@
     @apply text-[#3b4151] dark:text-slate-300;
 }
 .swagger-ui textarea {
-    @apply !bg-[hsla(0,0%,100%,.6)] dark:bg-[#110c24be] text-[#3b4151] dark:text-slate-300;
+    @apply !bg-[hsla(0,0%,100%,.6)] dark:!bg-[#110c2483] text-[#3b4151] dark:text-slate-300;
 }
 .swagger-ui .opblock .opblock-section-header h4 {
     @apply text-[#3b4151] dark:text-slate-300;
@@ -44,7 +44,7 @@
 }
 
 .swagger-ui select {
-    @apply bg-[#f7f7f7] dark:bg-[#110c24be] text-[#3b4151] dark:text-slate-300;
+    @apply bg-[#f7f7f7] dark:bg-[#110c2483] text-[#3b4151] dark:text-slate-300;
 }
 
 .swagger-ui .response-col_links {
@@ -70,5 +70,5 @@
 }
 
 .swagger-ui .opblock .opblock-section-header {
-    @apply !bg-[hsla(0,0%,100%,.6)] dark:bg-[#110c24be];
+    @apply !bg-[hsla(0,0%,100%,.6)] dark:!bg-[#110c2483];
 }

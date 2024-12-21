@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^7.3.0",
     "@hono/zod-openapi": "^0.18.3",
     "@hookform/resolvers": "^3.9.1",
     "@neondatabase/serverless": "^0.10.4",

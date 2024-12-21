@@ -163,3 +163,5 @@ export const userInsertSchema = createInsertSchema(user,
     platformInfo: platformInfoSchema.nullable().optional(),
     idCardInfo: idCardInfoInsertSchema,
   })
+
+export const userPatchSchema = userInsertSchema.partial()
