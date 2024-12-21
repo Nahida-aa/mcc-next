@@ -29,6 +29,7 @@ routes.forEach(route => {
   app.route("", route)
 })
 
+configOpenAPI(app)
 
 app.get('/hello', (c) => {
   return c.json({
@@ -36,7 +37,6 @@ app.get('/hello', (c) => {
   })
 })
 
-configOpenAPI(app)
 
 app.get('/:wild', (c) => {
   const wild = c.req.param('wild')
@@ -45,16 +45,18 @@ app.get('/:wild', (c) => {
   })
 })
 
-export function printRoutes(app: OpenAPIHono) {
-  const routes = app.routes;
-  routes.forEach(route => {
-    console.log(`${route.method.toUpperCase()} ${route.path}`);
-  });
-}
-console.log('Routes:');
-printRoutes(app);
+// type PrintRoutesParams = typeof app;
+// export function printRoutes(app: PrintRoutesParams) {
+// export function printRoutes(app: OpenAPIHono<any, any, "*">) {
+//   const routes = app.routes;
+//   routes.forEach((route: any) => {
+//     console.log(`${route.method.toUpperCase()} ${route.path}`);
+//   });
+// }
+// console.log('Routes:');
+// printRoutes(app);
 
 export const GET = handle(app)
 export const POST = handle(app)
-export const PATCH = handle(app);
-export const DELETE = handle(app);
+// export const PATCH = handle(app);
+// export const DELETE = handle(app);

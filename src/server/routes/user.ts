@@ -117,4 +117,41 @@ router.openapi(createRoute({
   });
 })
 
+router.openapi(createRoute({
+  tags: ['user'],
+  path: '/users/{id}',
+  method: 'patch',
+  request: {
+    params: IdUUIDParamsSchema
+  },
+  responses: {
+    [httpStatus.OK]: jsonContent(
+      userSelectSchema,
+      'get user'
+    ),
+    [httpStatus.NOT_FOUND]: jsonContent(
+      z.object({
+        message: z.string()
+      }),
+      'User not found; 用户未找到'
+    ),
+    [httpStatus.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(IdUUIDParamsSchema), 
+      'The validation error(s); 验证错误'
+    ),
+  }
+}), async (c) => {
+  const { id } = c.req.valid("param")
+  const dbUser = await db.query.user.findFirst({
+    where: (user, { eq }) => eq(user.id, id),
+    with: {
+      idCardInfo: true, // 关联查询身份证信息
+    }
+  });
+  if (!dbUser) {
+    return c.json({ message: 'User not found' }, httpStatus.NOT_FOUND)
+  }
+  return c.json(dbUser, httpStatus.OK)
+})
+
 export default router
