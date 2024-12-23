@@ -39,6 +39,6 @@ export const createJWT = async (data: object, expires_delta: number|null = null)
 }
 
 // 用于验证是否被篡改, 返回 payload
-export const verifyToken = async (token: string) => {
+export const verifyJWT = async (token: string) => {
   return await verify(token, settings.SECRET_KEY, alg)
 }

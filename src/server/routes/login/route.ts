@@ -5,12 +5,22 @@ import createErrorSchema from "@/server/openapi/schemas/create-error-schema";
 import { not } from "drizzle-orm";
 import { notFoundSchema } from "@/server/lib/constans";
 import createMessageObjectSchema from "@/server/openapi/schemas/create-message-object";
-import { user as userTable, idCardInfo as idCardInfoTable, User, userInsertSchema, userSelectSchema, idCardInfo, idCardInfoInsertSchema} from "@/lib/db/schema/user"
+import { user as userTable, idCardInfo as idCardInfoTable, User, userInsertSchema, userSelectSchema, idCardInfo, idCardInfoInsertSchema, platformInfoSchema} from "@/lib/db/schema/user"
+import { createInsertSchema } from "drizzle-zod";
 
-const registerUserSchema = userInsertSchema
-  .omit({description: true, nickname: true, email: true, gender: true, age: true})
+
+export const registerUserSchema = createInsertSchema(userTable,
+  {
+    name: schema => schema.min(1),
+    password: schema => schema.min(6),
+    phone: schema => schema.min(1),
+  })
+  .omit({id: true, createdAt: true, updatedAt: true, lastLogin: true, 
+    followersCount: true, followingCount: true, 
+    isSuperuser: true, isStaff: true, isActive: true, description: true, nickname: true, email: true, gender: true, age: true})
   .extend({
     password: z.string().min(6),
+    platformInfo: platformInfoSchema.nullable(),
     idCardInfo: idCardInfoInsertSchema.omit({frontImageUrl: true, backImageUrl: true})
   })
 

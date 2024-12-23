@@ -1,7 +1,7 @@
 import { Context, Next } from 'hono'
 // import { Context, Next } from "@hono/zod-openapi";
 import { getCookie } from 'hono/cookie'
-import { verifyToken } from '@/server/core/token'
+import { verifyJWT } from '@/server/core/token'
 
 export async function getSessionTokenPayload(c: Context) {
   const authHeader = c.req.header('Authorization')
@@ -15,7 +15,7 @@ export async function getSessionTokenPayload(c: Context) {
     return null
   }
 
-  return verifyToken(token)
+  return verifyJWT(token)
 }
 
 export async function getSessionTokenPayloadDep(c: Context) {

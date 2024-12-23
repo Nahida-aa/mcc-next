@@ -2,7 +2,7 @@ import { decode } from 'hono/jwt'
 import { createRouter } from "@/server/lib/create-app";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import settings from "@/server/settings";
-import { verifyToken } from "@/server/core/token";
+import { verifyJWT } from "@/server/core/token";
 import {
   getCookie,
   getSignedCookie,
@@ -73,7 +73,7 @@ const router = createRouter()
   if (!sessionToken) {
     return c.json(null, 200)
   }
-  const JWTPayload = await verifyToken(sessionToken)
+  const JWTPayload = await verifyJWT(sessionToken)
   return c.json({
     user: {
       id: JWTPayload.id,

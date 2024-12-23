@@ -1,0 +1,2590 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hono API",
+    "version": "0.1.0",
+    "description": "\n      - [去swagger-ui](https://mcc.Nahida-aaus.kg/docs)\n      "
+  },
+  "components": {
+    "schemas": {
+
+    },
+    "parameters": {
+
+    }
+  },
+  "paths": {
+    "/api/hono/auth/csrf": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "获取 CSRF token",
+        "description": " 用于在 需要csrfToken的请求前先获取 csrfToken, 会在两个header和body中返回 csrfToken, header中的是不可读的, body中的是可读的, 用于前端在请求体中携带csrfToken\n\n  需要csrfToken的请求: \n  - /api/hono/auth/signin\n  - /api/hono/auth/signout",
+        "responses": {
+          "200": {
+            "description": "已响应 CSRF token, 并将hash后的csrfToken放到 cookie 中",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "csrfToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "csrfToken"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hono/auth/session": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "获取 session (从 cookie 中)",
+        "description": "如果 cookie 中有 sessionToken, 则返回 { user, ...}, 否则返回 null, 注意次api只会响应 200, 这是特意这样设计的, 如果有异议请告诉我",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "sessionToken",
+            "in": "cookie"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "已响应 session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "nullable": true,
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "image": {
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hono/login": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "requestBody": {
+          "description": "login",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 6
+                  }
+                },
+                "required": [
+                  "name",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登录成功，响应头中会自动设置 sessionToken 到 Cookie 中",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessionToken": {
+                      "type": "string"
+                    },
+                    "tokenType": {
+                      "type": "string",
+                      "example": "Bearer"
+                    }
+                  },
+                  "required": [
+                    "sessionToken",
+                    "tokenType"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "用户名或密码错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "example": {
+                    "message": "用户名或密码错误"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "example": {
+                    "message": "Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The validation error(s); 类型验证错误",
+            "content": {  
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "path": {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                }
+                              },
+                              "message": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "path"
+                            ]
+                          }
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "issues",
+                        "name"
+                      ],
+                      "example": {
+                        "issues": [
+                          {
+                            "code": "invalid_type",
+                            "expected": "string",
+                            "received": "undefined",
+                            "path": [
+                              "name"
+                            ],
+                            "message": "Required"
+                          },
+                          {
+                            "code": "invalid_type",
+                            "expected": "string",
+                            "received": "undefined",
+                            "path": [
+                              "password"
+                            ],
+                            "message": "Required"
+                          }
+                        ],
+                        "name": "ZodError"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hono/users": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "name": {
+                        "type": "string",
+                        "maxLength": 32
+                      },
+                      "description": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "password": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 64
+                      },
+                      "image": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "nickname": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 32
+                      },
+                      "email": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 64
+                      },
+                      "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 64
+                      },
+                      "gender": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "age": {
+                        "type": "integer",
+                        "nullable": true,
+                        "minimum": -2147483648,
+                        "maximum": 2147483647
+                      },
+                      "lastLogin": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "followersCount": {
+                        "type": "integer",
+                        "minimum": -2147483648,
+                        "maximum": 2147483647
+                      },
+                      "followingCount": {
+                        "type": "integer",
+                        "minimum": -2147483648,
+                        "maximum": 2147483647
+                      },
+                      "isSuperuser": {
+                        "type": "boolean"
+                      },
+                      "isStaff": {
+                        "type": "boolean"
+                      },
+                      "isActive": {
+                        "type": "boolean"
+                      },
+                      "platformInfo": {
+                        "type": "object",
+                        "nullable": true,
+                        "properties": {
+                          "startYear": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "playReason": {
+                            "type": "string",
+                            "default": ""
+                          },
+                          "serverType": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": []
+                          },
+                          "favorite_content": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": []
+                          },
+                          "desiredPartners": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": []
+                          }
+                        }
+                      },
+                      "idCardInfo": {
+                        "type": "object",
+                        "nullable": true,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "userId": {
+                            "type": "string",
+                            "nullable": true,
+                            "format": "uuid"
+                          },
+                          "idCardNumber": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "idCardHolder": {
+                            "type": "string"
+                          },
+                          "isRealName": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "frontImageUrl": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "backImageUrl": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "userId",
+                          "idCardNumber",
+                          "idCardHolder",
+                          "isRealName",
+                          "frontImageUrl",
+                          "backImageUrl"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "description",
+                      "updatedAt",
+                      "createdAt",
+                      "password",
+                      "image",
+                      "nickname",
+                      "email",
+                      "phone",
+                      "gender",
+                      "age",
+                      "lastLogin",
+                      "followersCount",
+                      "followingCount",
+                      "isSuperuser",
+                      "isStaff",
+                      "isActive",
+                      "platformInfo",
+                      "idCardInfo"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "requestBody": {
+          "description": "create user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 6,
+                    "maxLength": 64
+                  },
+                  "image": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "nickname": {
+                    "type": "string",
+                    "nullable": true,
+                    "maxLength": 32
+                  },
+                  "email": {
+                    "type": "string",
+                    "nullable": true,
+                    "maxLength": 64
+                  },
+                  "phone": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "gender": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "age": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "platformInfo": {
+                    "type": "object",
+                    "nullable": true,
+                    "properties": {
+                      "startYear": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "playReason": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "serverType": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": []
+                      },
+                      "favorite_content": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": []
+                      },
+                      "desiredPartners": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": []
+                      }
+                    }
+                  },
+                  "idCardInfo": {
+                    "type": "object",
+                    "properties": {
+                      "idCardNumber": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "idCardHolder": {
+                        "type": "string",
+                        "default": "self"
+                      },
+                      "frontImageUrl": {
+                        "type": "string"
+                      },
+                      "backImageUrl": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "idCardNumber"
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "phone",
+                  "idCardInfo"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "created user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 32
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "image": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "nickname": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 32
+                    },
+                    "email": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "phone": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "gender": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "age": {
+                      "type": "integer",
+                      "nullable": true,
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "lastLogin": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "followersCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "followingCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "isSuperuser": {
+                      "type": "boolean"
+                    },
+                    "isStaff": {
+                      "type": "boolean"
+                    },
+                    "isActive": {
+                      "type": "boolean"
+                    },
+                    "platformInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "startYear": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "playReason": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "serverType": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "favorite_content": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "desiredPartners": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        }
+                      }
+                    },
+                    "idCardInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "nullable": true,
+                          "format": "uuid"
+                        },
+                        "idCardNumber": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "idCardHolder": {
+                          "type": "string"
+                        },
+                        "isRealName": {
+                          "type": "boolean",
+                          "nullable": true
+                        },
+                        "frontImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "backImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "userId",
+                        "idCardNumber",
+                        "idCardHolder",
+                        "isRealName",
+                        "frontImageUrl",
+                        "backImageUrl"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "updatedAt",
+                    "createdAt",
+                    "password",
+                    "image",
+                    "nickname",
+                    "email",
+                    "phone",
+                    "gender",
+                    "age",
+                    "lastLogin",
+                    "followersCount",
+                    "followingCount",
+                    "isSuperuser",
+                    "isStaff",
+                    "isActive",
+                    "platformInfo",
+                    "idCardInfo"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hono/users/{id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "required": [
+                "id"
+              ],
+              "example": "4651e634-a530-4484-9b09-9616a28f35e3"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "get user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 32
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "image": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "nickname": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 32
+                    },
+                    "email": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "phone": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "gender": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "age": {
+                      "type": "integer",
+                      "nullable": true,
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "lastLogin": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "followersCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "followingCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "isSuperuser": {
+                      "type": "boolean"
+                    },
+                    "isStaff": {
+                      "type": "boolean"
+                    },
+                    "isActive": {
+                      "type": "boolean"
+                    },
+                    "platformInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "startYear": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "playReason": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "serverType": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "favorite_content": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "desiredPartners": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        }
+                      }
+                    },
+                    "idCardInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "nullable": true,
+                          "format": "uuid"
+                        },
+                        "idCardNumber": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "idCardHolder": {
+                          "type": "string"
+                        },
+                        "isRealName": {
+                          "type": "boolean",
+                          "nullable": true
+                        },
+                        "frontImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "backImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "userId",
+                        "idCardNumber",
+                        "idCardHolder",
+                        "isRealName",
+                        "frontImageUrl",
+                        "backImageUrl"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "updatedAt",
+                    "createdAt",
+                    "password",
+                    "image",
+                    "nickname",
+                    "email",
+                    "phone",
+                    "gender",
+                    "age",
+                    "lastLogin",
+                    "followersCount",
+                    "followingCount",
+                    "isSuperuser",
+                    "isStaff",
+                    "isActive",
+                    "platformInfo",
+                    "idCardInfo"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found; 用户未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "example": {
+                    "message": "Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The validation error(s); 验证错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "path": {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                }
+                              },
+                              "message": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "path"
+                            ]
+                          }
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "issues",
+                        "name"
+                      ],
+                      "example": {
+                        "issues": [
+                          {
+                            "code": "invalid_type",
+                            "expected": "string",
+                            "received": "undefined",
+                            "path": [
+                              "id"
+                            ],
+                            "message": "Required"
+                          }
+                        ],
+                        "name": "ZodError"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "summary": "更新用户数据",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "required": [
+                "id"
+              ],
+              "example": "4651e634-a530-4484-9b09-9616a28f35e3"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "nullable": true,
+              "example": "Bearer sessionToken"
+            },
+            "required": false,
+            "name": "Authorization",
+            "in": "header"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "nullable": true,
+              "example": "sessionToken"
+            },
+            "required": false,
+            "name": "sessionToken",
+            "in": "cookie"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "nullable": true,
+              "example": "csrfToken"
+            },
+            "required": false,
+            "name": "csrfToken",
+            "in": "cookie"
+          }
+        ],
+        "requestBody": {
+          "description": "update user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "inUser": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 32
+                      },
+                      "description": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "password": {
+                        "type": "string",
+                        "nullable": true,
+                        "minLength": 6,
+                        "maxLength": 64
+                      },
+                      "image": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "nickname": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 32
+                      },
+                      "email": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 64
+                      },
+                      "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "minLength": 1,
+                        "maxLength": 64
+                      },
+                      "gender": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "age": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "platformInfo": {
+                        "type": "object",
+                        "nullable": true,
+                        "properties": {
+                          "startYear": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "playReason": {
+                            "type": "string",
+                            "default": ""
+                          },
+                          "serverType": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": []
+                          },
+                          "favorite_content": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": []
+                          },
+                          "desiredPartners": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": []
+                          }
+                        }
+                      },
+                      "idCardInfo": {
+                        "type": "object",
+                        "properties": {
+                          "idCardNumber": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "idCardHolder": {
+                            "type": "string",
+                            "default": "self"
+                          },
+                          "frontImageUrl": {
+                            "type": "string"
+                          },
+                          "backImageUrl": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "idCardNumber"
+                        ]
+                      }
+                    }
+                  },
+                  "csrfToken": {
+                    "type": "string",
+                    "example": "csrfToken"
+                  }
+                },
+                "required": [
+                  "inUser"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "updated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 32
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "image": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "nickname": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 32
+                    },
+                    "email": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "phone": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "gender": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "age": {
+                      "type": "integer",
+                      "nullable": true,
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "lastLogin": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "followersCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "followingCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "isSuperuser": {
+                      "type": "boolean"
+                    },
+                    "isStaff": {
+                      "type": "boolean"
+                    },
+                    "isActive": {
+                      "type": "boolean"
+                    },
+                    "platformInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "startYear": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "playReason": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "serverType": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "favorite_content": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "desiredPartners": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        }
+                      }
+                    },
+                    "idCardInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "nullable": true,
+                          "format": "uuid"
+                        },
+                        "idCardNumber": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "idCardHolder": {
+                          "type": "string"
+                        },
+                        "isRealName": {
+                          "type": "boolean",
+                          "nullable": true
+                        },
+                        "frontImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "backImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "userId",
+                        "idCardNumber",
+                        "idCardHolder",
+                        "isRealName",
+                        "frontImageUrl",
+                        "backImageUrl"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "updatedAt",
+                    "createdAt",
+                    "password",
+                    "image",
+                    "nickname",
+                    "email",
+                    "phone",
+                    "gender",
+                    "age",
+                    "lastLogin",
+                    "followersCount",
+                    "followingCount",
+                    "isSuperuser",
+                    "isStaff",
+                    "isActive",
+                    "platformInfo",
+                    "idCardInfo"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required; 未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "example": {
+                    "message": "Authentication required"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found; 用户未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "example": {
+                    "message": "Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The validation error(s); 验证错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "issues": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "code": {
+                                    "type": "string"
+                                  },
+                                  "path": {
+                                    "type": "array",
+                                    "items": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "message": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "code",
+                                  "path"
+                                ]
+                              }
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "issues",
+                            "name"
+                          ],
+                          "example": {
+                            "issues": [
+                              {
+                                "code": "invalid_type",
+                                "expected": "object",
+                                "received": "undefined",
+                                "path": [
+                                  "inUser"
+                                ],
+                                "message": "Required"
+                              }
+                            ],
+                            "name": "ZodError"
+                          }
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "issues": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "code": {
+                                    "type": "string"
+                                  },
+                                  "path": {
+                                    "type": "array",
+                                    "items": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "message": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "code",
+                                  "path"
+                                ]
+                              }
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "issues",
+                            "name"
+                          ],
+                          "example": {
+                            "issues": [
+                              {
+                                "code": "invalid_type",
+                                "expected": "string",
+                                "received": "undefined",
+                                "path": [
+                                  "id"
+                                ],
+                                "message": "Required"
+                              }
+                            ],
+                            "name": "ZodError"
+                          }
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "required": [
+                "id"
+              ],
+              "example": "4651e634-a530-4484-9b09-9616a28f35e3"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "deleted user"
+          },
+          "404": {
+            "description": "User not found; 用户未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "example": {
+                    "message": "Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The validation error(s); 验证错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "path": {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                }
+                              },
+                              "message": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "path"
+                            ]
+                          }
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "issues",
+                        "name"
+                      ],
+                      "example": {
+                        "issues": [
+                          {
+                            "code": "invalid_type",
+                            "expected": "string",
+                            "received": "undefined",
+                            "path": [
+                              "id"
+                            ],
+                            "message": "Required"
+                          }
+                        ],
+                        "name": "ZodError"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hono/users/name/{name}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32,
+              "required": [
+                "name"
+              ],
+              "example": "我的 空格名字"
+            },
+            "required": true,
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "get user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 32
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "image": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "nickname": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 32
+                    },
+                    "email": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "phone": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "gender": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "age": {
+                      "type": "integer",
+                      "nullable": true,
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "lastLogin": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "followersCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "followingCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "isSuperuser": {
+                      "type": "boolean"
+                    },
+                    "isStaff": {
+                      "type": "boolean"
+                    },
+                    "isActive": {
+                      "type": "boolean"
+                    },
+                    "platformInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "startYear": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "playReason": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "serverType": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "favorite_content": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "desiredPartners": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        }
+                      }
+                    },
+                    "idCardInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "nullable": true,
+                          "format": "uuid"
+                        },
+                        "idCardNumber": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "idCardHolder": {
+                          "type": "string"
+                        },
+                        "isRealName": {
+                          "type": "boolean",
+                          "nullable": true
+                        },
+                        "frontImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "backImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "userId",
+                        "idCardNumber",
+                        "idCardHolder",
+                        "isRealName",
+                        "frontImageUrl",
+                        "backImageUrl"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "updatedAt",
+                    "createdAt",
+                    "password",
+                    "image",
+                    "nickname",
+                    "email",
+                    "phone",
+                    "gender",
+                    "age",
+                    "lastLogin",
+                    "followersCount",
+                    "followingCount",
+                    "isSuperuser",
+                    "isStaff",
+                    "isActive",
+                    "platformInfo",
+                    "idCardInfo"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found; 用户未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "example": {
+                    "message": "Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The validation error(s); 验证错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string"
+                              },
+                              "path": {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                }
+                              },
+                              "message": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "path"
+                            ]
+                          }
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "issues",
+                        "name"
+                      ],
+                      "example": {
+                        "issues": [
+                          {
+                            "code": "invalid_type",
+                            "expected": "string",
+                            "received": "undefined",
+                            "path": [
+                              "name"
+                            ],
+                            "message": "Required"
+                          }
+                        ],
+                        "name": "ZodError"
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "user"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32,
+              "required": [
+                "name"
+              ],
+              "example": "我的 空格名字"
+            },
+            "required": true,
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "description": "update user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 6,
+                    "maxLength": 64
+                  },
+                  "image": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "nickname": {
+                    "type": "string",
+                    "nullable": true,
+                    "maxLength": 32
+                  },
+                  "email": {
+                    "type": "string",
+                    "nullable": true,
+                    "maxLength": 64
+                  },
+                  "phone": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "gender": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "age": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "platformInfo": {
+                    "type": "object",
+                    "nullable": true,
+                    "properties": {
+                      "startYear": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "playReason": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "serverType": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": []
+                      },
+                      "favorite_content": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": []
+                      },
+                      "desiredPartners": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": []
+                      }
+                    }
+                  },
+                  "idCardInfo": {
+                    "type": "object",
+                    "properties": {
+                      "idCardNumber": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "idCardHolder": {
+                        "type": "string",
+                        "default": "self"
+                      },
+                      "frontImageUrl": {
+                        "type": "string"
+                      },
+                      "backImageUrl": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "idCardNumber"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "updated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 32
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "image": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "nickname": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 32
+                    },
+                    "email": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "phone": {
+                      "type": "string",
+                      "nullable": true,
+                      "maxLength": 64
+                    },
+                    "gender": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "age": {
+                      "type": "integer",
+                      "nullable": true,
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "lastLogin": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "followersCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "followingCount": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "isSuperuser": {
+                      "type": "boolean"
+                    },
+                    "isStaff": {
+                      "type": "boolean"
+                    },
+                    "isActive": {
+                      "type": "boolean"
+                    },
+                    "platformInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "startYear": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "playReason": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "serverType": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "favorite_content": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        },
+                        "desiredPartners": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "default": []
+                        }
+                      }
+                    },
+                    "idCardInfo": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "nullable": true,
+                          "format": "uuid"
+                        },
+                        "idCardNumber": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "idCardHolder": {
+                          "type": "string"
+                        },
+                        "isRealName": {
+                          "type": "boolean",
+                          "nullable": true
+                        },
+                        "frontImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "backImageUrl": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "userId",
+                        "idCardNumber",
+                        "idCardHolder",
+                        "isRealName",
+                        "frontImageUrl",
+                        "backImageUrl"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "updatedAt",
+                    "createdAt",
+                    "password",
+                    "image",
+                    "nickname",
+                    "email",
+                    "phone",
+                    "gender",
+                    "age",
+                    "lastLogin",
+                    "followersCount",
+                    "followingCount",
+                    "isSuperuser",
+                    "isStaff",
+                    "isActive",
+                    "platformInfo",
+                    "idCardInfo"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found; 用户未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "example": {
+                    "message": "Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The validation error(s); 验证错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "issues": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "code": {
+                                    "type": "string"
+                                  },
+                                  "path": {
+                                    "type": "array",
+                                    "items": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "message": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "code",
+                                  "path"
+                                ]
+                              }
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "issues",
+                            "name"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "issues": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "code": {
+                                    "type": "string"
+                                  },
+                                  "path": {
+                                    "type": "array",
+                                    "items": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "message": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "code",
+                                  "path"
+                                ]
+                              }
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "issues",
+                            "name"
+                          ],
+                          "example": {
+                            "issues": [
+                              {
+                                "code": "invalid_type",
+                                "expected": "string",
+                                "received": "undefined",
+                                "path": [
+                                  "name"
+                                ],
+                                "message": "Required"
+                              }
+                            ],
+                            "name": "ZodError"
+                          }
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { createRouter } from "@/server/lib/create-app";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import settings from "@/server/settings";
-import {  createJWT, verifyToken } from "@/server/core/token";
+import {  createJWT, verifyJWT } from "@/server/core/token";
 import { decode } from 'hono/jwt'
 
 const router = createRouter()
@@ -35,7 +35,7 @@ async function testToken() {
   }
   const fakeAccToken = await createJWT(fakeData)
   console.log("fakeAccToken: ", fakeAccToken)
-  const fakeJWTPayload = await verifyToken(fakeAccToken) // 测试正常情况
+  const fakeJWTPayload = await verifyJWT(fakeAccToken) // 测试正常情况
   console.log("fakeJWTPayload: ", fakeJWTPayload)
 
   // 测试篡改 token
@@ -50,7 +50,7 @@ async function testToken() {
   console.log("tamperedToken: ", tamperedToken)
   let tamperedJWTPayload = null
   try {
-    tamperedJWTPayload = await verifyToken(tamperedToken) // 对于验证不同过: 都报 401, 例如: 过期, 篡改, 等都是属于验证不通过, 以及 权限不足
+    tamperedJWTPayload = await verifyJWT(tamperedToken) // 对于验证不同过: 都报 401, 例如: 过期, 篡改, 等都是属于验证不通过, 以及 权限不足
     console.log("tamperedJWTPayload: ", tamperedJWTPayload)
   } catch (e: any) {
     const { header: tamperedTokenHeader, payload: tamperedTokenPayload} = decode(tamperedToken)

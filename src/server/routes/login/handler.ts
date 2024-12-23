@@ -1,7 +1,7 @@
 import { AppRouteHandler } from "@/server/lib/types";
 import { LoginRoute, RegisterRoute } from "./route";
 import { db } from "@/lib/db";
-import { createJWT, verifyToken } from "@/server/core/token";
+import { createJWT, verifyJWT } from "@/server/core/token";
 import { user as userTable, idCardInfo as idCardInfoTable, User, userInsertSchema, userSelectSchema, userPatchSchema} from "@/lib/db/schema/user"
 import { eq } from "drizzle-orm";
 import { genSaltSync, hashSync } from 'bcrypt-ts';
