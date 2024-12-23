@@ -24,10 +24,12 @@ import {
   deleteCookie,
 } from 'hono/cookie'
 import { Context } from "hono";
+import { OpenAPIHono, RouteConfig, RouteHandler, RouteConfigToEnv } from "@hono/zod-openapi";
 
 // router.openapi("/reg", handler.register)
 
-router.openapi(route.register, async (c: Context) => {
+// const registerHandler: AppRouteHandler<RegisterRoute> = async (c) => {
+const registerHandler = async (c: any) => {
   const inUser = c.req.valid("json")
   const { idCardInfo: inIdCardInfo, ...userData } = inUser;
 
@@ -53,9 +55,11 @@ router.openapi(route.register, async (c: Context) => {
       idCardInfo: dbIdCardInfo
     }, httpStatus.OK);
   })
-})
+}
 
-// router.openapi(route.login, handler.login)
+router.openapi(route.register, registerHandler)
+
+router.openapi(route.login, handler.login)
 
 
 
