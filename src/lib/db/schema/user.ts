@@ -16,7 +16,7 @@ type PlatformInfo = typeof platformInfoDefault;
 
 export const user = pgTable("User", {
   ...uuidCommon,
-  password: varchar("password", { length: 64 }).notNull(),
+  password: varchar("password", { length: 64 }),
   image: varchar(), // ?
   nickname: varchar("nickname", { length: 32 }),
   email: varchar('email', { length: 64 }),

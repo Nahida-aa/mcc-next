@@ -27,7 +27,7 @@ export const server_sign_in = async (values: z.infer<typeof sign_in_schema>) => 
     //     // process.env,
     //     {basePath: "api/py/auth"}
     //   )
-      const signInURL = "https://api.nahida-aa.us.kg/api/py/auth/signin"
+    const signInURL = "https://api.nahida-aa.us.kg/api/py/auth/signin"
     // headers.set("Content-Type", "application/x-www-form-urlencoded")
     const snHeaders = { "Content-Type": "application/x-www-form-urlencoded" }
     const body = new URLSearchParams(values)
@@ -66,7 +66,8 @@ export const server_sign_in = async (values: z.infer<typeof sign_in_schema>) => 
       // 处理登录成功逻辑
     } else {
       const errorText = await resp.text();
-      console.error(`app/(auth)/actions.ts::sign_in 登录失败: ${errorText}`);
+      console.error(`app/(auth)/actions.ts::sign_in 登录失败,请求有响应: ${errorText}`);
+      throw new Error(`登录失败,请求有响应: ${errorText}`);
     }
     // await signIn('py', {
     //   email: values.name,
@@ -79,6 +80,7 @@ export const server_sign_in = async (values: z.infer<typeof sign_in_schema>) => 
     //   basePath: "api/py",
     // });
   } catch (error) {
-    console.error(`app/(auth)/actions.ts::sign_in 登录失败: ${error}`)
+    console.error(`app/(auth)/actions.ts::sign_in 登录失败,问题不明: ${error}`)
+    throw new Error(`登录失败,问题不明: ${error}`);
   }
 }

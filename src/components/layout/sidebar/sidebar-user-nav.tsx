@@ -2,7 +2,7 @@
 import { ChevronUp } from 'lucide-react';
 import Image from 'next/image';
 // import type { User } from 'next-auth';
-// import { signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 

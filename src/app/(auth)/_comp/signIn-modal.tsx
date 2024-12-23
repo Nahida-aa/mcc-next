@@ -27,13 +27,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+// import { useTransition } from "react"; // const [isPending, startTransition] = useTransition() // 或许很有用, 不使用可能有问题, 但是我怀疑是 react 的问题
 import { SubmitButton } from "@/components/common/submit-button";
 import {  server_sign_in } from "../actions";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
 // import { signIn } from "../auth";
 
 export const sign_in_schema = z.object({
-  name: z.string().min(1, "Name is required"),
+  nameOrEmail: z.string().min(1, "Name or email is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 })
 export function AignIn_Modal() {
@@ -41,13 +44,14 @@ export function AignIn_Modal() {
   // useEffect(() => {
   //   setIsMounted(true)
   // }, [])
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const router = useRouter();
   
   const form = useForm({
     resolver: zodResolver(sign_in_schema),
     defaultValues: {
-      name: '',
+      nameOrEmail: '',
       password: '',
     }
   })
@@ -69,8 +73,10 @@ export function AignIn_Modal() {
 
   // if (!isMounted) return null // 13 版本的 React 有 bug，需要这样处理
   return (
-    <Dialog open>
-      <DialogContent 
+    <Dialog defaultOpen  onOpenChange={() => router.push('/')}>
+      <DialogContent onInteractOutside={(event) => {
+        event.preventDefault() // 避免在点击外部时关闭对话框
+      }}
         className="flex flex-col gap-4 px-4 sm:px-16"
       >
         <DialogHeader>
@@ -84,18 +90,18 @@ export function AignIn_Modal() {
             <div className="space-y-4">
               <FormField
                 control={form.control}
-                name="name"
+                name="nameOrEmail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <FormLabel htmlFor="name">Name or Email</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        id="name"
+                        id="nameOrEmail"
                         type="text"
-                        placeholder="Enter name"
+                        placeholder="Enter name or email"
                         required
-                        className="bg-muted"
+                        className="bg-muted/30"
                         {...field}
                       />
                     </FormControl>
@@ -110,26 +116,45 @@ export function AignIn_Modal() {
                   <FormItem>
                     <FormLabel htmlFor="password">Password</FormLabel>
                     <FormControl>
+                      <div className="relative">
                       <Input
                         disabled={isLoading}
                         id="password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="Enter password"
                         required
-                        className="bg-muted"
+                        className="bg-muted/30"
                         {...field}
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                      >
+                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      </button>
+                      </div>
                     </FormControl>
                     <FormMessage {...field} />
                   </FormItem>
                 )}
               />
             </div>
-            <DialogFooter>
+
+            <DialogFooter className="">
               <SubmitButton isLoading={isLoading}> Sign in</SubmitButton>
             </DialogFooter>
           </form>
         </Form>
+        <p className="text-center text-sm text-gray-600 mt-4 dark:text-zinc-400">
+          {"Don't have an account? "}
+          <Link
+            href="/register"
+            className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
+          >
+            Sign up
+          </Link>
+        </p>
       </DialogContent>
     </Dialog>
   );

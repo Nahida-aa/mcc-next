@@ -23,6 +23,9 @@
 .swagger-ui .parameter__extension, .swagger-ui .parameter__in {
     @apply text-[grey] dark:text-slate-400;
 }
+.swagger-ui input[type=email], .swagger-ui input[type=file], .swagger-ui input[type=password], .swagger-ui input[type=search], .swagger-ui input[type=text], .swagger-ui textarea {
+    @apply bg-[#fff] dark:bg-[#110c2483] ;
+}
 .swagger-ui .json-schema-2020-12-expand-deep-button {
     @apply !text-[#505050] dark:!text-slate-400;
 }

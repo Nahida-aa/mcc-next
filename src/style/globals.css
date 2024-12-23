@@ -55,10 +55,10 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 20 14.3% 4.1%;
+    /* --background: 20 14.3% 4.1%; */
     
-    --background: 240, 10%, 3.9%, 0.2;
-    --background-v: hsl(240, 10%, 3.9%, 0.2);
+    --background: 244, 35%, 19%, 0.2;
+    --background-v: hsla(244, 35%, 19%, 0.2);
     --background-1: hsl(220, 73%, 9%);
     --background-2: hsl(234, 31%, 12%);
     --background-3: hsl(240, 32%, 12%);

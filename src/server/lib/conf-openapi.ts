@@ -9,7 +9,7 @@ export default function configOpenAPI(app: AppOpenAPI) {
       title: 'Hono API',
       version: packageJson.version,
       description: `
-      [去 swagger-ui](/docs)
+      - [去swagger-ui](https://mcc.Nahida-aaus.kg/docs)
       `,
     }
   });
