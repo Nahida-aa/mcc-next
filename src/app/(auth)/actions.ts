@@ -3,7 +3,7 @@ import { headers as nextHeaders } from "next/headers"
 import { cookies } from 'next/headers'
 import { z } from 'zod';
 
-// import { createUser, getUser } from '@/lib/db/queries';
+// import { createUser, getUser } from '@/server/db/queries';
 
 import { createActionURL } from './auth';
 import { sign_in_schema } from './_comp/signIn-modal';

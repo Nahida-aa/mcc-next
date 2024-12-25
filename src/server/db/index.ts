@@ -19,8 +19,12 @@
 // export const db = drizzle({ client: pool });
 
 import * as userSchema from './schema/user';
+import * as linkSchema from './schema/link';
+import * as groupSchema from './schema/group';
+import * as followSchema from './schema/follow';
+import * as linkUserGroupSchema from './schema/linkUserGroup';
 
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 const client = postgres(`${process.env.DATABASE_URL!}`);
-export const db = drizzle(client, { schema: {...userSchema} });
+export const db = drizzle(client, { schema: {...userSchema, ...linkSchema, ...groupSchema, ...followSchema, ...linkUserGroupSchema} });

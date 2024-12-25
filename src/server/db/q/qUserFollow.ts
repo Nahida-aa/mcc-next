@@ -4,17 +4,17 @@ import { db } from '..';
 import { linkUserFollow } from '../schema/link';
 import { user as userTable } from '../schema/user';
 
-export async function getUserFollowers(userId: string) {
+export async function getUserFollowers(user_id: string) {
   const followers = await db
     .select({
-      followerId: linkUserFollow.userId,
+      followerId: linkUserFollow.user_id,
       follower: userTable,
     })
     .from(linkUserFollow)
-    .leftJoin(userTable, eq(linkUserFollow.userId, userTable.id))
-    // .innerJoin(user, linkUserFollow.userId.eq(user.id))
-    // .where(linkUserFollow.targetUserId.eq(userId))
-    .where(eq(linkUserFollow.targetUserId, userId))
+    .leftJoin(userTable, eq(linkUserFollow.user_id, userTable.id))
+    // .innerJoin(user, linkUserFollow.user_id.eq(user.id))
+    // .where(linkUserFollow.target_user_id.eq(user_id))
+    .where(eq(linkUserFollow.target_user_id, user_id))
     // .all();
 
   return followers;
@@ -22,17 +22,17 @@ export async function getUserFollowers(userId: string) {
 
 export class QLinkUserFollow {
   // 返回当目标户关注的用户(团队)list, 每个用户携带与当前用户的关注关系(两个字段: 1. 当前用户是否关注了目标用户的关注的用户; 2. 目标用户关注的用户是否关注了当前用户)
-  static async getFollowingByIds(currentUserId: string, targetUserId: string) {
+  static async getFollowingByIds(current_user_id: string, target_user_id: string) {
     const subquery = db
       .select({
-        followedId: linkUserFollow.targetUserId,
-        currentFollowingUser: sql<boolean>`CASE WHEN ${linkUserFollow.userId} = ${currentUserId} THEN true ELSE false END`,
-        userFollowingCurrent: sql<boolean>`CASE WHEN ${linkUserFollow.targetUserId} = ${currentUserId} THEN true ELSE false END`,
+        followedId: linkUserFollow.target_user_id,
+        currentFollowingUser: sql<boolean>`CASE WHEN ${linkUserFollow.user_id} = ${current_user_id} THEN true ELSE false END`,
+        userFollowingCurrent: sql<boolean>`CASE WHEN ${linkUserFollow.target_user_id} = ${current_user_id} THEN true ELSE false END`,
       })
       .from(linkUserFollow)
       .where(or(
-        eq(linkUserFollow.userId, currentUserId),
-        eq(linkUserFollow.targetUserId, currentUserId)
+        eq(linkUserFollow.user_id, current_user_id),
+        eq(linkUserFollow.target_user_id, current_user_id)
       ))
       .as('subquery');
 
@@ -43,9 +43,9 @@ export class QLinkUserFollow {
         userFollowingCurrent: subquery.userFollowingCurrent,
       })
       .from(linkUserFollow)
-      .innerJoin(userTable, eq(linkUserFollow.targetUserId, userTable.id))
+      .innerJoin(userTable, eq(linkUserFollow.target_user_id, userTable.id))
       .leftJoin(subquery, eq(subquery.followedId, userTable.id))
-      .where(eq(linkUserFollow.userId, targetUserId))
+      .where(eq(linkUserFollow.user_id, target_user_id))
       .orderBy(userTable.name);
 
     return result.map(row => ({
@@ -56,57 +56,57 @@ export class QLinkUserFollow {
 
   }
 
-  static async getByIds(currentUserId: string, targetUserId: string) {
+  static async getByIds(current_user_id: string, target_user_id: string) {
     const [dbLinkUserFollow] = await db.select()
       .from(linkUserFollow)
       .where(
-        sql`(${linkUserFollow.userId} = ${currentUserId}) and (${linkUserFollow.targetUserId} = ${targetUserId})`
+        sql`(${linkUserFollow.user_id} = ${current_user_id}) and (${linkUserFollow.target_user_id} = ${target_user_id})`
       )
     return dbLinkUserFollow
   }
 
-  static async create(currentUserId: string, targetUserId: string) {
+  static async create(current_user_id: string, target_user_id: string) {
     const [dbLinkUserFollow] = await db.insert(linkUserFollow)
       .values({
-        userId: currentUserId,
-        targetUserId,
+        user_id: current_user_id,
+        target_user_id,
       })
       .returning()
     return dbLinkUserFollow
   }
 
-  static async followUserByIds(currentUserId: string, targetUserId: string) {//业务逻辑: 当前用户关注目标用户
+  static async followUserByIds(current_user_id: string, target_user_id: string) {//业务逻辑: 当前用户关注目标用户
     // 检查是否已经关注
-    const dbLinkUserFollow = await this.getByIds(currentUserId, targetUserId)
+    const dbLinkUserFollow = await this.getByIds(current_user_id, target_user_id)
     if (dbLinkUserFollow) {
       throw new Error('User is already following the target user');
     }
     
     // 使用事务来确保所有更新都成功完成或全部回滚
     return await db.transaction(async (tx) => {
-      console.log('followUserByIds::transaction 开始', currentUserId, targetUserId);
+      console.log('followUserByIds::transaction 开始', current_user_id, target_user_id);
       // 创建关注 link
       const [newLinkUserFollow] = await tx.insert(linkUserFollow)
         .values({
-          userId: currentUserId,
-          targetUserId,
+          user_id: current_user_id,
+          target_user_id,
         })
         .returning();
 
       // 更新目标用户的粉丝数并返回更新后的用户数据
       const [updatedTargetUser] = await tx.update(userTable)
         .set({
-          followersCount: sql`${userTable.followersCount} + 1`,
+          followers_count: sql`${userTable.followers_count} + 1`,
         })
-        .where(eq(userTable.id, targetUserId))
+        .where(eq(userTable.id, target_user_id))
         .returning();
 
       // 更新当前用户的关注人数并返回更新后的用户数据
       const [updatedCurrentUser] = await tx.update(userTable)
         .set({
-          followingCount: sql`${userTable.followingCount} + 1`,
+          following_count: sql`${userTable.following_count} + 1`,
         })
-        .where(eq(userTable.id, currentUserId))
+        .where(eq(userTable.id, current_user_id))
         .returning();
 
       return {
@@ -119,18 +119,18 @@ export class QLinkUserFollow {
 
   static async followUserByNames(currentUserName: string, targetUserName: string) {
     console.log('followUserByNames:', currentUserName, targetUserName);
-    const [{id: currentUserId }] = await db.select({id: userTable.id})
+    const [{id: current_user_id }] = await db.select({id: userTable.id})
       .from(userTable)
       .where(eq(userTable.name, currentUserName))
 
-    const [{id: targetUserId}] = await db.select({id: userTable.id})
+    const [{id: target_user_id}] = await db.select({id: userTable.id})
       .from(userTable)
       .where(eq(userTable.name, targetUserName))
 
-    if (!currentUserId || !targetUserId) {
+    if (!current_user_id || !target_user_id) {
       throw new Error('User not found');
     }
 
-    return this.followUserByIds(currentUserId, targetUserId);
+    return this.followUserByIds(current_user_id, target_user_id);
   }
 }

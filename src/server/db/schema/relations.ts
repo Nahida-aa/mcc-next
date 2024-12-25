@@ -1,49 +1,33 @@
 import { relations } from "drizzle-orm/relations"
 
 import { home, idCardInfo, identity, user } from "./user";
-import { linkGroupFollow, linkGroupIdentity, linkGroupProj, linkGroupResource, linkUserFollow, linkUserIdentity, linkUserProj, linkUserResource, linkUserGroup } from "./link";
+import { linkGroupFollow, linkGroupIdentity, linkGroupProj, linkGroupResource, linkUserFollow, linkUserIdentity, linkUserProj, linkUserResource } from "./link";
 import { group } from "./group";
 import { tag } from "./tag";
 import { proj } from "./proj";
 import { resource } from "./resource";
 
 
-
-
-
-
 export const linkGroupFollowRelations = relations(linkGroupFollow, ({one}) => ({
 	targetGroup: one(group, {
-		fields: [linkGroupFollow.targetGroupId],
+		fields: [linkGroupFollow.target_group_id],
 		references: [group.id]
 	}),
 	user: one(user, {
-		fields: [linkGroupFollow.userId],
+		fields: [linkGroupFollow.user_id],
 		references: [user.id]
 	}),
 }));
 
 
 
-export const groupRelations = relations(group, ({many}) => ({
-	linkGroupFollows: many(linkGroupFollow),
-	linkGroupProjs: many(linkGroupProj),
-	linkGroupResources: many(linkGroupResource),
-	linkUserGroups: many(linkUserGroup),
-	linkGroupIdentities: many(linkGroupIdentity),
-}));
-
-
-
-
-
 export const linkGroupProjRelations = relations(linkGroupProj, ({one}) => ({
 	proj: one(proj, {
-		fields: [linkGroupProj.projId],
+		fields: [linkGroupProj.proj_id],
 		references: [proj.id]
 	}),
 	group: one(group, {
-		fields: [linkGroupProj.groupId],
+		fields: [linkGroupProj.group_id],
 		references: [group.id]
 	}),
 }));
@@ -55,11 +39,11 @@ export const projRelations = relations(proj, ({many}) => ({
 
 export const linkGroupResourceRelations = relations(linkGroupResource, ({one}) => ({
 	resource: one(resource, {
-		fields: [linkGroupResource.resourceId],
+		fields: [linkGroupResource.resource_id],
 		references: [resource.id]
 	}),
 	group: one(group, {
-		fields: [linkGroupResource.groupId],
+		fields: [linkGroupResource.group_id],
 		references: [group.id]
 	}),
 }));
@@ -71,44 +55,35 @@ export const resourceRelations = relations(resource, ({many}) => ({
 
 export const linkUserProjRelations = relations(linkUserProj, ({one}) => ({
 	proj: one(proj, {
-		fields: [linkUserProj.projId],
+		fields: [linkUserProj.proj_id],
 		references: [proj.id]
 	}),
 	user: one(user, {
-		fields: [linkUserProj.userId],
+		fields: [linkUserProj.user_id],
 		references: [user.id]
 	}),
 }));
 
 export const linkUserResourceRelations = relations(linkUserResource, ({one}) => ({
 	resource: one(resource, {
-		fields: [linkUserResource.resourceId],
+		fields: [linkUserResource.resource_id],
 		references: [resource.id]
 	}),
 	user: one(user, {
-		fields: [linkUserResource.userId],
+		fields: [linkUserResource.user_id],
 		references: [user.id]
 	}),
 }));
 
-export const linkUserGroupRelations = relations(linkUserGroup, ({one}) => ({
-	group: one(group, {
-		fields: [linkUserGroup.groupId],
-		references: [group.id]
-	}),
-	user: one(user, {
-		fields: [linkUserGroup.userId],
-		references: [user.id]
-	}),
-}));
+
 
 export const linkGroupIdentityRelations = relations(linkGroupIdentity, ({one}) => ({
 	identity: one(identity, {
-		fields: [linkGroupIdentity.identityId],
+		fields: [linkGroupIdentity.identity_id],
 		references: [identity.id]
 	}),
 	group: one(group, {
-		fields: [linkGroupIdentity.groupId],
+		fields: [linkGroupIdentity.group_id],
 		references: [group.id]
 	}),
 }));
@@ -120,11 +95,11 @@ export const identityRelations = relations(identity, ({many}) => ({
 
 export const linkUserIdentityRelations = relations(linkUserIdentity, ({one}) => ({
 	identity: one(identity, {
-		fields: [linkUserIdentity.identityId],
+		fields: [linkUserIdentity.identity_id],
 		references: [identity.id]
 	}),
 	user: one(user, {
-		fields: [linkUserIdentity.userId],
+		fields: [linkUserIdentity.user_id],
 		references: [user.id]
 	}),
 }));

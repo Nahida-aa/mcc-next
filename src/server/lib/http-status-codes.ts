@@ -1,11 +1,16 @@
 // Generated file. Do not edit
 // Codes retrieved on Thu, 03 Oct 2024 12:05:14 GMT from https://raw.githubusercontent.com/prettymuchbryce/http-status-codes/refs/heads/master/codes.json
+
+import { ClientErrorStatusCode as _ClientErrorStatusCode, InfoStatusCode, SuccessStatusCode } from "hono/utils/http-status";
+
+export type ClientErrorStatusCode = _ClientErrorStatusCode | 419 | 420
+
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.3.3
  *
  * The request has been received but not yet acted upon. It is non-committal, meaning that there is no way in HTTP to later send an asynchronous response indicating the outcome of processing the request. It is intended for cases where another process or server handles the request, or for batch processing.
  */
-export const ACCEPTED = 202;
+export const ACCEPTED: SuccessStatusCode = 202;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.6.3
  *
@@ -17,43 +22,43 @@ export const BAD_GATEWAY = 502;
  *
  * This response means that server could not understand the request due to invalid syntax.
  */
-export const BAD_REQUEST = 400;
+export const BAD_REQUEST: ClientErrorStatusCode = 400;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.8
  *
  * This response is sent when a request conflicts with the current state of the server.
  */
-export const CONFLICT = 409;
+export const CONFLICT: ClientErrorStatusCode = 409;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.2.1
  *
  * This interim response indicates that everything so far is OK and that the client should continue with the request or ignore it if it is already finished.
  */
-export const CONTINUE = 100;
+export const CONTINUE: InfoStatusCode = 100;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.3.2
  *
  * The request has succeeded and a new resource has been created as a result of it. This is typically the response sent after a PUT request.
  */
-export const CREATED = 201;
+export const CREATED: SuccessStatusCode = 201;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.14
  *
  * This response code means the expectation indicated by the Expect request header field can't be met by the server.
  */
-export const EXPECTATION_FAILED = 417;
+export const EXPECTATION_FAILED: ClientErrorStatusCode = 417;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.5
  *
  * The request failed due to failure of a previous request.
  */
-export const FAILED_DEPENDENCY = 424;
+export const FAILED_DEPENDENCY: ClientErrorStatusCode = 424;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.3
  *
  * The client does not have access rights to the content, i.e. they are unauthorized, so server is rejecting to give proper response. Unlike 401, the client's identity is known to the server.
  */
-export const FORBIDDEN = 403;
+export const FORBIDDEN: ClientErrorStatusCode = 403;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.6.5
  *
@@ -65,7 +70,7 @@ export const GATEWAY_TIMEOUT = 504;
  *
  * This response would be sent when the requested content has been permenantly deleted from server, with no forwarding address. Clients are expected to remove their caches and links to the resource. The HTTP specification intends this status code to be used for "limited-time, promotional services". APIs should not feel compelled to indicate resources that have been deleted with this status code.
  */
-export const GONE = 410;
+export const GONE: ClientErrorStatusCode = 410;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.6.6
  *
@@ -77,13 +82,13 @@ export const HTTP_VERSION_NOT_SUPPORTED = 505;
  *
  * Any attempt to brew coffee with a teapot should result in the error code "418 I'm a teapot". The resulting entity body MAY be short and stout.
  */
-export const IM_A_TEAPOT = 418;
+export const IM_A_TEAPOT: ClientErrorStatusCode = 418;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.6
  *
  * The 507 (Insufficient Storage) status code means the method could not be performed on the resource because the server is unable to store the representation needed to successfully complete the request. This condition is considered to be temporary. If the request which received this status code was the result of a user action, the request MUST NOT be repeated until it is requested by a separate user action.
  */
-export const INSUFFICIENT_SPACE_ON_RESOURCE = 419;
+export const INSUFFICIENT_SPACE_ON_RESOURCE: ClientErrorStatusCode = 419;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.6
  *
@@ -101,26 +106,26 @@ export const INTERNAL_SERVER_ERROR = 500;
  *
  * The server rejected the request because the Content-Length header field is not defined and the server requires it.
  */
-export const LENGTH_REQUIRED = 411;
+export const LENGTH_REQUIRED: ClientErrorStatusCode = 411;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.4
  *
  * The resource that is being accessed is locked.
  */
-export const LOCKED = 423;
+export const LOCKED: ClientErrorStatusCode = 423;
 /**
  * @deprecated
  * Official Documentation @ https://tools.ietf.org/rfcdiff?difftype=--hwdiff&url2=draft-ietf-webdav-protocol-06.txt
  *
  * A deprecated response used by the Spring Framework when a method has failed.
  */
-export const METHOD_FAILURE = 420;
+export const METHOD_FAILURE: ClientErrorStatusCode = 420;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.5
  *
  * The request method is known by the server but has been disabled and cannot be used. For example, an API may forbid DELETE-ing a resource. The two mandatory methods, GET and HEAD, must never be disabled and should not return this error code.
  */
-export const METHOD_NOT_ALLOWED = 405;
+export const METHOD_NOT_ALLOWED: ClientErrorStatusCode = 405;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.2
  *
@@ -138,7 +143,7 @@ export const MOVED_TEMPORARILY = 302;
  *
  * A Multi-Status response conveys information about multiple resources in situations where multiple status codes might be appropriate.
  */
-export const MULTI_STATUS = 207;
+export const MULTI_STATUS: SuccessStatusCode = 207;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.1
  *
@@ -156,25 +161,25 @@ export const NETWORK_AUTHENTICATION_REQUIRED = 511;
  *
  * There is no content to send for this request, but the headers may be useful. The user-agent may update its cached headers for this resource with the new ones.
  */
-export const NO_CONTENT = 204;
+export const NO_CONTENT: SuccessStatusCode = 204;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.3.4
  *
  * This response code means returned meta-information set is not exact set as available from the origin server, but collected from a local or a third party copy. Except this condition, 200 OK response should be preferred instead of this response.
  */
-export const NON_AUTHORITATIVE_INFORMATION = 203;
+export const NON_AUTHORITATIVE_INFORMATION: SuccessStatusCode = 203;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.6
  *
  * This response is sent when the web server, after performing server-driven content negotiation, doesn't find any content following the criteria given by the user agent.
  */
-export const NOT_ACCEPTABLE = 406;
+export const NOT_ACCEPTABLE: ClientErrorStatusCode = 406;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.4
  *
  * The server can not find requested resource. In the browser, this means the URL is not recognized. In an API, this can also mean that the endpoint is valid but the resource itself does not exist. Servers may also send this response instead of 403 to hide the existence of a resource from an unauthorized client. This response code is probably the most famous one due to its frequent occurence on the web.
  */
-export const NOT_FOUND = 404;
+export const NOT_FOUND: ClientErrorStatusCode = 404;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.6.2
  *
@@ -196,19 +201,19 @@ export const NOT_MODIFIED = 304;
  * POST: The resource describing the result of the action is transmitted in the message body.
  * TRACE: The message body contains the request message as received by the server
  */
-export const OK = 200;
+export const OK: SuccessStatusCode = 200;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7233#section-4.1
  *
  * This response code is used because of range header sent by the client to separate download into multiple streams.
  */
-export const PARTIAL_CONTENT = 206;
+export const PARTIAL_CONTENT: SuccessStatusCode = 206;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.2
  *
  * This response code is reserved for future use. Initial aim for creating this code was using it for digital payment systems however this is not used currently.
  */
-export const PAYMENT_REQUIRED = 402;
+export const PAYMENT_REQUIRED: ClientErrorStatusCode = 402;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7538#section-3
  *
@@ -220,73 +225,73 @@ export const PERMANENT_REDIRECT = 308;
  *
  * The client has indicated preconditions in its headers which the server does not meet.
  */
-export const PRECONDITION_FAILED = 412;
+export const PRECONDITION_FAILED: ClientErrorStatusCode = 412;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc6585#section-3
  *
  * The origin server requires the request to be conditional. Intended to prevent the 'lost update' problem, where a client GETs a resource's state, modifies it, and PUTs it back to the server, when meanwhile a third party has modified the state on the server, leading to a conflict.
  */
-export const PRECONDITION_REQUIRED = 428;
+export const PRECONDITION_REQUIRED: ClientErrorStatusCode = 428;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.1
  *
  * This code indicates that the server has received and is processing the request, but no response is available yet.
  */
-export const PROCESSING = 102;
+export const PROCESSING: InfoStatusCode = 102;
 /**
  * Official Documentation @ https://www.rfc-editor.org/rfc/rfc8297#page-3
  *
  * This code indicates to the client that the server is likely to send a final response with the header fields included in the informational response.
  */
-export const EARLY_HINTS = 103;
+export const EARLY_HINTS: InfoStatusCode = 103;
 /**
  * Official Documentation @ https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.15
  *
  * The server refuses to perform the request using the current protocol but might be willing to do so after the client upgrades to a different protocol.
  */
-export const UPGRADE_REQUIRED = 426;
+export const UPGRADE_REQUIRED: ClientErrorStatusCode = 426;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7235#section-3.2
  *
  * This is similar to 401 but authentication is needed to be done by a proxy.
  */
-export const PROXY_AUTHENTICATION_REQUIRED = 407;
+export const PROXY_AUTHENTICATION_REQUIRED: ClientErrorStatusCode = 407;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc6585#section-5
  *
  * The server is unwilling to process the request because its header fields are too large. The request MAY be resubmitted after reducing the size of the request header fields.
  */
-export const REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
+export const REQUEST_HEADER_FIELDS_TOO_LARGE: ClientErrorStatusCode = 431;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.7
  *
  * This response is sent on an idle connection by some servers, even without any previous request by the client. It means that the server would like to shut down this unused connection. This response is used much more since some browsers, like Chrome, Firefox 27+, or IE9, use HTTP pre-connection mechanisms to speed up surfing. Also note that some servers merely shut down the connection without sending this message.
  */
-export const REQUEST_TIMEOUT = 408;
+export const REQUEST_TIMEOUT: ClientErrorStatusCode = 408;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.11
  *
  * Request entity is larger than limits defined by server; the server might close the connection or return an Retry-After header field.
  */
-export const REQUEST_TOO_LONG = 413;
+export const REQUEST_TOO_LONG: ClientErrorStatusCode = 413;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.12
  *
  * The URI requested by the client is longer than the server is willing to interpret.
  */
-export const REQUEST_URI_TOO_LONG = 414;
+export const REQUEST_URI_TOO_LONG: ClientErrorStatusCode = 414;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7233#section-4.4
  *
  * The range specified by the Range header field in the request can't be fulfilled; it's possible that the range is outside the size of the target URI's data.
  */
-export const REQUESTED_RANGE_NOT_SATISFIABLE = 416;
+export const REQUESTED_RANGE_NOT_SATISFIABLE: ClientErrorStatusCode = 416;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.3.6
  *
  * This response code is sent after accomplishing request to tell user agent reset document view which sent this request.
  */
-export const RESET_CONTENT = 205;
+export const RESET_CONTENT: SuccessStatusCode = 205;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.4
  *
@@ -304,7 +309,7 @@ export const SERVICE_UNAVAILABLE = 503;
  *
  * This code is sent in response to an Upgrade request header by the client, and indicates the protocol the server is switching too.
  */
-export const SWITCHING_PROTOCOLS = 101;
+export const SWITCHING_PROTOCOLS: InfoStatusCode = 101;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.7
  *
@@ -322,13 +327,13 @@ export const TOO_MANY_REQUESTS = 429;
  *
  * Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.
  */
-export const UNAUTHORIZED = 401;
+export const UNAUTHORIZED: ClientErrorStatusCode = 401;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7725
  *
  * The user-agent requested a resource that cannot legally be provided, such as a web page censored by a government.
  */
-export const UNAVAILABLE_FOR_LEGAL_REASONS = 451;
+export const UNAVAILABLE_FOR_LEGAL_REASONS: ClientErrorStatusCode = 451;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.3
  *
@@ -343,7 +348,7 @@ export const UNPROCESSABLE_ENTITY = 422;
  *
  * The media format of the requested data is not supported by the server, so the server is rejecting the request.
  */
-export const UNSUPPORTED_MEDIA_TYPE = 415;
+export const UNSUPPORTED_MEDIA_TYPE: ClientErrorStatusCode = 415;
 /**
  * @deprecated
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.4.6
@@ -356,4 +361,77 @@ export const USE_PROXY = 305;
  *
  * Defined in the specification of HTTP/2 to indicate that a server is not able to produce a response for the combination of scheme and authority that are included in the request URI.
  */
-export const MISDIRECTED_REQUEST = 421;
+export const MISDIRECTED_REQUEST: ClientErrorStatusCode = 421;
+
+const httpStatusCodes = {
+  ACCEPTED,
+  BAD_GATEWAY,
+  BAD_REQUEST,
+  CONFLICT,
+  CONTINUE,
+  CREATED,
+  EXPECTATION_FAILED,
+  FAILED_DEPENDENCY,
+  FORBIDDEN,
+  GATEWAY_TIMEOUT,
+  GONE,
+  HTTP_VERSION_NOT_SUPPORTED,
+  IM_A_TEAPOT,
+  INSUFFICIENT_SPACE_ON_RESOURCE,
+  INSUFFICIENT_STORAGE,
+  INTERNAL_SERVER_ERROR,
+  LENGTH_REQUIRED,
+  LOCKED,
+  METHOD_FAILURE,
+  METHOD_NOT_ALLOWED,
+  MOVED_PERMANENTLY,
+  MOVED_TEMPORARILY,
+  MULTI_STATUS,
+  MULTIPLE_CHOICES,
+  NETWORK_AUTHENTICATION_REQUIRED,
+  NO_CONTENT,
+  NON_AUTHORITATIVE_INFORMATION,
+  NOT_ACCEPTABLE,
+  NOT_FOUND,
+  NOT_IMPLEMENTED,
+  NOT_MODIFIED,
+  OK,
+  PARTIAL_CONTENT,
+  PAYMENT_REQUIRED,
+  PERMANENT_REDIRECT,
+  PRECONDITION_FAILED,
+  PRECONDITION_REQUIRED,
+  PROCESSING,
+  EARLY_HINTS,
+  UPGRADE_REQUIRED,
+  PROXY_AUTHENTICATION_REQUIRED,
+  REQUEST_HEADER_FIELDS_TOO_LARGE,
+  REQUEST_TIMEOUT,
+  REQUEST_TOO_LONG,
+  REQUEST_URI_TOO_LONG,
+  REQUESTED_RANGE_NOT_SATISFIABLE,
+  RESET_CONTENT,
+  SEE_OTHER,
+  SERVICE_UNAVAILABLE,
+  SWITCHING_PROTOCOLS,
+  TEMPORARY_REDIRECT,
+  TOO_MANY_REQUESTS,
+  UNAUTHORIZED,
+  UNAVAILABLE_FOR_LEGAL_REASONS,
+  UNPROCESSABLE_ENTITY,
+  UNSUPPORTED_MEDIA_TYPE,
+  USE_PROXY,
+  MISDIRECTED_REQUEST,
+};
+
+export default httpStatusCodes;
+
+// export type InfoStatusCode = 100 | 101 | 102 | 103;
+// export type SuccessStatusCode = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
+// export type RedirectStatusCode = 300 | 301 | 302 | 303 | 304 | 305 | 307 | 308;
+// export type ClientErrorStatusCode = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 418 | 419 | 420 | 421 | 422 | 423 | 424 | 426 | 428 | 429 | 431 | 451;
+// export type ClientErrorStatusCode = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 418 | 421 | 422 | 423 | 424 | 425 | 426 | 428 | 429 | 431 | 451
+
+// export type StatusCode = InfoStatusCode | SuccessStatusCode | RedirectStatusCode | ClientErrorStatusCode | ServerErrorStatusCode | UnofficialStatusCode;
+
+// export type HttpStatusCodes = typeof httpStatusCodes;

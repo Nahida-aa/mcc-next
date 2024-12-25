@@ -11,7 +11,7 @@ type CreateUserInput = Omit<Partial<User>, 'name' | 'password'> & {
   name: string;
   password: string;
   idCardInfo: {
-    idCardNumber: string;
+    id_card_number: string;
     idCardHolder?: string; // self | guardian
     // isRealName?: boolean; // 这个字段不由用户填写
     frontImageUrl?: string;
@@ -35,7 +35,7 @@ export async function create(new_user: CreateUserInput): Promise<CreateUserOutpu
     age: new_user.age,
     email: new_user.email,
     password: new_user.password,
-    platformInfo: new_user.platformInfo,
+    platform_info: new_user.platform_info,
   };
   const [dbUser] = await db.insert(usersTable).values(user).returning()
 

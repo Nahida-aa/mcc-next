@@ -9,8 +9,11 @@ import createApp, { createRouter } from '@/server/lib/create-app'
 
 import test from '@/server/routes/test/index'
 import auth from '@/server/routes/auth/index'
-import login from '@/server/routes/login/index'
-import user from '@/server/routes/user/index'
+import users from '@/server/routes/users/route'
+import users_get from '@/server/routes/users/get'
+import user from '@/server/routes/user/route'
+import groups from '@/server/routes/groups/route'
+import follow from '@/server/routes/follow/route'
 
 // const app = new Hono().basePath('/api/hono')
 // const app = new OpenAPIHono().basePath('/api/hono')
@@ -19,20 +22,14 @@ const app = createApp()
 // 使用 hono-pino 中间件进行日志记录
 // app.use('*', logger());
 
-app.get('/hello', (c) => {
-  return c.json({
-    message: 'Hello from Hono on Vercel!'
-  })
-})
-
-
-
-
 const routes = [
   test,
   auth,
-  login,
+  users,
+  users_get,
   user,
+  groups,
+  follow,
 ] as const;
 
 configOpenAPI(app)
@@ -44,13 +41,6 @@ routes.forEach(route => {
 // const _app = app
 //   .route("/", user)
 //   .route("/", login)
-
-app.get('/:wild', (c) => {
-  const wild = c.req.param('wild')
-  return c.json({
-    message: `Hello from Hono on Vercel! You're now on /api/${wild}!`
-  })
-})
 
 // type PrintRoutesParams = typeof app;
 // export function printRoutes(app: PrintRoutesParams) {

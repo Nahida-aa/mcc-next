@@ -5,7 +5,7 @@ import postgres from 'postgres';
 const client = postgres(`${process.env.DATABASE_URL!}`);
 const db = drizzle(client);
 import { user as usersTable, identity, idCardInfo as idCardInfoTable, home  } from './schema/user';
-import { linkUserFollow, linkGroupFollow, linkUserProj, linkUserResource, linkUserGroup, linkUserIdentity } from './schema/link';
+import { linkUserFollow, linkGroupFollow, linkUserProj, linkUserResource, linkUserIdentity } from './schema/link';
 import { proj } from './schema/proj';
 import { resource } from './schema/resource';
 import { tag } from './schema/tag';
@@ -45,7 +45,7 @@ async function createUserLines() {
     password: 'string',
     image: 'https://avatars.githubusercontent.com/u/96083926?s=80&v=4',
     idCardInfo: {
-      idCardNumber: 'string123456',
+      id_card_number: 'string123456',
     },
   });
   console.log('user1:', user1);
@@ -55,7 +55,7 @@ async function createUserLines() {
     password: '123456',
     image: 'https://avatars.githubusercontent.com/u/96083926?s=80&v=4',
     idCardInfo: {
-      idCardNumber: '123456123456',
+      id_card_number: '123456123456',
     },
   });
   console.log('user2:', user2);
@@ -64,7 +64,7 @@ async function createUserLines() {
     password: '1234ts',
     image: 'https://avatars.githubusercontent.com/u/96083926?s=80&v=4',
     idCardInfo: {
-      idCardNumber: '1234ts123456',
+      id_card_number: '1234ts123456',
     },
   });
   console.log('user3:', user3);

@@ -1,8 +1,8 @@
 import { createRouter } from "@/server/lib/create-app";
 import list_route from './list'
 // import get_route from './get'
-// import create_route from './create'
-// import check_route from './check'
+import create_route from './create'
+import check_route from './check'
 // import post_route from './post'
 // import action_route from './action'
 // import patch_route from './patch'
@@ -12,8 +12,8 @@ const router = createRouter()
 
 router.route('', list_route)
 // router.route('', get_route)
-// router.route('', create_route)
-// router.route('', check_route)
+router.route('', create_route)
+router.route('', check_route)
 // router.route('', action_route)
 // router.route('', post_route)
 // router.route('', patch_route)

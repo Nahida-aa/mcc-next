@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from 'next/headers'
 import { cookies } from 'next/headers'
 import { verifyJWT } from "@/server/core/token";
-// import { user } from "@/lib/db/schema/user";
+// import { user } from "@/server/db/schema/user";
 
 /**
  *@swagger
@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
   let session_token = null
   if (!Authorization) {
     const cookieStore = await cookies()
-    session_token = cookieStore.get('session_token')?.value || cookieStore.get('sessionToken')?.value
+    session_token = cookieStore.get('session_token')?.value 
   } else {
     session_token = Authorization.split(" ")[1];
   }

@@ -86,4 +86,4 @@ export const getApiDocs = async () => {
     },
   });
   return spec;
-};
+}

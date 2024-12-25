@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   let session_token = null
   if (!Authorization) {
     const cookieStore = await cookies()
-    session_token = cookieStore.get('session_token')?.value || cookieStore.get('sessionToken')?.value
+    session_token = cookieStore.get('session_token')?.value 
   } else {
     session_token = Authorization.split(" ")[1];
   }

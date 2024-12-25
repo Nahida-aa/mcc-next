@@ -1,5 +1,5 @@
 // "use server";
-import { QUser } from '@/lib/db/q/qUser';
+import { QUser } from '@/server/db/q/qUser';
 import { compare } from 'bcrypt-ts';
 import NextAuth, { type User, type Session } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';

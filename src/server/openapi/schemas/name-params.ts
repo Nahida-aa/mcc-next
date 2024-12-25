@@ -12,4 +12,16 @@ const NameParamsSchema = z.object({
   }),
 });
 
+export const UsernameParamsSchema = z.object({
+  username: z.string().min(1).max(32).openapi({
+    param: {
+      name: "username",
+      in: "path",
+      required: true,
+    },
+    required: ["username"],
+    example: "测试用户",
+  }),
+});
+
 export default NameParamsSchema;
