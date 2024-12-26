@@ -108,9 +108,9 @@ export async function server_auth(){
   // console.log(`app/(auth)/auth.ts::server_auth: payload: ${JSON.stringify(session_payload)}`);
   return { user: {
     id: de_payload?.user?.id,
-    email: de_payload?.user?.email,
-    name: de_payload?.user?.name,
-    image: de_payload?.user?.image,
+    email: de_payload?.user?.email || '',
+    name: de_payload?.user?.name!,
+    image: de_payload?.user?.image || '',
     nickname: de_payload?.user?.nickname,
   }};
 };
