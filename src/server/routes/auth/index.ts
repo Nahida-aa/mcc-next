@@ -16,6 +16,7 @@ import { createCSRFToken } from '@/server/core/token';
 import register_route from './register'
 import session_route from './session'
 import login_route from './login'
+import logout_route from './logout'
 
 const router = createRouter()
 .openapi(createRoute({
@@ -56,5 +57,6 @@ const router = createRouter()
 router.route('', register_route)
 router.route('', session_route)
 router.route('', login_route)
+router.route('', logout_route)
 
 export default router

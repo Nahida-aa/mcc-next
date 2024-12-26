@@ -35,3 +35,12 @@ export const create_sessionToken_and_setCookie = async (c: any, dbUser: any) => 
   });
   return session_token
 }
+
+export const set_delCookie = async (c: any) => {
+  setCookie(c, 'session_token', '', {
+    httpOnly: true,
+    sameSite: 'strict',
+    expires: new Date(Date.now() - 1000)
+  });
+  return
+}

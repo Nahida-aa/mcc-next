@@ -80,27 +80,41 @@ export const {
 
 import { cookies } from 'next/headers'
 import { NextApiRequest } from 'next';
+import { verifyJWT } from '@/server/core/token';
+import { SessionTokenPayload } from '@/server/middleware/auth';
 
 // import { redirect } from "next/navigation";
 
 export async function server_auth(){
   const cookieStore = await cookies();
-  const token = cookieStore.get('access_token');
+  const token = cookieStore.get('session_token')?.value;
   
   if (!token) {
     return null;
   }
-  // 解密 token
-  const payload = token.value.split('.')[1];
-  const base64 = payload.replace(/-/g, '+').replace(/_/g, '/'); // 将 Base64 URL 安全编码转换为标准 Base64 编码
-  const padding = '='.repeat((4 - (payload.length % 4)) % 4);
-  const decodedPayload = atob(base64 + padding);
-  const user = JSON.parse(decodedPayload);
-  console.log(`app/(auth)/auth.ts::server_auth: user: ${JSON.stringify(user)}`);
-  return { user:
-    { id: user.id, name: user.name, email: user.email, image: user.image, nickname: user.nickname }
-  };
-}
+  let de_payload = null
+  try{
+    de_payload = await verifyJWT(token) as SessionTokenPayload
+  } catch (error) {
+    console.error(`app/(auth)/auth.ts::server_auth: token 解析失败: ${error}`);
+    return null;
+  }
+  // // 解密 token
+  // const payload = token.split('.')[1];
+  // const base64 = payload.replace(/-/g, '+').replace(/_/g, '/'); // 将 Base64 URL 安全编码转换为标准 Base64 编码
+  // const padding = '='.repeat((4 - (payload.length % 4)) % 4);
+  // const decodedPayload = atob(base64 + padding);
+  // const session_payload = JSON.parse(decodedPayload);
+  // console.log(`app/(auth)/auth.ts::server_auth: payload: ${JSON.stringify(session_payload)}`);
+  return { user: {
+    id: de_payload?.user?.id,
+    email: de_payload?.user?.email,
+    name: de_payload?.user?.name,
+    image: de_payload?.user?.image,
+    nickname: de_payload?.user?.nickname,
+  }};
+};
+
 
 export interface AuthConfig {
   /**

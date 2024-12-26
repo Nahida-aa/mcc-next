@@ -29,7 +29,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 // import { useTransition } from "react"; // const [isPending, startTransition] = useTransition() // 或许很有用, 不使用可能有问题, 但是我怀疑是 react 的问题
 import { SubmitButton } from "@/components/common/submit-button";
-import {  server_sign_in } from "../actions";
+import {  hono_sign_in, server_sign_in } from "../actions";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
@@ -62,9 +62,10 @@ export function AignIn_Modal() {
 
   const onSubmit = async (values: z.infer<typeof sign_in_schema>) => {
     try {
-      console.log(`app/(auth)/_comp/signIn-modal.tsx: 开始登录: ${JSON.stringify(values)}`)
-      const result = await server_sign_in(values)
-      console.log(`app/(auth)/_comp/signIn-modal.tsx: 登录成功: ${JSON.stringify(values)}`)
+      console.log(`app/(auth)/_comp/signIn-modal.tsx: 开始登录: ${JSON.stringify(values.nameOrEmail)}`)
+      // const result = await server_sign_in(values)
+      const result = await hono_sign_in(values)
+      console.log(`app/(auth)/_comp/signIn-modal.tsx: 登录成功: ${JSON.stringify(values.nameOrEmail)}`)
       router.push('/')
     } catch (error) {
       console.error(error)

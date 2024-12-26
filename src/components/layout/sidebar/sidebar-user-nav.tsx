@@ -18,7 +18,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { client_sign_out } from '@/app/(auth)/client';
+import { client_logout, client_sign_out } from '@/app/(auth)/client';
 import { UserMeta } from '@/components/layout/sidebar/user-side-toggle';
 
 export function SidebarUserNav({ user }: { user?: UserMeta }) {
@@ -63,7 +63,8 @@ export function SidebarUserNav({ user }: { user?: UserMeta }) {
                     router.push('/sign-in'); // 导航到登录页面
                   } else {
                     // signOut({
-                    client_sign_out({
+                    // client_sign_out({
+                    client_logout({
                       redirectTo: '/',
                     });
                   }
