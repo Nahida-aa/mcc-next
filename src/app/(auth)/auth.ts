@@ -99,6 +99,7 @@ export async function server_auth(){
     console.error(`app/(auth)/auth.ts::server_auth: token 解析失败: ${error}`);
     return null;
   }
+  const user = de_payload.user as NonNullable<SessionTokenPayload['user']>
   // // 解密 token
   // const payload = token.split('.')[1];
   // const base64 = payload.replace(/-/g, '+').replace(/_/g, '/'); // 将 Base64 URL 安全编码转换为标准 Base64 编码
@@ -107,11 +108,11 @@ export async function server_auth(){
   // const session_payload = JSON.parse(decodedPayload);
   // console.log(`app/(auth)/auth.ts::server_auth: payload: ${JSON.stringify(session_payload)}`);
   return { user: {
-    id: de_payload?.user?.id,
-    email: de_payload?.user?.email || '',
-    name: de_payload?.user?.name!,
-    image: de_payload?.user?.image || '',
-    nickname: de_payload?.user?.nickname,
+    id: user.id,
+    email: user?.email || '',
+    name: user.name,
+    image: user?.image || '',
+    nickname: user?.nickname,
   }};
 };
 
