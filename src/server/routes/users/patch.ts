@@ -63,7 +63,7 @@ const router = createRouter()
 }), async (c) => {
   const { id } = c.req.valid("param")
   const {inUser, csrfToken} = c.req.valid("json")
-  const { idCardInfo: inIdCardInfo, ...userData } = inUser;
+  const { id_card_info: inIdCardInfo, ...userData } = inUser;
   let hashPassword = null // 密码加密
   if (inUser.password){
     hashPassword = await hash(inUser.password, 10)
@@ -111,7 +111,7 @@ const router = createRouter()
       // ...completeUser.User,
       // idCardInfo: completeUser.IDCardInfo
       ...updatedUser,
-      idCardInfo: updatedIdCardInfo
+      id_card_info: updatedIdCardInfo
     }, httpStatus.OK);
   });
 })
@@ -144,7 +144,7 @@ const router = createRouter()
 }), async (c) => {
   const { name } = c.req.valid("param")
   const inUser = c.req.valid("json")
-  const { idCardInfo: inIdCardInfo, ...userData } = inUser;
+  const { id_card_info: inIdCardInfo, ...userData } = inUser;
   let hashPassword = null // 密码加密
   if (inUser.password){
     hashPassword = await hash(inUser.password, 10)
@@ -184,7 +184,7 @@ const router = createRouter()
 
     return c.json({
       ...updatedUser,
-      idCardInfo: updatedIdCardInfo
+      id_card_info: updatedIdCardInfo
     }, httpStatus.OK);
   });
 })
