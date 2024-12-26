@@ -10,7 +10,7 @@ import createApp, { createRouter } from '@/server/lib/create-app'
 import test from '@/server/routes/test/index'
 import auth from '@/server/routes/auth/index'
 import users from '@/server/routes/users/route'
-import users_get from '@/server/routes/users/get'
+// import users_get from '@/server/routes/users/get'
 import user from '@/server/routes/user/route'
 import groups from '@/server/routes/groups/route'
 import follow from '@/server/routes/follow/route'
@@ -26,7 +26,7 @@ const routes = [
   test,
   auth,
   users,
-  users_get,
+  // users_get,
   user,
   groups,
   follow,

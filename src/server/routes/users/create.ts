@@ -28,7 +28,7 @@ const router = createRouter()
   const inUser = c.req.valid("json")
   // 检查用户是否存在
 
-  const { idCardInfo: inIdCardInfo, ...userData  } = inUser;
+  const { id_card_info: inIdCardInfo, ...userData  } = inUser;
 
   let hashPassword = null // 密码加密
   if (inUser.password){
@@ -57,7 +57,7 @@ const router = createRouter()
 
     return c.json({
       ...completeUser.User,
-      idCardInfo: completeUser.IDCardInfo
+      id_card_info: completeUser.IDCardInfo
     }, 201);
   });
 })

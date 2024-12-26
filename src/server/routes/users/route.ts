@@ -7,7 +7,7 @@ import delete_route from './delete'
 
 const router = createRouter()
 
-// router.route('/', get_route)
+router.route('', get_route)
 // router.route('', post_route)
 router.route('', create_route)
 router.route('', patch_route)

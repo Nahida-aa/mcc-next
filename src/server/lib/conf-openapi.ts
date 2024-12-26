@@ -8,7 +8,7 @@ export default function configOpenAPI(app: AppOpenAPI) {
     info: {
       title: 'Hono API',
       version: packageJson.version,
-      description: `- [去swagger-ui](/docs)\n\n- [去scalar-ui](/api/hono)
+      description: `- [去swagger-ui](/docs)\n- [去scalar-ui](/api/hono)\n- [index](/)
       `,
     },
     servers: [

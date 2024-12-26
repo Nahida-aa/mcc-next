@@ -7,14 +7,14 @@ import { z } from '@hono/zod-openapi';
 import { follow_table } from './follow';
 import { linkUserGroup } from './linkUserGroup';
 
-const platformInfoDefault = {
-  startYear: null as number | null, // > 2009, 第一次玩 mc 的年份
-  playReason: '', // 游戏原因
-  serverType: [] as string[],  // 服务器类型: 服务器玩家 | 公益服 | 盈利服 | 多人竞技服 | 多人合作服
+const platform_info_default = {
+  start_year: null as number | null, // > 2009, 第一次玩 mc 的年份
+  play_reason: '', // 游戏原因
+  server_type: [] as string[],  // 服务器类型: 服务器玩家 | 公益服 | 盈利服 | 多人竞技服 | 多人合作服
   favorite_content: [] as string[], // 喜欢哪些内容: 建筑|生存|冒险|科技
-  desiredPartners: [] as string[], // 想在平台内结识怎样的伙伴
+  desired_partners: [] as string[], // 想在平台内结识怎样的伙伴
 }
-type PlatformInfo = typeof platformInfoDefault;
+type PlatformInfo = typeof platform_info_default;
 
 export const user = pgTable("User", {
   ...uuidCommon,
@@ -31,7 +31,7 @@ export const user = pgTable("User", {
   is_superuser: boolean("is_superuser").default(false).notNull(),
   is_staff: boolean("is_staff").default(false).notNull(),
   is_active: boolean("is_active").default(true).notNull(),
-  platform_info: jsonb("platform_info").$type<PlatformInfo>().default(platformInfoDefault),
+  platform_info: jsonb("platform_info").$type<PlatformInfo>().default(platform_info_default),
 }, (table) => [
   // index("ix_User_age").using("btree", table.age.asc().nullsLast().op("int4_ops")),
   index("ix_User_age").on(table.age),
@@ -64,7 +64,7 @@ export const idCardInfo = pgTable("IDCardInfo", {
 
 export const userRelations = relations(user, ({one, many}) => ({
   home: one(home),
-  idCardInfo: one(idCardInfo),
+  id_card_info: one(idCardInfo),
   followings: many(follow_table, { // 关注的 people(user, group)
     relationName: "target_user",
   }),

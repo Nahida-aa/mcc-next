@@ -10,7 +10,8 @@ import createErrorSchema from "@/server/openapi/schemas/create-error-schema";
 import NameParamsSchema from "@/server/openapi/schemas/name-params";
 
 const router = createRouter()
-.openapi(createRoute({
+
+router.openapi(createRoute({
   tags: ['user'],
   path: '/users',
   method: 'get',
@@ -25,13 +26,13 @@ const router = createRouter()
 }), async (c) => {
   const dbUsers = await db.query.user.findMany({
     with: {
-      idCardInfo: true, // 关联查询身份证信息
+      id_card_info: true, // 关联查询身份证信息
     }
   })
   return c.json(dbUsers, httpStatus.OK)
 })
 
-.openapi(createRoute({
+router.openapi(createRoute({
   tags: ['user'],
   path: '/users/{id}',
   method: 'get',
@@ -57,7 +58,7 @@ const router = createRouter()
   const dbUser = await db.query.user.findFirst({
     where: (user, { eq }) => eq(user.id, id),
     with: {
-      idCardInfo: true, // 关联查询身份证信息
+      id_card_info: true, // 关联查询身份证信息
     }
   });
   if (!dbUser) {
@@ -66,7 +67,7 @@ const router = createRouter()
   return c.json(dbUser, httpStatus.OK)
 })
 
-.openapi(createRoute({
+router.openapi(createRoute({
   tags: ['user'],
   path: '/users/name/{name}',
   method: 'get',
@@ -92,7 +93,7 @@ const router = createRouter()
   const dbUser = await db.query.user.findFirst({
     where: (user, { eq }) => eq(user.name, name),
     with: {
-      idCardInfo: true, // 关联查询身份证信息
+      id_card_info: true, // 关联查询身份证信息
     }
   });
   if (!dbUser) {

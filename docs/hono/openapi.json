@@ -381,15 +381,15 @@
                         "type": "object",
                         "nullable": true,
                         "properties": {
-                          "startYear": {
+                          "start_year": {
                             "type": "number",
                             "nullable": true
                           },
-                          "playReason": {
+                          "play_reason": {
                             "type": "string",
                             "default": ""
                           },
-                          "serverType": {
+                          "server_type": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -403,7 +403,7 @@
                             },
                             "default": []
                           },
-                          "desiredPartners": {
+                          "desired_partners": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -543,15 +543,15 @@
                     "type": "object",
                     "nullable": true,
                     "properties": {
-                      "startYear": {
+                      "start_year": {
                         "type": "number",
                         "nullable": true
                       },
-                      "playReason": {
+                      "play_reason": {
                         "type": "string",
                         "default": ""
                       },
-                      "serverType": {
+                      "server_type": {
                         "type": "array",
                         "items": {
                           "type": "string"
@@ -565,7 +565,7 @@
                         },
                         "default": []
                       },
-                      "desiredPartners": {
+                      "desired_partners": {
                         "type": "array",
                         "items": {
                           "type": "string"
@@ -694,15 +694,15 @@
                       "type": "object",
                       "nullable": true,
                       "properties": {
-                        "startYear": {
+                        "start_year": {
                           "type": "number",
                           "nullable": true
                         },
-                        "playReason": {
+                        "play_reason": {
                           "type": "string",
                           "default": ""
                         },
-                        "serverType": {
+                        "server_type": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -716,7 +716,7 @@
                           },
                           "default": []
                         },
-                        "desiredPartners": {
+                        "desired_partners": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -906,15 +906,15 @@
                       "type": "object",
                       "nullable": true,
                       "properties": {
-                        "startYear": {
+                        "start_year": {
                           "type": "number",
                           "nullable": true
                         },
-                        "playReason": {
+                        "play_reason": {
                           "type": "string",
                           "default": ""
                         },
-                        "serverType": {
+                        "server_type": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -928,7 +928,7 @@
                           },
                           "default": []
                         },
-                        "desiredPartners": {
+                        "desired_partners": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -1219,15 +1219,15 @@
                         "type": "object",
                         "nullable": true,
                         "properties": {
-                          "startYear": {
+                          "start_year": {
                             "type": "number",
                             "nullable": true
                           },
-                          "playReason": {
+                          "play_reason": {
                             "type": "string",
                             "default": ""
                           },
-                          "serverType": {
+                          "server_type": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -1241,7 +1241,7 @@
                             },
                             "default": []
                           },
-                          "desiredPartners": {
+                          "desired_partners": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -1374,15 +1374,15 @@
                       "type": "object",
                       "nullable": true,
                       "properties": {
-                        "startYear": {
+                        "start_year": {
                           "type": "number",
                           "nullable": true
                         },
-                        "playReason": {
+                        "play_reason": {
                           "type": "string",
                           "default": ""
                         },
-                        "serverType": {
+                        "server_type": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -1396,7 +1396,7 @@
                           },
                           "default": []
                         },
-                        "desiredPartners": {
+                        "desired_partners": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -1903,15 +1903,15 @@
                       "type": "object",
                       "nullable": true,
                       "properties": {
-                        "startYear": {
+                        "start_year": {
                           "type": "number",
                           "nullable": true
                         },
-                        "playReason": {
+                        "play_reason": {
                           "type": "string",
                           "default": ""
                         },
-                        "serverType": {
+                        "server_type": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -1925,7 +1925,7 @@
                           },
                           "default": []
                         },
-                        "desiredPartners": {
+                        "desired_partners": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -2178,15 +2178,15 @@
                     "type": "object",
                     "nullable": true,
                     "properties": {
-                      "startYear": {
+                      "start_year": {
                         "type": "number",
                         "nullable": true
                       },
-                      "playReason": {
+                      "play_reason": {
                         "type": "string",
                         "default": ""
                       },
-                      "serverType": {
+                      "server_type": {
                         "type": "array",
                         "items": {
                           "type": "string"
@@ -2200,7 +2200,7 @@
                         },
                         "default": []
                       },
-                      "desiredPartners": {
+                      "desired_partners": {
                         "type": "array",
                         "items": {
                           "type": "string"
@@ -2324,15 +2324,15 @@
                       "type": "object",
                       "nullable": true,
                       "properties": {
-                        "startYear": {
+                        "start_year": {
                           "type": "number",
                           "nullable": true
                         },
-                        "playReason": {
+                        "play_reason": {
                           "type": "string",
                           "default": ""
                         },
-                        "serverType": {
+                        "server_type": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -2346,7 +2346,7 @@
                           },
                           "default": []
                         },
-                        "desiredPartners": {
+                        "desired_partners": {
                           "type": "array",
                           "items": {
                             "type": "string"

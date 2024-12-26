@@ -5,9 +5,13 @@ import { group as group_table } from "@/server/db/schema/group";
 import { createRouter } from "@/server/lib/create-app";
 import { offset_limit_query_schema } from "@/server/lib/schema/query";
 import { get_current_user_and_res } from "@/server/middleware/auth";
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
 import { sql } from "drizzle-orm";
 import { unionAll } from "drizzle-orm/pg-core";
+import jsonContent from "@/server/openapi/helpers/json-content";
+import createMessageObjectSchema from "@/server/openapi/schemas/create-message-object";
+import { StatusCode } from "hono/utils/http-status";
+import { user_meta_with_follow_schema } from "@/server/lib/schema/user";
 
 
 const router = createRouter()
@@ -21,12 +25,15 @@ router.openapi(createRoute({
     query: offset_limit_query_schema,
   },
   responses: {
-    [200]: {description: "返回用户列表"},
-    [401]: {description: "未登录"},
+    [200]: jsonContent(z.object({
+      users: z.array(user_meta_with_follow_schema),
+      count: z.number()
+    }), "返回用户列表"),
+    [401]: jsonContent(createMessageObjectSchema(), "Unauthorized: xxx"),
   }
 }), async (c) => {
   const CU_ret = await get_current_user_and_res(c)
-  if (!CU_ret.success) return c.json(CU_ret.json_body, CU_ret.status)
+  if (!CU_ret.success) return c.json(CU_ret.json_body, 401)
   const auth_user = CU_ret.user
 
   const { offset, limit } = c.req.valid("query")
@@ -36,6 +43,7 @@ router.openapi(createRoute({
     name: user_table.name,
     nickname: user_table.nickname,
     image: user_table.image,
+    email: user_table.email,
     is_following: sql<boolean>`EXISTS (
       SELECT 1 FROM ${follow_table}
       WHERE ${follow_table.follower_id} = ${auth_user.id}
@@ -52,7 +60,7 @@ router.openapi(createRoute({
   .from(user_table).offset(offset).limit(limit)
 
   const count = (await db.select().from(user_table)).length
-  return c.json({ users, count })
+  return c.json({ users, count }, 200)
 })
 
 router.openapi(createRoute({
@@ -62,7 +70,12 @@ router.openapi(createRoute({
     query: offset_limit_query_schema,
   },
   responses: {
-    [200]: {description: "返回用户列表"},
+    [200]: jsonContent(z.object({
+      users: z.array(user_meta_with_follow_schema.extend({
+        type: z.enum(['user', 'group'])
+      })),
+      count: z.number()
+    }), "返回用户列表"),
     [401]: {description: "未登录"},
   }
 }), async (c) => {
@@ -77,6 +90,7 @@ router.openapi(createRoute({
     name: user_table.name,
     nickname: user_table.nickname,
     image: user_table.image,
+    email: user_table.email,
     is_following: sql<boolean>`EXISTS (
       SELECT 1 FROM ${follow_table}
       WHERE ${follow_table.follower_id} = ${auth_user.id}
@@ -97,6 +111,7 @@ router.openapi(createRoute({
     name: group_table.name,
     nickname: group_table.nickname,
     image: group_table.image,
+    email: group_table.email,
     is_following: sql<boolean>`EXISTS (
       SELECT 1 FROM ${follow_table}
       WHERE ${follow_table.follower_id} = ${auth_user.id}

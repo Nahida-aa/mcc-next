@@ -3,11 +3,35 @@ import { eq, sql, and, getTableColumns } from "drizzle-orm";
 import { follow_table } from "@/server/db/schema/follow";
 import { createRouter } from "@/server/lib/create-app";
 import NameParamsSchema from "@/server/openapi/schemas/name-params";
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
 import { user as user_table } from "@/server/db/schema/user";
 import { group as group_table } from "@/server/db/schema/group";
 import { offset_limit_query_schema } from "@/server/lib/schema/query";
 import { get_current_user_and_res } from "@/server/middleware/auth";
+import jsonContent from "@/server/openapi/helpers/json-content";
+import { user_meta_schema } from "@/server/lib/schema/user";
+
+export const group_meta_schema = z.object({
+  id: z.string(),
+  name: z.string(),
+  image: z.string().nullable().optional(),
+  email: z.string().nullable().optional(),
+  nickname: z.string().nullable().optional(),
+})
+
+export const follow_list_with_group_out_schema = z.object({
+  followers: z.array(
+    z.object({
+      created_at: z.string(),
+      type: z.enum(['user', 'group']),
+      user: user_meta_schema.optional(),
+      group: group_meta_schema.optional(),
+      is_following: z.boolean(),
+      is_following_me: z.boolean(),
+    })
+  ),
+  count: z.number()
+})
 
 const router = createRouter()
 
@@ -22,9 +46,10 @@ router.openapi(createRoute({
     query: offset_limit_query_schema,
   },
   responses: {
-    [200]: {
-      description: "返回 user 的关注者(粉丝)列表"
-    }
+    [200]: jsonContent(z.object({
+      followers: z.array(user_meta_schema),
+      count: z.number()}), "返回 user 的关注者(粉丝)列表"),
+    [404]: jsonContent(z.object({message: z.string()}), "用户不存在")
   }
 }), async (c) => {
   const [{name}, {offset, limit}] = [c.req.valid("param"), c.req.valid("query")]
@@ -35,9 +60,9 @@ router.openapi(createRoute({
   const followers = await db.select().from(follow_table)
     .leftJoin(user_table, eq(follow_table.follower_id, user_table.id))
     .where(and(eq(follow_table.target_id, user.id), eq(follow_table.target_type, 'user'))).offset(offset).limit(limit)
-    
+  const [{count}] = await db.execute(sql`SELECT COUNT(*) FROM ${follow_table} WHERE ${follow_table.target_id} = ${user.id}`)
   console.log('followers:', followers)
-  return c.json(followers)
+  return c.json({followers: followers, count: count})
 })
 router.openapi(
   createRoute({
@@ -51,11 +76,13 @@ router.openapi(
       query: offset_limit_query_schema,
     },
     responses: {
-      [200]: {description: "列出 user 的关注者(粉丝)列表"}
+      [200]: jsonContent(follow_list_with_group_out_schema, "返回 user 的关注者(粉丝)列表"),
+      [401]: jsonContent(z.object({message: z.string()}), "未登录"),
+      [404]: jsonContent(z.object({message: z.string()}), "用户不存在"),
     }
   }), async (c) => {
     const CU_ret = await get_current_user_and_res(c)
-    if (!CU_ret.success) return c.json(CU_ret.json_body, CU_ret.status)
+    if (!CU_ret.success) return c.json(CU_ret.json_body, 401)
     const auth_user = CU_ret.user
 
     const [{name}, {offset, limit}] = [c.req.valid("param"), c.req.valid("query")]
@@ -136,13 +163,13 @@ router.openapi(
       query: offset_limit_query_schema,
     },
     responses: {
-      [200]: {
-        description: "列出 user 关注的 people"
-      }
+      [200]: jsonContent(follow_list_with_group_out_schema, "列出 user 关注的 people"),
+      [401]: jsonContent(z.object({message: z.string()}), "未登录"),
+      [404]: jsonContent(z.object({message: z.string()}), "用户不存在"),
     }
   }), async (c) => {
     const CU_ret = await get_current_user_and_res(c)
-    if (!CU_ret.success) return c.json(CU_ret.json_body, CU_ret.status)
+    if (!CU_ret.success) return c.json(CU_ret.json_body, 401)
     const auth_user = CU_ret.user
 
     const [{name}, {offset, limit}] = [c.req.valid("param"), c.req.valid("query")]

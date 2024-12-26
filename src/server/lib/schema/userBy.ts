@@ -3,11 +3,11 @@ import { z } from "@hono/zod-openapi";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const platformInfo_schema = z.object({
-  startYear: z.number().nullable().optional().default(null),
-  playReason: z.string().optional().default(""),
-  serverType: z.array(z.string()).optional().default([]),
+  start_year: z.number().nullable().optional().default(null),
+  play_reason: z.string().optional().default(""),
+  server_type: z.array(z.string()).optional().default([]),
   favorite_content: z.array(z.string()).optional().default([]),
-  desiredPartners: z.array(z.string()).optional().default([]),
+  desired_partners: z.array(z.string()).optional().default([]),
 });
 export const idCardInfo_selectSchema = createSelectSchema(idCardInfo)
   // .extend({
@@ -20,7 +20,7 @@ export const user_selectSchema = createSelectSchema(user)
   .extend({
     // createdAt: z.string(), // 将 createdAt 定义为字符串类型
     platform_info: platformInfo_schema.nullable(),
-    idCardInfo: idCardInfo_selectSchema.nullable(),
+    id_card_info: idCardInfo_selectSchema.nullable(),
   });
 
 export const idCardInfo_insertSchema = createInsertSchema(idCardInfo)
@@ -51,7 +51,7 @@ export const user_insertSchema = createInsertSchema(user,
     gender: z.string().nullable().default(null),
     age: z.number().nullable().default(null).openapi({example: null}),
     platform_info: platformInfo_schema.nullable().optional(),
-    idCardInfo: idCardInfo_insertSchema,
+    id_card_info: idCardInfo_insertSchema,
   })
 
 export const user_patchSchema = user_insertSchema.partial()
