@@ -1,23 +1,18 @@
 import { relations } from "drizzle-orm/relations"
 
 import { home, idCardInfo, identity, user } from "./user";
-import { linkGroupFollow, linkGroupIdentity, linkGroupProj, linkGroupResource, linkUserFollow, linkUserIdentity, linkUserProj, linkUserResource } from "./link";
+import { 
+	// linkGroupFollow, 
+	linkGroupIdentity, linkGroupProj, linkGroupResource, 
+	// linkUserFollow, 
+	linkUserIdentity, linkUserProj, linkUserResource } from "./link";
 import { group } from "./group";
 import { tag } from "./tag";
 import { proj } from "./proj";
 import { resource } from "./resource";
 
 
-export const linkGroupFollowRelations = relations(linkGroupFollow, ({one}) => ({
-	targetGroup: one(group, {
-		fields: [linkGroupFollow.target_group_id],
-		references: [group.id]
-	}),
-	user: one(user, {
-		fields: [linkGroupFollow.user_id],
-		references: [user.id]
-	}),
-}));
+
 
 
 

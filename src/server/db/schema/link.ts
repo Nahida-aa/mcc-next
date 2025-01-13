@@ -7,53 +7,63 @@ import { proj } from "./proj";
 import { resource } from "./resource";
 import { timestamps, uuidCommon } from "./columnsHelpers"
 
-export const linkGroupFollow = pgTable("LinkGroupFollow", {
-	user_id: uuid("user_id").notNull(),
-	target_group_id: uuid("group_id").notNull(),
-	created_at: timestamp("created_at").defaultNow().notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.target_group_id],
-			foreignColumns: [group.id],
-			name: "LinkGroupFollow_target_group_id_fkey"
-		}),
-	foreignKey({
-			columns: [table.user_id],
-			foreignColumns: [user.id],
-			name: "LinkGroupFollow_user_id_fkey"
-		}),
-	primaryKey({ columns: [table.user_id, table.target_group_id], name: "LinkGroupFollow_pkey"}),
-]);
+// export const linkGroupFollow = pgTable("LinkGroupFollow", {
+// 	user_id: uuid("user_id").notNull(),
+// 	target_group_id: uuid("group_id").notNull(),
+// 	created_at: timestamp("created_at").defaultNow().notNull(),
+// }, (table) => [
+// 	foreignKey({
+// 			columns: [table.target_group_id],
+// 			foreignColumns: [group.id],
+// 			name: "LinkGroupFollow_target_group_id_fkey"
+// 		}),
+// 	foreignKey({
+// 			columns: [table.user_id],
+// 			foreignColumns: [user.id],
+// 			name: "LinkGroupFollow_user_id_fkey"
+// 		}),
+// 	primaryKey({ columns: [table.user_id, table.target_group_id], name: "LinkGroupFollow_pkey"}),
+// ]);
 
-export const linkUserFollow = pgTable("LinkUserFollow", {
-  user_id: uuid("user_id").notNull(), // 原 followerId
-  target_user_id: uuid("target_user_id").notNull(), // 原 followedId
-	created_at: timestamp("created_at").defaultNow().notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.target_user_id],
-			foreignColumns: [user.id],
-			name: "LinkUserFollow_target_user_id_fkey"
-		}),
-	foreignKey({
-			columns: [table.user_id],
-			foreignColumns: [user.id],
-			name: "LinkUserFollow_user_id_fkey"
-		}),
-	primaryKey({ columns: [table.user_id, table.target_user_id], name: "LinkUserFollow_pkey"}),
-]);
-export const linkUserFollowRelations = relations(linkUserFollow, ({one}) => ({
-	target_user: one(user, {
-		fields: [linkUserFollow.target_user_id],
-		references: [user.id],
-		relationName: "linkUserFollow_target_user_id"
-	}),
-	user: one(user, {
-		fields: [linkUserFollow.user_id],
-		references: [user.id],
-		relationName: "linkUserFollow_user_id"
-	}),
-}));
+// export const linkUserFollow = pgTable("LinkUserFollow", {
+//   user_id: uuid("user_id").notNull(), // 原 followerId
+//   target_user_id: uuid("target_user_id").notNull(), // 原 followedId
+// 	created_at: timestamp("created_at").defaultNow().notNull(),
+// }, (table) => [
+// 	foreignKey({
+// 			columns: [table.target_user_id],
+// 			foreignColumns: [user.id],
+// 			name: "LinkUserFollow_target_user_id_fkey"
+// 		}),
+// 	foreignKey({
+// 			columns: [table.user_id],
+// 			foreignColumns: [user.id],
+// 			name: "LinkUserFollow_user_id_fkey"
+// 		}),
+// 	primaryKey({ columns: [table.user_id, table.target_user_id], name: "LinkUserFollow_pkey"}),
+// ]);
+// export const linkUserFollowRelations = relations(linkUserFollow, ({one}) => ({
+// 	target_user: one(user, {
+// 		fields: [linkUserFollow.target_user_id],
+// 		references: [user.id],
+// 		relationName: "linkUserFollow_target_user_id"
+// 	}),
+// 	user: one(user, {
+// 		fields: [linkUserFollow.user_id],
+// 		references: [user.id],
+// 		relationName: "linkUserFollow_user_id"
+// 	}),
+// }));
+// export const linkGroupFollowRelations = relations(linkGroupFollow, ({one}) => ({
+// 	targetGroup: one(group, {
+// 		fields: [linkGroupFollow.target_group_id],
+// 		references: [group.id]
+// 	}),
+// 	user: one(user, {
+// 		fields: [linkGroupFollow.user_id],
+// 		references: [user.id]
+// 	}),
+// }));
 
 export const linkGroupProj = pgTable("LinkGroupProj", {
 	...timestamps,

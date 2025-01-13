@@ -14,6 +14,7 @@ import users from '@/server/routes/users/route'
 import user from '@/server/routes/user/route'
 import groups from '@/server/routes/groups/route'
 import follow from '@/server/routes/follow/route'
+import chats from '@/server/routes/user/chats/route'
 
 // const app = new Hono().basePath('/api/hono')
 // const app = new OpenAPIHono().basePath('/api/hono')
@@ -30,6 +31,7 @@ const routes = [
   user,
   groups,
   follow,
+  chats,
 ] as const;
 
 configOpenAPI(app)

@@ -40,14 +40,14 @@ export function UserSidebarToggle({
         className="p-1 md:h-fit relative size-10 rounded-full hover:bg-opacity "
       >
         <Image
-          loader={imageLoader}
+          // loader={imageLoader}
           src={img_src}
           alt={user?.email ?? 'User Avatar'}
           width={32}
           height={32}
           className="rounded-full hover:glow-purple-box-shadow"
         />
-          <span className={`absolute bottom-0.5 right-1 w-3 h-3  border-2 rounded-full 
+          <span className={`absolute bottom-1 right-1 w-2 h-2  border-1 rounded-full 
             ${status === "online" ? 'bg-green-500' : 'bg-gray-500'}
             `}></span>
         {/* {status === "online" && (

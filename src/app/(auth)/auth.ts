@@ -111,7 +111,7 @@ export async function server_auth(){
     id: user.id,
     email: user?.email || '',
     name: user.name,
-    image: user?.image || '',
+    image: user?.image,
     nickname: user?.nickname,
   }};
 };

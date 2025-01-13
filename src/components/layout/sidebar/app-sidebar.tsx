@@ -26,6 +26,12 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
   const displayUser = user || { email: 'guest@example.com', name: 'Guest' }
+  let user_status
+  if (user) {
+    user_status = "online"
+  } else {
+    user_status = "未登录"
+  }
   return (
     <Sidebar className="group-data-[side=left]:border-r-0 backdrop-blur-md ">
       <SidebarHeader>
@@ -68,7 +74,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
         {/* {displayUser && ( */}
           <SidebarGroup>
             <SidebarGroupContent>
-              <SidebarUserNav user={user} />
+              <SidebarUserNav user={user} status={user_status} />
             </SidebarGroupContent>
           </SidebarGroup>
         {/* )} */}

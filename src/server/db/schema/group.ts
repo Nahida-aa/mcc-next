@@ -1,7 +1,9 @@
 import { InferSelectModel, relations } from "drizzle-orm";
 import { pgTable, varchar, index, timestamp, serial, integer, uniqueIndex, boolean, foreignKey, primaryKey, uuid } from "drizzle-orm/pg-core"
 import { uuidCommon } from "./columnsHelpers";
-import { linkGroupFollow, linkGroupIdentity, linkGroupProj, linkGroupResource } from "./link";
+import { 
+  // linkGroupFollow, 
+  linkGroupIdentity, linkGroupProj, linkGroupResource } from "./link";
 import { follow_table } from "./follow";
 import { user as user_table } from "./user";
 import { linkUserGroup } from "./linkUserGroup";
@@ -18,6 +20,7 @@ export const group = pgTable("Group", {
   // index("ix_Group_name").using("btree", table.name.asc().nullsLast().op("text_ops")),
   index("ix_Group_name").on(table.name),
 ]);
+export const group_table = group;
 
 export const groupRelations = relations(group, ({many, one }) => ({
   followers: many(follow_table, { // 粉丝

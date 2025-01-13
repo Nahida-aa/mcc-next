@@ -9,8 +9,8 @@ import { sql } from "drizzle-orm";
 import { createRoute } from "@hono/zod-openapi";
 import jsonContent from "@/server/openapi/helpers/json-content";
 import createMessageObjectSchema from "@/server/openapi/schemas/create-message-object";
-import { user as user_table } from "@/server/db/schema/user";
-import { group as group_table } from "@/server/db/schema/group";
+import { user_table } from "@/server/db/schema/user";
+import { group_table } from "@/server/db/schema/group";
 
 const router = createRouter()
 // 检测 auth_user 是否关注 user

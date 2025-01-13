@@ -21,7 +21,44 @@ import {
 import { client_logout, client_sign_out } from '@/app/(auth)/client';
 import { UserMeta } from '@/components/layout/sidebar/user-side-toggle';
 
-export function SidebarUserNav({ user }: { user?: UserMeta }) {
+interface UserAvatarProps {
+  user?: UserMeta 
+  className?: string;
+  status?: string;
+}
+export const UserAvatar = ({   
+  user,
+  className,
+  status = "offline",
+}: UserAvatarProps
+)=> {
+  const img_src = user?.image ?? `https://avatar.vercel.sh/${user?.email}`
+  return (
+<div className='relative size-10 p-1'>
+  <Image
+    src={img_src}
+    alt={user?.name ?? 'User Avatar'}
+    width={32}
+    height={32}
+    className="rounded-full hover:glow-purple-box-shadow"
+  />
+    <span className={`absolute bottom-1 right-1 w-2 h-2  border-1 rounded-full 
+${status === "online" ? 'bg-green-500' : 'bg-gray-500'}
+`}></span>
+</div>
+  )
+}
+interface SidebarUserNavProps {
+  user?: UserMeta 
+  className?: string;
+  status?: string;
+}
+export function SidebarUserNav({ 
+  user,
+  className,
+  status = "offline",
+}: SidebarUserNavProps
+) {
   const { setTheme, theme } = useTheme();
   const router = useRouter();
   const isGuest = !user;
@@ -31,14 +68,8 @@ export function SidebarUserNav({ user }: { user?: UserMeta }) {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-10">
-              <Image
-                src={img_src}
-                alt={user?.name ?? 'User Avatar'}
-                width={24}
-                height={24}
-                className="rounded-full"
-              />
+            <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-10 p-1">
+              <UserAvatar user={user} status={status} />
               <span className="truncate">{isGuest ? "未登录" : user?.name}</span>
               <ChevronUp className="ml-auto" />
             </SidebarMenuButton>

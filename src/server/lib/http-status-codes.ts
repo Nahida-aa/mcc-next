@@ -1,7 +1,7 @@
 // Generated file. Do not edit
 // Codes retrieved on Thu, 03 Oct 2024 12:05:14 GMT from https://raw.githubusercontent.com/prettymuchbryce/http-status-codes/refs/heads/master/codes.json
 
-import { ClientErrorStatusCode as _ClientErrorStatusCode, InfoStatusCode, SuccessStatusCode } from "hono/utils/http-status";
+import { ClientErrorStatusCode as _ClientErrorStatusCode, InfoStatusCode, SuccessStatusCode, ServerErrorStatusCode } from "hono/utils/http-status";
 
 export type ClientErrorStatusCode = _ClientErrorStatusCode | 419 | 420
 
@@ -100,7 +100,7 @@ export const INSUFFICIENT_STORAGE = 507;
  *
  * The server encountered an unexpected condition that prevented it from fulfilling the request.
  */
-export const INTERNAL_SERVER_ERROR = 500;
+export const INTERNAL_SERVER_ERROR: ServerErrorStatusCode = 500;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.10
  *
@@ -431,7 +431,8 @@ export default httpStatusCodes;
 // export type RedirectStatusCode = 300 | 301 | 302 | 303 | 304 | 305 | 307 | 308;
 // export type ClientErrorStatusCode = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 418 | 419 | 420 | 421 | 422 | 423 | 424 | 426 | 428 | 429 | 431 | 451;
 // export type ClientErrorStatusCode = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 418 | 421 | 422 | 423 | 424 | 425 | 426 | 428 | 429 | 431 | 451
+// export type ServerErrorStatusCode = 500 | 501 | 502 | 503 | 504 | 505 | 506 | 507 | 508 | 510 | 511;
 
 // export type StatusCode = InfoStatusCode | SuccessStatusCode | RedirectStatusCode | ClientErrorStatusCode | ServerErrorStatusCode | UnofficialStatusCode;
 
-// export type HttpStatusCodes = typeof httpStatusCodes;
+export type HttpStatusCodes = typeof httpStatusCodes;

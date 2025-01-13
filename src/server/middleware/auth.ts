@@ -42,14 +42,14 @@ export async function get_session_token_payload(c: Context) {
 
 export async function get_session_token_payload_and_res(c: Context): Promise<
 { session_token_payload: SessionTokenPayload, success: true } | {
-  json_body: { message: string }, status: StatusCode, success: false }
+  json_body: { message: string }, status: 401, success: false }
 > {
   try {
     const session_token_payload = await get_session_token_payload(c)
     if (!session_token_payload) {
       return {
         json_body: { message: 'Authentication required' },
-        status: httpStatus.UNAUTHORIZED as StatusCode, success: false
+        status: httpStatus.UNAUTHORIZED, success: false
       }
     }
     console.log('get_session_token_payload_and_res::session_token_payload:', session_token_payload)
@@ -57,14 +57,14 @@ export async function get_session_token_payload_and_res(c: Context): Promise<
   } catch (error) {
     return {
       json_body: { message: 'token verification failed' },
-      status: httpStatus.UNAUTHORIZED as StatusCode, success: false
+      status: httpStatus.UNAUTHORIZED, success: false
     }
   }
 }
 
 export async function get_current_user_and_res(c: Context): Promise<
 { user: NonNullable<SessionTokenPayload['user']>, success: true } | {
-  json_body: { message: string }, status: StatusCode, success: false }
+  json_body: { message: string }, status: 401, success: false }
 > {
   const session_token_payload_ret = await get_session_token_payload_and_res(c)
   if (!session_token_payload_ret.success) return session_token_payload_ret
@@ -72,7 +72,7 @@ export async function get_current_user_and_res(c: Context): Promise<
   if (!payload?.user) {
     return {
       json_body: { message: 'Unauthorized: 未登录' },
-      status: httpStatus.UNAUTHORIZED as StatusCode, success: false
+      status: httpStatus.UNAUTHORIZED , success: false
     }
   }
   return { user: payload.user, success: true }

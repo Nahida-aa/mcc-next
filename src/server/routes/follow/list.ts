@@ -82,7 +82,8 @@ router.openapi(
     }
   }), async (c) => {
     const CU_ret = await get_current_user_and_res(c)
-    if (!CU_ret.success) return c.json(CU_ret.json_body, 401)
+    // if (!CU_ret.success) return c.json(CU_ret.json_body, 401)
+    if (!CU_ret.success) return c.json(CU_ret.json_body, CU_ret.status)
     const auth_user = CU_ret.user
 
     const [{name}, {offset, limit}] = [c.req.valid("param"), c.req.valid("query")]

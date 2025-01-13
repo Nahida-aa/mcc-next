@@ -1,7 +1,9 @@
 import { relations, type InferSelectModel } from 'drizzle-orm';
 import { pgTable, varchar, index, timestamp, serial, integer, uniqueIndex, boolean, foreignKey, primaryKey, uuid, json, jsonb } from "drizzle-orm/pg-core"
 import { timestamps, uuidCommon } from "./columnsHelpers"
-import { linkGroupFollow, linkUserFollow, linkUserIdentity, linkUserProj, linkUserResource } from './link';
+import { 
+  // linkGroupFollow, linkUserFollow, 
+  linkUserIdentity, linkUserProj, linkUserResource } from './link';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from '@hono/zod-openapi';
 import { follow_table } from './follow';
@@ -41,6 +43,7 @@ export const user = pgTable("User", {
   uniqueIndex("ix_User_name").on(table.name),
   uniqueIndex("ix_User_phone").on(table.phone),
 ]);
+export const user_table = user;
 
 export type User = InferSelectModel<typeof user>;
 
@@ -72,9 +75,9 @@ export const userRelations = relations(user, ({one, many}) => ({
     relationName: "follower",
   }),
   joined_groups: many(linkUserGroup),
-  linkUserProjs: many(linkUserProj),
-  linkUserResources: many(linkUserResource),
-  linkUserIdentities: many(linkUserIdentity),
+  projs: many(linkUserProj),
+  resources: many(linkUserResource),
+  identities: many(linkUserIdentity),
 }));
 
 export const idCardInfoRelations = relations(idCardInfo, ({one}) => ({
