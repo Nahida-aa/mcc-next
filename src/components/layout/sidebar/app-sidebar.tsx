@@ -75,6 +75,15 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
       <SidebarContent>
         <SidebarGroup>
           {/* <SidebarHistory user={user} /> */}
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton >
+                  <span className='h-40 bg-red-600'></span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
       {/* <UserSidebarFooter user={user} status={user_status} /> */}

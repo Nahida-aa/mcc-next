@@ -41,7 +41,7 @@ export const user_insertSchema = createInsertSchema(user,
     phone: schema => schema.min(1),
   }
 )
-  .omit({id: true, created_at: true, updated_at: true, lastLogin: true, 
+  .omit({id: true, created_at: true, updated_at: true, last_login: true, 
     followers_count: true, following_count: true, 
     is_superuser: true, is_staff: true, is_active: true})
   .required({
