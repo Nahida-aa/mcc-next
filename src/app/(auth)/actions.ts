@@ -7,6 +7,7 @@ import { z } from 'zod';
 
 import { createActionURL } from './auth';
 import { sign_in_schema } from './_comp/signIn-modal';
+import { signUp_schema } from "./_comp/signUp-modal";
 
 const authFormSchema = z.object({
   name: z.string().min(1),
@@ -105,6 +106,61 @@ export const hono_sign_in = async (values: z.infer<typeof sign_in_schema>) => {
     const lgHeaders = { "Content-Type": "application/json" }
     const body = JSON.stringify({
       name: values.nameOrEmail,
+      password: values.password,
+    })
+
+    const resp = await fetch(signInURL,
+      {
+        method: "POST",
+        headers: lgHeaders,
+        body: body,
+      }
+    );
+    if (resp.ok) {
+      const data = await resp.json();
+      console.log(`app/(auth)/actions.ts::sign_in 登录成功: ${data}`);
+      
+      // 设置 cookies
+      const cookieStore = await cookies();
+      cookieStore.set('session_token', data.session_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+      });
+      return { 
+        session_token: data.session_token, 
+        token_type: data.token_type,
+      }
+    } else {
+      const errorText = await resp.text();
+      console.error(`app/(auth)/actions.ts::sign_in 登录失败,请求有响应: ${errorText}`);
+      throw new Error(`登录失败,请求有响应: ${errorText}`);
+    }
+  } catch (error) {
+    console.error(`app/(auth)/actions.ts::sign_in 登录失败,问题不明: ${error}`)
+    throw new Error(`登录失败,问题不明: ${error}`);
+  }
+}
+
+export const hono_signUp = async (values: z.infer<typeof signUp_schema>) => {
+  try {
+    console.log(JSON.stringify(values))
+    // const signInURL = "/api/hono/auth/login"
+    const headers = new Headers(await nextHeaders())
+    const signInURL = createActionURL(
+      "sign-up",
+      // @ts-expect-error `x-forwarded-proto` is not nullable, next.js sets it by default
+      headers.get("x-forwarded-proto"),
+      headers,
+      // process.env,
+      {basePath: "api/hono/auth"}
+    )
+    // headers.set("Content-Type", "application/x-www-form-urlencoded")
+    // const snHeaders = { "Content-Type": "application/x-www-form-urlencoded" }
+    // const body = new URLSearchParams(values)
+    const lgHeaders = { "Content-Type": "application/json" }
+    const body = JSON.stringify({
+      name: values.name,
       password: values.password,
     })
 

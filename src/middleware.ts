@@ -26,5 +26,7 @@ export const config = {
     // '/', 
     // '/:id', 
     // '/api/:path*', 
-    '/login', '/register', '/user/status'],
+    // '/login', 
+    // '/register', 
+    '/user/status'],
 };

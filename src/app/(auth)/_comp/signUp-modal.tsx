@@ -29,18 +29,18 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 // import { useTransition } from "react"; // const [isPending, startTransition] = useTransition() // 或许很有用, 不使用可能有问题, 但是我怀疑是 react 的问题
 import { SubmitButton } from "@/components/common/submit-button";
-import {  hono_sign_in, server_sign_in } from "../actions";
+import {  hono_sign_in, hono_signUp, server_sign_in } from "../actions";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 // import { signIn } from "../auth";
 import { toast as sonner_toast } from "sonner"
 
-export const sign_in_schema = z.object({
-  nameOrEmail: z.string().min(1, "Name or email is required"),
+export const signUp_schema = z.object({
+  name: z.string().min(1, "Name is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 })
-export function SignIn_Modal() {
+export const SignUp_Modal = () => {
   // const [isMounted, setIsMounted] = useState(false) // 13 版本的 React 有 bug，需要这样处理
   // useEffect(() => {
   //   setIsMounted(true)
@@ -50,9 +50,9 @@ export function SignIn_Modal() {
   const router = useRouter();
   
   const form = useForm({
-    resolver: zodResolver(sign_in_schema),
+    resolver: zodResolver(signUp_schema),
     defaultValues: {
-      nameOrEmail: '',
+      name: '',
       password: '',
     }
   })
@@ -61,13 +61,13 @@ export function SignIn_Modal() {
   console.log(`isLoading: ${isLoading}`)
   // const [isSuccessful, setIsSuccessful] = useState(false);
 
-  const onSubmit = async (values: z.infer<typeof sign_in_schema>) => {
+  const onSubmit = async (values: z.infer<typeof signUp_schema>) => {
     try {
-      console.log(`app/(auth)/_comp/signIn-modal.tsx: 开始登录: ${JSON.stringify(values.nameOrEmail)}`)
+      console.log(`app/(auth)/_comp/signIn-modal.tsx: 开始登录: ${JSON.stringify(values.name)}`)
       // const result = await server_sign_in(values)
-      const result = await hono_sign_in(values)
-      console.log(`app/(auth)/_comp/signIn-modal.tsx: 登录成功: ${JSON.stringify(values.nameOrEmail)}`)
-      sonner_toast(`Welcome back, ${values.nameOrEmail}!`)
+      const result = await hono_signUp(values)
+      console.log(`app/(auth)/_comp/signIn-modal.tsx: 登录成功: ${JSON.stringify(values.name)}`)
+      await sonner_toast(`Welcome back, ${values.name}!`)
       router.push('/')
     } catch (error: any) {
       console.error(error)
@@ -84,9 +84,9 @@ export function SignIn_Modal() {
         className="flex flex-col gap-4 px-4 sm:px-16"
       >
         <DialogHeader>
-          <DialogTitle className="text-center">Sign In</DialogTitle>
+          <DialogTitle className="text-center">Sign Up</DialogTitle>
           <DialogDescription className="text-center">
-            Sign in to your account to continue
+            Sign up to your account to continue
           </DialogDescription>
         </DialogHeader>
         <Form {...form} >
@@ -94,16 +94,16 @@ export function SignIn_Modal() {
             <div className="space-y-4">
               <FormField
                 control={form.control}
-                name="nameOrEmail"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="name">Name or Email</FormLabel>
+                    <FormLabel htmlFor="name">Name</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        id="nameOrEmail"
+                        id="name"
                         type="text"
-                        placeholder="Enter name or email"
+                        placeholder="Enter name"
                         required
                         className="bg-muted/30"
                         {...field}
@@ -146,17 +146,17 @@ export function SignIn_Modal() {
             </div>
 
             <DialogFooter className="">
-              <SubmitButton isLoading={isLoading}> Sign in</SubmitButton>
+              <SubmitButton isLoading={isLoading}> Sign up</SubmitButton>
             </DialogFooter>
           </form>
         </Form>
         <p className="text-center text-sm text-gray-600 mt-4 dark:text-zinc-400">
           {"Don't have an account? "}
           <Link
-            href="/sign-up"
+            href="/sign-in"
             className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
           >
-            Sign up
+            Sign in
           </Link>
         </p>
       </DialogContent>

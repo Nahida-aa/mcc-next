@@ -98,4 +98,51 @@ const router = createRouter()
   return c.json(res, httpStatus.CREATED);
 })
 
+const signUp_schema = z.object({
+  name: z.string().min(1).max(32),
+  password: z.string().min(6).max(64),
+});
+router.openapi(createRoute({
+  tags: ['auth'],
+  method: 'post', path: '/auth/sign-up',
+  request: {
+    body: jsonContent(signUp_schema,'create user')
+  },
+  responses: {
+    [httpStatus.CREATED]: jsonContent(session_token_schema, '成功'),
+    [httpStatus.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(register_user_schema), 
+      'The validation error(s); 验证错误'
+    ),
+    [httpStatus.CONFLICT]: jsonContent(createMessageObjectSchema('用户名或手机号或身份证号已存在'), '用户名或手机号或身份证号已存在')
+  }
+}), async (c) => {
+  const  body_json = c.req.valid("json")
+  const {...user_data } = body_json;
+  // 避免重复注册的检查
+  const existing_user = await db.query.user.findFirst({
+    where: (user, { eq }) => eq(user.name, user_data.name),
+  });
+  if (existing_user) {
+    return c.json({ message: '用户名或手机号已存在' }, httpStatus.CONFLICT);
+  }
+
+  const user_data_image = `https://avatar.vercel.sh/${user_data.name}` as string
+
+  const hash_password = await hash(user_data.password, 10);
+  user_data.password = hash_password;
+
+  const db_user = await db.transaction(async (tx) => {
+    const [db_user] = await tx.insert(userTable).values({
+      ...user_data,
+      image: user_data_image
+    }).returning();
+    return db_user;
+  })
+
+  const session_token = await create_sessionToken_and_setCookie(c, db_user)
+  const res = { session_token, token_type: "Bearer" }
+  return c.json(res, httpStatus.CREATED);
+})
+
 export default router

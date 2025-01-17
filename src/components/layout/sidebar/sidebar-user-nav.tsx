@@ -92,6 +92,7 @@ export function SidebarUserNav({
                 onClick={() => {
                   if (isGuest) {
                     router.push('/sign-in'); // 导航到登录页面
+                    // router.push('/login'); // 导航到登录页面
                   } else {
                     // signOut({
                     // client_sign_out({
