@@ -9,9 +9,13 @@ import { Button } from '@/components/ui/button';
 export function SubmitButton({
   children,
   isLoading,
+  onClick,
+  className,
 }: {
   children: React.ReactNode;
   isLoading: boolean;
+  onClick?: () => void;
+  className?: string;
 }) {
   const { pending } = useFormStatus();
 
@@ -21,16 +25,16 @@ export function SubmitButton({
       type={pending ? 'button' : 'submit'}
       aria-disabled={pending || isLoading}
       disabled={pending || isLoading}
-      className="relative"
+      onClick={onClick}
+      className={`${className} relative`}
     >
-      {children}
 
+      {children}
       {(pending || isLoading) && (
-        <span className="animate-spin absolute right-4">
+        <span className="animate-spin  ">
           <LoaderIcon />
         </span>
       )}
-
       <output aria-live="polite" className="sr-only">
         {pending || isLoading ? 'Loading' : 'Submit form'}
       </output>

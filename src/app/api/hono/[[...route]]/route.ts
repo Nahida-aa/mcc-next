@@ -14,8 +14,8 @@ import users from '@/lib/routes/users/route'
 import user from '@/lib/routes/user/route'
 import groups from '@/lib/routes/groups/route'
 import follow from '@/lib/routes/follow/route'
-import friend from '@/lib/routes/user/friend/route'
-import chats from '@/lib/routes/user/chats/route'
+import friend from '@/lib/routes/friend/route'
+import chats from '@/lib/routes/chats/route'
 
 // const app = new Hono().basePath('/api/hono')
 // const app = new OpenAPIHono().basePath('/api/hono')

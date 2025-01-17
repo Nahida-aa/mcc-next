@@ -1,4 +1,4 @@
-'server-only';
+// 'server-only';
 // import { neon } from '@neondatabase/serverless';
 // import { drizzle } from 'drizzle-orm/neon-serverless';
 // // import { drizzle } from 'drizzle-orm/postgres-js';

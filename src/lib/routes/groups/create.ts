@@ -34,11 +34,10 @@ router.openapi(createRoute({
   const CU_ret = await get_current_user_and_res(c)
   if (!CU_ret.success) return c.json(CU_ret.json_body, CU_ret.status)
   const auth_user = CU_ret.user
-
   const in_group = c.req.valid("json")
 
   // const created_group_out = await auth_create_group(current_user_id, in_group)
-  const created_group_out = await auth_create_group_outMembers(CU_ret.user, in_group)
+  const created_group_out = await auth_create_group_outMembers(auth_user, in_group)
   return c.json(created_group_out, httpStatus.CREATED)
 })
 

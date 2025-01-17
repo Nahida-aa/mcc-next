@@ -1,22 +1,13 @@
 "use client";
 import { HomeHeader } from '@/components/layout/header/home-header'
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import { cookies } from 'next/headers';
 import Link from 'next/link'; // 对 next 内的 router 的跳转
 import { Button } from '@/components/ui/button';
-import { redirect } from 'next/navigation'
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { server_auth } from '@/app/(auth)/auth';
 import { SubHeader } from '@/components/layout/header/sub-header';
 import { ChevronRight, CircleX, Search, X } from 'lucide-react';
 import { Input } from "@/components/ui/input"
-
-interface Result {
-  id: number;
-  name: string;
-  email: string;
-}
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -33,6 +24,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { userLsWithCount_notFriend_by_currentUserId_word, UserLsWithCount_whenAddFriend } from '@/lib/db/q/user/friend';
+import { SubmitButton } from '@/components/common/submit-button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ShadcnAvatar } from '@/components/common/avatar';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
   query: z.string().min(1, {
@@ -93,24 +92,39 @@ const FormSchema = z.object({
 
 
 export default function SearchFriendPage() {
-  // const [session, cookieStore] = await Promise.all([server_auth(), cookies()]);
-  // const [query, setQuery] = useState('');
-  const [results, setResults] = useState<Result[]>([]);
-
+  const [searchResults, setSearchResults] = useState<UserLsWithCount_whenAddFriend | null>(null);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       query: "",
     },
   })
+  const isLoading = form.formState.isSubmitting
+  const isSuccessful = form.formState.isSubmitSuccessful
+
   const handleSearch = async (data: z.infer<typeof FormSchema>) => {
     console.log(`searching for ${data.query}`);
-    // 模拟搜索结果
-    const mockResults: Result[] = [
-      { id: 1, name: 'John Doe', email: 'john@example.com' },
-      { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
-    ];
-    // setResults(mockResults.filter(user => user.name.includes(query) || user.email.includes(query)));
+    try {
+      // const res = await fetch(`/api/search?q=${data.query}&offset=0&limit=10`);
+      const res = await fetch(`/api/hono/user/list/not_friend?q=${data.query}`);
+      const result = await res.json();
+      if (res.ok) {
+        const { users, count } = result as UserLsWithCount_whenAddFriend
+        setSearchResults({ users, count });
+        sonner_toast(`Found ${count} users matching "${data.query}"`, {
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">{JSON.stringify(users, null, 2)}</code>
+            </pre>
+          ),
+        })
+      } else {
+        sonner_toast(`An error occurred: ${result.message}`)
+      }
+    } catch (error: any) {
+      console.error(error);
+      sonner_toast(`An error occurred: ${error.message}`)
+    }
   };
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -123,12 +137,11 @@ export default function SearchFriendPage() {
     })
     await handleSearch(data)
   }
-
+  const router = useRouter()
 
   return (<>
     <Form {...form}>
       <SubHeader 
-      // user={session?.user} 
       user={undefined} 
       className='sticky top-0 z-10' > 
       <form onSubmit={form.handleSubmit(onSubmit)} className="">
@@ -138,14 +151,14 @@ export default function SearchFriendPage() {
           render={({ field }) => (
             <FormItem>
               <FormControl className=''>
-              <div className='relative w-auto mr-1 '>
+              <div className='relative w-auto mr-3 '>
                 <Search size={20} className='absolute left-2 top-1/2 transform -translate-y-1/2 opacity-50' />
                 <Input
                   placeholder='name\email\phone'
                   className='pl-8 pr-8 
                   focus-visible:ring-0 
                   focus-visible:ring-offset-0 bg-muted h-[2.375rem]'
-                  {...field}
+                  {...field} // 后续可以补上 点击搜索框 将取消(暂停)请求(也可以不管)
                 />
                 {/* focus-visible:ring-1 */}
                 <CircleX
@@ -162,15 +175,15 @@ export default function SearchFriendPage() {
         </form>
       </SubHeader>
       {form.watch().query && (
-        <Button type="submit" className='bg-muted hover:bg-muted/80 text-foreground mt-0.5 flex justify-between focus-visible:ring-0 focus-visible:ring-offset-0 w-full'
+        <SubmitButton isLoading={isLoading} className='bg-muted hover:bg-muted/80 text-foreground mt-0.5 flex justify-between focus-visible:ring-0 focus-visible:ring-offset-0 w-full rounded-none'
         onClick={form.handleSubmit(onSubmit)}
         >
           <div></div>
           <span>
-            Search<span className='glow-purple'>{form.watch().query}</span>相关的
+            Search&quot;<span className='glow-purple'>{form.watch().query}</span>&quot;相关的
           </span>
-          <ChevronRight />
-        </Button>
+          {!isLoading && <ChevronRight />}
+        </SubmitButton>
       )}
     </Form>
       {/* <div className='relative w-full '>
@@ -188,20 +201,48 @@ export default function SearchFriendPage() {
           onClick={() => setQuery('')}
         />
       </div> */}
-    
-    <main className=''>
-      <ul>
-        {results.length === 0 ? (
-          <li>No results found.</li>
-        ) : (
-          results.map(user => (
-            <li key={user.id} className='p-2 border-b'>
-              <div className='font-medium'>{user.name}</div>
-              <div className='text-sm text-gray-500'>{user.email}</div>
+    <main className='bg-background/30 h-full'>
+      {!form.watch().query && (<div>Enter a query to search for users.</div>)}
+      {isLoading && (<div>Searching...</div>)}
+      {searchResults && (
+      searchResults.count > 0 ? (
+        <ul className=' m-2'>
+          {searchResults.users.map((user, index) => (<>
+            <li key={user.id} className={`flex items-center justify-between bg-muted hover:bg-muted/75 `} onClick={() => {console.log(user)
+              router.push(`/${user.name}`)
+            }}>
+              <ShadcnAvatar src={user.image} size={14} className='my-3 ml-3' />
+              <div className='w-full mx-3'>
+                <div className='w-full flex items-center my-3'>
+                  <div className='h-14 w-full '>
+                    <div className='h-7 text-lg font-medium'>
+                      {user.nickname ? (
+                        <span>{user.nickname}({user.name})</span>
+                      ) : (
+                        <span>{user.name}</span>
+                      )}
+                    </div>
+                  
+                    <div className='h-7'>
+                      <Badge variant="secondary" className=''>{user.gender}{user.age}岁</Badge>
+                      {/* <div>{user.gender}{user.age}</div> */}
+                    </div>
+                  </div>
+                  <Button variant='outline' className='bg-background/20' onClick={(e: any) => {
+                    // 阻止事件冒泡
+                    e.stopPropagation()
+                    console.log("add")
+                  }}>add</Button>
+                </div>
+              {index !== searchResults.users.length - 1 && <Separator className="mt-" />}
+              </div>
             </li>
-          ))
-        )}
-      </ul>
+          </>))}
+        </ul>
+      ) : (
+        <div>No users found matching your query.</div>
+      )
+      )}
     </main>
   </>)
 }

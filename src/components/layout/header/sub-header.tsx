@@ -33,14 +33,14 @@ export function SubHeader({
   const { width: windowWidth } = useWindowSize();
 
   return (
-    <header className={`flex sticky py-1.5 items-center justify-between ${className}`}>
+    <header className={`flex sticky py-1.5 items-center justify-between ${className} bg-card`}>
 
       <div className='flex gap-1 items-center'>
         <Button variant='ghost' size="icon" className='p-0 gap-0' onClick={() => {
           console.log('back')
           router.back()
         }}>
-          <ChevronLeft size={32} className='min-w-8 min-h-8' />
+          <ChevronLeft size={32} className='min-w-8 min-h-8 opacity-50' />
         </Button>
       </div>
 

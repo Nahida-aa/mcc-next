@@ -1,13 +1,14 @@
 import { db } from "@/lib/db";
 import { friend_table } from "@/lib/db/schema/follow";
 import { friendNotification_table } from "@/lib/db/schema/notification";
-import { eq, and, or, inArray } from "drizzle-orm";
+import { eq, and, or, inArray, ilike, notInArray } from "drizzle-orm";
 import { chat_table } from "../../schema/message";
-import { user_table } from "../../schema/user";
+import { User, user_table } from "../../schema/user";
+import { z } from "@hono/zod-openapi";
 
 // 创建好友请求
-export async function createFriendRequest(
-  sender_id: string, receiver_id: string, content: string) {
+export const createFriendRequest = async (
+  sender_id: string, receiver_id: string, content: string) => {
   return await db.transaction(async (tx) => {
     // 检查是否已经存在好友请求或好友关系
     const existingRequest = await tx.select().from(friend_table)
@@ -136,7 +137,7 @@ export const userList_isFriend_byUserId = async (user_id: string, offset: number
   return users;
 }
 
-export const userListWithCount_isFriend_byUserId = async (user_id: string, offset: number = 0, limit: number = 10) => {
+export const userLsWithCount_isFriend_by_currentUserId = async (user_id: string, offset: number = 0, limit: number = 10) => {
   const friendIds = await friendIdList_byUserId(user_id);
 
   const usersQuery = db.select().from(user_table)
@@ -145,5 +146,56 @@ export const userListWithCount_isFriend_byUserId = async (user_id: string, offse
   const count = (await usersQuery).length
   const users = await usersQuery.offset(offset).limit(limit);
 
+  return { users, count };
+}
+
+
+// 定义 User 的 zod 模式
+const UserSchema_whenAddFriend = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().nullable(),
+  phone: z.string().nullable(),
+  nickname: z.string().nullable(),
+  image: z.string(),
+  description: z.string().nullable(),
+  gender: z.string().nullable(),
+  age: z.number().nullable(),
+});
+// 定义 UserLsWithCount 的 zod 模式
+export const UserLsWithCountSchema_whenAddFriend = z.object({
+  users: z.array(UserSchema_whenAddFriend),
+  count: z.number(),
+});
+export type UserLsWithCount_whenAddFriend = z.infer<typeof UserLsWithCountSchema_whenAddFriend>;
+
+export const userLsWithCount_notFriend_by_currentUserId_word = async (currentUserId: string, keyword: string, offset: number = 0, limit: number = 10)
+: Promise<UserLsWithCount_whenAddFriend> => {
+  // 获取当前用户的好友列表
+  const friendIds = await friendIdList_byUserId(currentUserId);
+
+  // 查询不在好友列表中的用户
+  const usersQuery = db.select({
+    id: user_table.id,
+    name: user_table.name,
+    email: user_table.email,
+    phone: user_table.phone,
+    nickname: user_table.nickname,
+    image: user_table.image,
+    description: user_table.description,
+    gender: user_table.gender,
+    age: user_table.age,
+  }).from(user_table)
+    .where(and(
+      or(
+        ilike(user_table.name, `%${keyword}%`),
+        ilike(user_table.email, `%${keyword}%`),
+        ilike(user_table.phone, `%${keyword}%`),
+        ilike(user_table.nickname, `%${keyword}%`)
+      ),
+      notInArray(user_table.id, friendIds)
+    ));
+  const count = (await usersQuery).length
+  const users = await usersQuery.offset(offset).limit(limit).execute()
   return { users, count };
 }

@@ -2,11 +2,12 @@
 import { eq, lt, gte, ne, like, or, ilike, and, notInArray } from 'drizzle-orm';
 import { db } from '..';
 // import { linkUserFollow } from '../schema/link';
-import { user as usersTable, idCardInfo as idCardInfoTable } from '../schema/user';
+import { user as usersTable, idCardInfo as idCardInfoTable, user_table } from '../schema/user';
 import type { User } from '../schema/user';
 import { hash_password } from '@/lib/core/auth';
 import { friend_table } from '../schema/follow';
 import { friendIdList_byUserId } from './user/friend';
+import { SelectedFields } from 'drizzle-orm/pg-core';
 
 
 // 定义新的输入类型，包含关系字段，并将 name 和 password 设为必选字段
@@ -75,7 +76,7 @@ export const userList_byWord = async (keyword: string, offset: number = 0, limit
   return users;
 }
 
-export const userList_onlyNotFriend_byWord_currentUserID = async (currentUserId: string, keyword: string, offset: number = 0, limit: number = 10): Promise<User[]> => {
+export const userList_onlyNotFriend_byWord_currentUserId = async (currentUserId: string, keyword: string, offset: number = 0, limit: number = 10): Promise<User[]> => {
   // 获取当前用户的好友列表
   const friendIds = await friendIdList_byUserId(currentUserId);
 
@@ -97,29 +98,6 @@ export const userList_onlyNotFriend_byWord_currentUserID = async (currentUserId:
   return users;
 }
 
-export const userListWithCount_onlyNotFriend_byWord_currentUserID = async (currentUserId: string, keyword: string, offset: number = 0, limit: number = 10): Promise<{ users: User[], count: number }> => {
-  // 获取当前用户的好友列表
-  const friendIds = await friendIdList_byUserId(currentUserId);
-
-  // 查询不在好友列表中的用户
-  const usersQuery = db
-    .select()
-    .from(usersTable)
-    .where(
-      and(
-        or(
-          ilike(usersTable.name, `%${keyword}%`),
-          ilike(usersTable.email, `%${keyword}%`),
-          ilike(usersTable.phone, `%${keyword}%`),
-          ilike(usersTable.nickname, `%${keyword}%`)
-        ),
-        notInArray(usersTable.id, friendIds)
-      )
-    );
-  const count = (await usersQuery).length
-  const users = await usersQuery.offset(offset).limit(limit).execute()
-  return { users, count };
-}
 
 export const getByName = async (name: string) => {
   const users = await db.select().from(usersTable).where(eq(usersTable.name, name));

@@ -34,6 +34,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 // import { signIn } from "../auth";
+import { toast as sonner_toast } from "sonner"
 
 export const sign_in_schema = z.object({
   nameOrEmail: z.string().min(1, "Name or email is required"),
@@ -66,9 +67,11 @@ export function SignIn_Modal() {
       // const result = await server_sign_in(values)
       const result = await hono_sign_in(values)
       console.log(`app/(auth)/_comp/signIn-modal.tsx: 登录成功: ${JSON.stringify(values.nameOrEmail)}`)
+      sonner_toast(`Welcome back, ${values.nameOrEmail}!`)
       router.push('/')
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
+      sonner_toast(`An error occurred: ${error.message}`)
     }
   }
 
