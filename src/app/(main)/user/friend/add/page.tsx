@@ -14,6 +14,8 @@ import SearchButton from './_comp/search-button';
 export default async function AddFriendPage() {
   const [session, cookieStore] = await Promise.all([server_auth(), cookies()]);
 
+  
+
   return (<>
     <SubHeader 
         // user={session?.user} 

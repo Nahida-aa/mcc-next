@@ -1,6 +1,6 @@
 "use client";
 import { HomeHeader } from '@/components/layout/header/home-header'
-import React, { use, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { cookies } from 'next/headers';
 import Link from 'next/link'; // 对 next 内的 router 的跳转
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { ChevronRight, CircleX, Search, X } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { set, z } from "zod"
 
 // import { toast as toast_toast } from "@/components/hooks/use-toast"
 import { toast as sonner_toast } from "sonner"
@@ -31,7 +31,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ShadcnAvatar } from '@/components/common/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const FormSchema = z.object({
   query: z.string().min(1, {
@@ -92,6 +92,10 @@ const FormSchema = z.object({
 
 
 export default function SearchFriendPage() {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const query = searchParams.get('query')
+  console.log(`query: ${query}`)
   const [searchResults, setSearchResults] = useState<UserLsWithCount_whenAddFriend | null>(null);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -99,6 +103,14 @@ export default function SearchFriendPage() {
       query: "",
     },
   })
+  useEffect(() => {
+    const storedResults = sessionStorage.getItem(`searchResults`);
+    if (storedResults) {
+      setSearchResults(JSON.parse(storedResults));
+    }
+    console.log(`searchResults: ${JSON.stringify(searchResults)}`)
+  }, []);
+
   const isLoading = form.formState.isSubmitting
   const isSuccessful = form.formState.isSubmitSuccessful
 
@@ -111,6 +123,7 @@ export default function SearchFriendPage() {
       if (res.ok) {
         const { users, count } = result as UserLsWithCount_whenAddFriend
         setSearchResults({ users, count });
+        sessionStorage.setItem(`searchResults`, JSON.stringify({ users, count }));
         sonner_toast(`Found ${count} users matching "${data.query}"`, {
           description: (
             <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
@@ -128,6 +141,9 @@ export default function SearchFriendPage() {
   };
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
+    sessionStorage.removeItem(`searchResults}`);
+    setSearchResults(null);
+    router.replace(`?query=${data.query}`)
     sonner_toast("You submitted the following values:", {
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
@@ -182,7 +198,7 @@ export default function SearchFriendPage() {
           <span>
             Search&quot;<span className='glow-purple'>{form.watch().query}</span>&quot;相关的
           </span>
-          {!isLoading && <ChevronRight />}
+          {!isLoading && <ChevronRight className='opacity-50' />}
         </SubmitButton>
       )}
     </Form>
@@ -202,13 +218,13 @@ export default function SearchFriendPage() {
         />
       </div> */}
     <main className='bg-background/30 h-full'>
-      {!form.watch().query && (<div>Enter a query to search for users.</div>)}
+      {!form.watch().query && !searchResults && (<div>Enter a query to search for users.</div>)}
       {isLoading && (<div>Searching...</div>)}
       {searchResults && (
       searchResults.count > 0 ? (
         <ul className=' m-2'>
           {searchResults.users.map((user, index) => (<>
-            <li key={user.id} className={`flex items-center justify-between bg-muted hover:bg-muted/75 `} onClick={() => {console.log(user)
+            <li key={index} className={`flex items-center justify-between bg-muted hover:bg-muted/75 `} onClick={() => {console.log(user)
               router.push(`/${user.name}`)
             }}>
               <ShadcnAvatar src={user.image} size={14} className='my-3 ml-3' />

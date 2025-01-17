@@ -99,11 +99,11 @@ export function HomeHeader(
       /> */}
       <div className='space-x-1'>
         {/* 搜索按钮: {翻译: Search} */}
-        <Button variant="outline" className='px-2 min-w-10'>
+        <Button variant="outline" className='px-2 min-w-10 bg-background/20'>
           <Search />
         </Button>
         <BetterTooltip content="Chat Bot">
-          <Button variant="outline" className='px-2 min-w-10'>
+          <Button variant="outline" className='px-2 min-w-10 bg-background/20'>
             <Sparkles />
           </Button>
         </BetterTooltip>  
@@ -120,7 +120,7 @@ export function HomeHeader(
             <PopoverTrigger asChild>          
               <Button
                 variant="outline"
-                className="order-2 md:order-1 md:px-2 px-2 ml-auto md:ml-0  min-w-10"
+                className="bg-background/20 order-2 md:order-1 md:px-2 px-2 ml-auto md:ml-0  min-w-10"
                 onClick={() => {
                 }}
               >
@@ -128,7 +128,7 @@ export function HomeHeader(
                 <PlusIcon />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className='min-w-0 w-auto p-0'><MoreMenu /></PopoverContent>
+            <PopoverContent className='min-w-0 w-auto p-0 '><MoreMenu /></PopoverContent>
           </Popover>
         </BetterTooltip>
         {/* )} */}

@@ -1,6 +1,6 @@
 "use client";
 import { HomeHeader } from '@/components/layout/header/home-header'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { cookies } from 'next/headers';
 import Link from 'next/link'; // 对 next 内的 router 的跳转
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,9 @@ const SearchButton = () => {
   const router = useRouter();
   const [query, setQuery] = useState('');
 
+  useEffect(() => {
+    sessionStorage.removeItem(`searchResults`)
+  }, [])
 
   return (<>
         {/* <Input
@@ -37,7 +40,7 @@ const SearchButton = () => {
           className='w-full max-w-xs focus-visible:ring-1 focus-visible:ring-offset-0'
         /> */}
       <div className='px-4'>
-        <Button variant='outline' className='w-full md:w-40 lg:w-56 xl:w-64 justify-between'
+        <Button variant='outline' className='bg-background/20 w-full md:w-40 lg:w-56 xl:w-64 justify-between'
           onClick={() => router.push('/user/friend/add/search')}
         >
           <Search size={20} />
