@@ -20,6 +20,7 @@ import {
 import { BetterTooltip } from '@/components/common/BetterTooltip';
 import Link from 'next/link';
 import { UserMeta } from './user-side-toggle';
+import { X } from 'lucide-react';
 
 
 export function AppSidebar({ user }: { user: UserMeta | undefined }) {
@@ -48,18 +49,18 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
                 mcc
               </span>
             </Link>
-            <BetterTooltip content="New Server" align="start">
+            <BetterTooltip content="关闭 side" align="start">
               <Button
                 variant="ghost"
                 type="button"
                 className="p-2 h-fit"
                 onClick={() => {
                   setOpenMobile(false);
-                  router.push('/');
-                  router.refresh();
+                  // router.push('/');
+                  // router.refresh();
                 }}
               >
-                <PlusIcon />
+                <X />
               </Button>
             </BetterTooltip>
           </div>

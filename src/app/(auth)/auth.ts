@@ -1,5 +1,5 @@
 // "use server";
-import { QUser } from '@/server/db/q/qUser';
+import * as QUser  from '@/lib/db/q/qUser';
 import { compare } from 'bcrypt-ts';
 import NextAuth, { type User, type Session } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
@@ -80,8 +80,8 @@ export const {
 
 import { cookies } from 'next/headers'
 import { NextApiRequest } from 'next';
-import { verifyJWT } from '@/server/core/token';
-import { SessionTokenPayload } from '@/server/middleware/auth';
+import { verifyJWT } from '@/lib/core/token';
+import { SessionTokenPayload } from '@/lib/middleware/auth';
 
 // import { redirect } from "next/navigation";
 

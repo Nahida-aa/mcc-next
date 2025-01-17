@@ -1,0 +1,55 @@
+'use client';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useWindowSize } from 'usehooks-ts';
+
+// import { ModelSelector } from '@/components/model-selector';
+import { SidebarToggle } from '@/components/layout/sidebar/sidebar-toggle';
+import { Button } from '@/components/ui/button';
+import { BetterTooltip } from '@/components/common/BetterTooltip';
+import { PlusIcon, VercelIcon } from '@/components/icons';
+import { useSidebar } from '@/components/ui/sidebar';
+import { UserMeta, UserSidebarToggle } from '../sidebar/user-side-toggle';
+import { ModeToggle } from '@/components/common/ModeToggle';
+import { Search, AlignRight, X, Sparkles, UserRound, House, ChevronLeft } from 'lucide-react';
+// import { useState } from 'react';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { MoreMenu } from './home-header';
+
+export function SubHeader({
+  user, className, children,
+}: { 
+  user: UserMeta | undefined, className?: string; children: React.ReactNode; 
+}
+  // { selectedModelId }: { selectedModelId: string }
+) {
+  const router = useRouter();
+
+  const { width: windowWidth } = useWindowSize();
+
+  return (
+    <header className={`flex sticky py-1.5 items-center justify-between ${className}`}>
+
+      <div className='flex gap-1 items-center'>
+        <Button variant='ghost' size="icon" className='p-0 gap-0' onClick={() => {
+          console.log('back')
+          router.back()
+        }}>
+          <ChevronLeft size={32} className='min-w-8 min-h-8' />
+        </Button>
+      </div>
+
+      <div className='w-full'>
+      {children}
+      </div>
+
+      <div className='space-x-1'>
+      </div>
+    </header>
+  );
+}

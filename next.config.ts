@@ -10,7 +10,10 @@ const nextConfig: NextConfig = {
 		  },
 		  {
 			  hostname: 'avatars.githubusercontent.com',
-		  }
+		  },
+      {
+			  hostname: 'raw.githubusercontent.com',
+		  },
 		],
 	},
   async rewrites() {

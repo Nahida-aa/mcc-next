@@ -86,8 +86,12 @@ body {
     --primary-foreground: 24 9.8% 10%;
     --secondary: 12 6.5% 15.1%;
     --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 12 6.5% 15.1%;
+    --muted: 240 14% 16%;
+    --muted-40: 240, 15%, 21%, 0.4;
+    --muted-v: hsla(240, 14%, 16%, 0.5);
+    --muted-v-40: hsla(240, 15%, 21%, 0.4);
     --muted-foreground: 24 5.4% 63.9%;
+    --muted-foreground-v: hsl(24 5.4% 63.9%);
     --accent: 12 6.5% 15.1%;
     --accent-foreground: 60 9.1% 97.8%;
     --destructive: 0 62.8% 30.6%;
@@ -146,5 +150,9 @@ html, body, :root {
 @layer utilities {
   .glow-purple-box-shadow {
     box-shadow: 0 0 2px #0e002000, 0 0 7px #780afe75, 0 0 5px #780afe75, 0 0 18px #780afe75;
+  }
+  .glow-purple {
+    color: #f4edf7;
+    text-shadow: 0 0 2px #0e002000, 0 0 7px #780afe75, 0 0 5px #780afe75, 0 0 18px #780afe75;
   }
 }

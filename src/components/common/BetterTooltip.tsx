@@ -3,7 +3,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/
 
 export const BetterTooltip = ({
   content,
-  children,
+  children, 
   align = 'center',
   ...props
 }: React.ComponentPropsWithoutRef<typeof Tooltip> & {

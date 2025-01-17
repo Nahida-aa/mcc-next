@@ -12,13 +12,22 @@ import LoggedInIndexPage from './logged_in';
 export default async function AA() {
   const [session, cookieStore] = await Promise.all([server_auth(), cookies()]);
   if (!session){
-    return <NotLoginIndexPage />
+    return (
+      <main className=''>
+        <HomeHeader user={undefined} className='sticky top-0 z-10' />
+        <div className='overflow-auto h-full flex w-full'>
+          <NotLoginIndexPage />
+        </div>
+      </main>
+    )
   }
 
   return (
     <main className=''>
-
-      <LoggedInIndexPage />
+      <HomeHeader user={session?.user} className='sticky top-0 z-10' />
+      <div className='overflow-auto h-full flex w-full'>
+        <LoggedInIndexPage user={session?.user} />
+      </div>
     </main>
   )
 }

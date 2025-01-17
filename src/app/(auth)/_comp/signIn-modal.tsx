@@ -39,7 +39,7 @@ export const sign_in_schema = z.object({
   nameOrEmail: z.string().min(1, "Name or email is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 })
-export function AignIn_Modal() {
+export function SignIn_Modal() {
   // const [isMounted, setIsMounted] = useState(false) // 13 版本的 React 有 bug，需要这样处理
   // useEffect(() => {
   //   setIsMounted(true)

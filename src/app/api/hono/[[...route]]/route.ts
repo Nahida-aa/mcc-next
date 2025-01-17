@@ -3,18 +3,19 @@ import { handle } from 'hono/vercel'
 export const dynamic = 'force-dynamic'
 // export const runtime = 'edge'
 // export const runtime = "nodejs";
-import configOpenAPI from '@/server/lib/conf-openapi'
-import createApp, { createRouter } from '@/server/lib/create-app'
+import configOpenAPI from '@/lib/conf-openapi'
+import createApp, { createRouter } from '@/lib/create-app'
 // import { logger } from 'hono-pino'; // pnpm add hono-pino pino
 
-import test from '@/server/routes/test/index'
-import auth from '@/server/routes/auth/index'
-import users from '@/server/routes/users/route'
+import test from '@/lib/routes/test/index'
+import auth from '@/lib/routes/auth/index'
+import users from '@/lib/routes/users/route'
 // import users_get from '@/server/routes/users/get'
-import user from '@/server/routes/user/route'
-import groups from '@/server/routes/groups/route'
-import follow from '@/server/routes/follow/route'
-import chats from '@/server/routes/user/chats/route'
+import user from '@/lib/routes/user/route'
+import groups from '@/lib/routes/groups/route'
+import follow from '@/lib/routes/follow/route'
+import friend from '@/lib/routes/user/friend/route'
+import chats from '@/lib/routes/user/chats/route'
 
 // const app = new Hono().basePath('/api/hono')
 // const app = new OpenAPIHono().basePath('/api/hono')
@@ -31,6 +32,7 @@ const routes = [
   user,
   groups,
   follow,
+  friend,
   chats,
 ] as const;
 

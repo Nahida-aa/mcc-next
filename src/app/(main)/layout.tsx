@@ -7,6 +7,7 @@ import { server_auth } from '../(auth)/auth';
 import { HomeHeader } from '@/components/layout/header/home-header';
 import { NavigationSidebar } from './_comp/side';
 import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 // export const experimental_ppr = true; // next
 
@@ -31,10 +32,11 @@ export default async function Layout({
       <AppSidebar user={session?.user} />
       <SidebarInset className='h-screen bg-opacity'>
         {/* <HomeHeader user={session?.user} /> */}
-        <HomeHeader user={session?.user} className='sticky top-0 z-10' />
+        {/* <HomeHeader user={session?.user} className='sticky top-0 z-10' /> */}
         {/* 下划线、间隔线 */}
         {/* <Separator className='mx-2'></Separator> */}
-        <div className='overflow-auto h-full flex w-full'>
+        {/* <div className='overflow-auto h-full flex w-full'> */}
+          {/* <ScrollArea> */}
           {/* <aside className="flex z-30 w-14 h-full flex-col fixed inset-y-14"> */}
           {/* <aside className="flex  w-14 h-full flex-col">
             <NavigationSidebar></NavigationSidebar>
@@ -42,7 +44,8 @@ export default async function Layout({
           {/* <main className='flex-1 w-full'> */}
             {children}
           {/* </main> */}
-        </div>
+          {/* </ScrollArea> */}
+        {/* </div> */}
       </SidebarInset>
     </SidebarProvider>
   );
