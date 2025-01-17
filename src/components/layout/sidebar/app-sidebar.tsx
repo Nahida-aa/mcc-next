@@ -15,17 +15,21 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
 import { BetterTooltip } from '@/components/common/BetterTooltip';
 import Link from 'next/link';
 import { UserMeta } from './user-side-toggle';
-import { X } from 'lucide-react';
+import { Settings, X } from 'lucide-react';
+import { UserSidebarFooter } from './footer';
+import { ModeToggle } from '@/components/common/ModeToggle';
 
 
 export function AppSidebar({ user }: { user: UserMeta | undefined }) {
   const router = useRouter();
-  const { setOpenMobile } = useSidebar();
+  const { setOpen, setOpenMobile, isMobile, toggleSidebar } = useSidebar();
   const displayUser = user || { email: 'guest@example.com', name: 'Guest' }
   let user_status
   if (user) {
@@ -34,7 +38,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
     user_status = "未登录"
   }
   return (
-    <Sidebar className="group-data-[side=left]:border-r-0 backdrop-blur-md ">
+    <Sidebar className="group-data-[side=left]:border-r-0 backdrop-blur-md Sidebar">
       <SidebarHeader>
         <SidebarMenu>
           <div className="flex flex-row justify-between items-center">
@@ -55,7 +59,9 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
                 type="button"
                 className="p-2 h-fit"
                 onClick={() => {
-                  setOpenMobile(false);
+                  toggleSidebar()
+                  // setOpen(false);
+                  // setOpenMobile(false);
                   // router.push('/');
                   // router.refresh();
                 }}
@@ -71,14 +77,25 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
           {/* <SidebarHistory user={user} /> */}
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="gap-0">
-        {/* {displayUser && ( */}
-          <SidebarGroup>
-            <SidebarGroupContent>
-              <SidebarUserNav user={user} status={user_status} />
-            </SidebarGroupContent>
-          </SidebarGroup>
-        {/* )} */}
+      {/* <UserSidebarFooter user={user} status={user_status} /> */}
+      <SidebarFooter>
+        <SidebarMenu className='flex-row'>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild onClick={() => {
+                // router.push('/setting');
+              }}
+            >
+              <Button variant='ghost' size='icon' className='size-10'>
+              <Settings />
+              </Button>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <ModeToggle variant={'ghost'} className='size-10 active:bg-sidebar-accent' />
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   );

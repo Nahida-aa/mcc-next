@@ -66,8 +66,8 @@ export const SignUp_Modal = () => {
       console.log(`app/(auth)/_comp/signIn-modal.tsx: 开始登录: ${JSON.stringify(values.name)}`)
       // const result = await server_sign_in(values)
       const result = await hono_signUp(values)
-      console.log(`app/(auth)/_comp/signIn-modal.tsx: 登录成功: ${JSON.stringify(values.name)}`)
-      await sonner_toast(`Welcome back, ${values.name}!`)
+      // sonner_toast(`Welcome back, ${values.name}!`)
+      console.log(`app/(auth)/_comp/signIn-modal.tsx: 注册并自动登录成功: ${JSON.stringify(values.name)}`)
       router.push('/')
     } catch (error: any) {
       console.error(error)

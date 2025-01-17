@@ -109,7 +109,7 @@ export function HomeHeader(
         </BetterTooltip>  
 
         {(windowWidth >= 768) && (
-        <ModeToggle />
+        <ModeToggle className='bg-background/20' />
         )}
 
         {/* {(!open || windowWidth < 768) && ( */}

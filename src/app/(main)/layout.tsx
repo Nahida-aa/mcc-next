@@ -25,6 +25,7 @@ export default async function Layout({
     user_status = "未登录"
   }
   const isCollapsed = cookieStore.get('sidebar:state')?.value !== 'true';
+  console.log(`app/(main)/layout.tsx: Layout: isCollapsed: ${isCollapsed}`);
 
   return (
     <SidebarProvider defaultOpen={!isCollapsed} className='h-screen SidebarProvider  '> 

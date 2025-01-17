@@ -48,7 +48,7 @@ ${status === "online" ? 'bg-green-500' : 'bg-gray-500'}
 </div>
   )
 }
-interface SidebarUserNavProps {
+export interface SidebarUserNavProps {
   user?: UserMeta 
   className?: string;
   status?: string;
@@ -68,7 +68,7 @@ export function SidebarUserNav({
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-10 p-1">
+            <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background/20 data-[state=open]:text-sidebar-accent-foreground h-10 p-1">
               <UserAvatar user={user} status={status} />
               <span className="truncate">{isGuest ? "未登录" : user?.name}</span>
               <ChevronUp className="ml-auto" />

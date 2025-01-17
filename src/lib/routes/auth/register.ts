@@ -135,7 +135,7 @@ router.openapi(createRoute({
   const db_user = await db.transaction(async (tx) => {
     const [db_user] = await tx.insert(userTable).values({
       ...user_data,
-      image: user_data_image
+      image: user_data_image,
     }).returning();
     return db_user;
   })

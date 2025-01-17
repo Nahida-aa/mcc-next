@@ -21,11 +21,12 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
 
-
-const SearchButton = () => {
+const SearchButton = ({
+  router_push = '/search',
+  placeholder = 'Search...',
+}) => {
   const router = useRouter();
   const [query, setQuery] = useState('');
 
@@ -41,11 +42,11 @@ const SearchButton = () => {
         /> */}
       <div className='px-4'>
         <Button variant='outline' className='bg-background/20 w-full md:w-40 lg:w-56 xl:w-64 justify-between'
-          onClick={() => router.push('/user/friend/add/search')}
+          onClick={() => router.push(router_push)}
         >
           <Search size={20} />
           <span className="hidden lg:inline-flex">Search...</span>
-          <span className="inline-flex lg:hidden">name\nickname\email\phone...
+          <span className="inline-flex lg:hidden">{placeholder}
           </span>
           <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
             <span className="text-xs">⌘</span>K

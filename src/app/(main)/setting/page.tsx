@@ -9,27 +9,20 @@ import { server_auth } from '@/app/(auth)/auth';
 import { SubHeader } from '@/components/layout/header/sub-header';
 import { Search } from 'lucide-react';
 import { Input } from "@/components/ui/input"
-import SearchButton from './_comp/search-button';
+import SearchButton from '../user/friend/add/_comp/search-button';
 
-export default async function AddFriendPage() {
+export default async function SettingPage() {
   const [session, cookieStore] = await Promise.all([server_auth(), cookies()]);
-
-
+  
 
   return (<>
     <SubHeader 
-        // user={session?.user} 
-        user={undefined}
-    className='sticky top-0 z-10' > 
-      Add Friend 
+      user={undefined}
+      className='sticky top-0 z-10' > 
+      Settings
     </SubHeader>
-    <main className=''>
-        {/* <Input
-          type='text'
-          placeholder='name\email\phone'
-          className='w-full max-w-xs focus-visible:ring-1 focus-visible:ring-offset-0'
-        /> */}
-      <SearchButton router_push='/user/friend/add/search' placeholder='name\nickname\email\phone...' />
+    <main className='bg-card/80 h-full'>
+      <SearchButton router_push='/setting/search' />
     </main>
   </>)
 }

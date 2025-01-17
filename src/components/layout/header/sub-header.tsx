@@ -33,7 +33,7 @@ export function SubHeader({
   const { width: windowWidth } = useWindowSize();
 
   return (
-    <header className={`flex sticky py-1.5 items-center justify-between ${className} bg-card`}>
+    <header className={`flex sticky py-1.5 items-center justify-between ${className} bg-card/80`}>
 
       <div className='flex gap-1 items-center'>
         <Button variant='ghost' size="icon" className='p-0 gap-0' onClick={() => {
@@ -44,11 +44,11 @@ export function SubHeader({
         </Button>
       </div>
 
-      <div className='w-full'>
+      <div className='w-full h-10 flex items-center justify-center'>
       {children}
       </div>
 
-      <div className='space-x-1'>
+      <div className='w-10'>
       </div>
     </header>
   );

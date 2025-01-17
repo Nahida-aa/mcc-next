@@ -28,7 +28,7 @@ export const user = pgTable("User", {
   phone: varchar("phone", { length: 64 }), // 逻辑必填
   gender: varchar(),
   age: integer(),
-  lastLogin: timestamp("last_login"),
+  last_login: timestamp("last_login"),
   followers_count: integer("followers_count").default(0).notNull(), // 粉丝数
   following_count: integer("following_count").default(0).notNull(), // 关注数(包括团队)
   is_superuser: boolean("is_superuser").default(false).notNull(),
