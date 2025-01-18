@@ -1,3 +1,5 @@
+import { SubHeader } from "@/components/layout/header/sub-header"
+
 export default async function Page({
   params,
 }: {
@@ -6,7 +8,12 @@ export default async function Page({
   const name = (await params).name
   const decodeURLComponentName = decodeURIComponent(name)
 
-  return <div>
+  return <main className="z-[100] h-full">
+    <SubHeader 
+      user={undefined}
+      className='sticky top-0 z-10' > 
+      profile
+    </SubHeader>
     <span>
       My Name: {name} 
     </span>
@@ -14,5 +21,5 @@ export default async function Page({
     <span>
       My Decoded Name: {decodeURLComponentName}
     </span>
-  </div>
+  </main>
 }

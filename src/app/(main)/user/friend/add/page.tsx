@@ -23,7 +23,7 @@ export default async function AddFriendPage() {
     className='sticky top-0 z-10' > 
       Add Friend 
     </SubHeader>
-    <main className=''>
+    <main className='bg-card/80 h-full'>
         {/* <Input
           type='text'
           placeholder='name\email\phone'

@@ -96,8 +96,8 @@ body {
     --muted-v-40: hsla(240, 15%, 21%, 0.4);
     --muted-foreground: 24 5.4% 63.9%;
     --muted-foreground-v: hsl(24 5.4% 63.9%);
-    --accent: 240 11% 26%;
-    --accent-v: hsl(240, 11%, 26%);
+    --accent: 240 11% 34%;
+    --accent-v: hsl(240, 11%, 34%);
     --accent-foreground: 60 9.1% 97.8%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 60 9.1% 97.8%;
@@ -111,13 +111,13 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240, 28%, 23% , 0.5;
-    --sidebar-background-var: hsla(240, 28%, 23%, 0.3);
+    --sidebar-background: 246, 57%, 7%, 0.6;
+    --sidebar-background-var: hsla(247, 57%, 9%, 0.432);
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240, 11%, 26%, 0.826;
-    --sidebar-accent-v: hsla(240, 11%, 26%, 0.826);
+    --sidebar-accent: 240 11% 26%;
+    --sidebar-accent-v: hsla(248, 11%, 26%, 0.826);
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;

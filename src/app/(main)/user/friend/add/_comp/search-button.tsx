@@ -41,7 +41,7 @@ const SearchButton = ({
           className='w-full max-w-xs focus-visible:ring-1 focus-visible:ring-offset-0'
         /> */}
       <div className='px-4'>
-        <Button variant='outline' className='bg-background/20 w-full md:w-40 lg:w-56 xl:w-64 justify-between'
+        <Button variant='outline' className='bg-muted w-full md:w-64 lg:w-80 xl:w-96 justify-between'
           onClick={() => router.push(router_push)}
         >
           <Search size={20} />
