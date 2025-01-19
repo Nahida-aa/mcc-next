@@ -10,4 +10,4 @@ export const FriendNotification = () => {
   );
 }
 
-export default Notification;
+export default FriendNotification;
