@@ -45,41 +45,41 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
     <Sidebar className="group-data-[side=left]:border-r-0 backdrop-blur-md Sidebar">
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <SidebarMenuButton className='pr-0'>
-                Select Workspace
-                <ChevronDown className="ml-auto" />
-                <Button
-                variant="ghost"
-                type="button"
-                className="p-2 h-fit"
-                onClick={() => {
-                  toggleSidebar()
-                  // setOpen(false);
-                  // setOpenMobile(false);
-                  // router.push('/');
-                  // router.refresh();
-                }}
-              >
-                <X />
-              </Button>
-              </SidebarMenuButton>
-
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-              <DropdownMenuItem>
-                <span>
-                  Navigate list
-                </span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <span>Chat list</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu> 
-        </SidebarMenuItem>
+          <SidebarMenuItem className='flex'>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton >
+                  Select Workspace
+                  <ChevronDown className="ml-auto" />
+                  
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+                <DropdownMenuItem>
+                  <span>
+                    Navigate list
+                  </span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>Chat list</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu> 
+            <Button
+              variant="ghost"
+              type="button"
+              className="p-2 h-fit"
+              onClick={() => {
+                toggleSidebar()
+                // setOpen(false);
+                // setOpenMobile(false);
+                // router.push('/');
+                // router.refresh();
+              }}
+            >
+              <X />
+            </Button>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
@@ -89,7 +89,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
               if (user) router.push(`/${user.name}`);
             }} />
             {user ? (<>
-              <SidebarMenu className='mr-2 gap-0 h-[min-count]'>
+              <SidebarMenu className=' gap-0 h-[min-count]'>
                 <SidebarMenuItem className='h-5'>
                   <SidebarMenuButton className='h-5' onClick={() => router.push(`/${user.name}`)}
                   >
@@ -107,10 +107,12 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>
-              <div className='w-auto h-[3.75rem] justify-between flex flex-col items-end'>
+              <section className='w-auto h-[3.75rem] justify-between flex flex-col items-end'>
                 <DropdownMenu>
-                  <DropdownMenuTrigger className='text-xs h-4 top-0'>
+                  <DropdownMenuTrigger className='text-xs h-4 top-0' asChild>
+                    <Button variant='ghost' className='p-1'>
                     <span className='flex items-center gap-1 opacity-75'>switchAccount<ChevronDown className='size-3 opacity-75 ' /></span>
+                    </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem>Profile</DropdownMenuItem>
@@ -119,18 +121,18 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
                     <DropdownMenuItem>Subscription</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                {/* <Button variant='ghost' size='icon' className=' p-0 m-0 gap-0'> */}
-                  <QrCode className='size-6 opacity-50' onClick={
+                <Button variant='ghost' size='icon' className=' p-0 m-0 gap-0 size-6 [&amp;>svg]:size-6 [&amp;_svg]:size-6'>
+                  <QrCode className='size-6 opacity-75 hover:bg-accent focus-visible:ring-2' onClick={
                     (e) => {
                       e.preventDefault();
                       console.log('qr-code');
                       // router.push('/qr-code');
                     }
                   } />
-                {/* </Button> */}
-              </div>
+                </Button>
+              </section>
               </>) : (
-              <SidebarMenu className='mr-2 gap-0 bg-sidebar-accent/75 rounded-md'>
+              <SidebarMenu className='gap-0 bg-sidebar-accent/75 rounded-md'>
                 <SidebarMenuItem>
                   <SidebarMenuButton className='rounded-b-none justify-between'
                     onClick={(e) => {
@@ -169,6 +171,8 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
         <SidebarMenu className='flex-row'>
           <SidebarMenuItem>
             <SidebarMenuButton asChild onClick={() => {
+                // toggleSidebar()
+                setOpenMobile(false);
                 router.push('/setting');
               }}
             >

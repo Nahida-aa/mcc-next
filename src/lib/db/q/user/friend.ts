@@ -6,19 +6,22 @@ import { chat_table } from "../../schema/message";
 import { User, user_table } from "../../schema/user";
 import { z } from "@hono/zod-openapi";
 
+
+// 检查是否已经存在好友请求或好友关系(有好友关系且关系状态为 pending\accepted
+export const getFriendshipStatus = async (sender_id: string, receiver_id: string) => {
+  const [friendship] = await db.select({
+    status: friend_table.status
+  }).from(friend_table)
+    .where(and(eq(friend_table.user_id, sender_id),
+      eq(friend_table.friend_id, receiver_id)));
+
+  return friendship
+}
+
 // 创建好友请求
 export const createFriendRequest = async (
   sender_id: string, receiver_id: string, content: string) => {
   return await db.transaction(async (tx) => {
-    // 检查是否已经存在好友请求或好友关系
-    const existingRequest = await tx.select().from(friend_table)
-      .where(and(eq(friend_table.user_id, sender_id),
-        eq(friend_table.friend_id, receiver_id)))
-
-    if (existingRequest) {
-      throw new Error('好友请求已存在或已经是好友');
-    }
-
     // 创建好友请求通知
     const [notification] = await tx.insert(friendNotification_table).values({
       type: 'request',
@@ -167,7 +170,8 @@ export const UserLsWithCountSchema_whenAddFriend = z.object({
   users: z.array(UserSchema_whenAddFriend),
   count: z.number(),
 });
-export type UserLsWithCount_whenAddFriend = z.infer<typeof UserLsWithCountSchema_whenAddFriend>;
+export type UserLsWithCount_whenAddFriend = z.infer<typeof UserLsWithCountSchema_whenAddFriend>
+export type User_whenAddFriend = z.infer<typeof UserSchema_whenAddFriend>
 
 export const userLsWithCount_notFriend_by_currentUserId_word = async (currentUserId: string, keyword: string, offset: number = 0, limit: number = 10)
 : Promise<UserLsWithCount_whenAddFriend> => {

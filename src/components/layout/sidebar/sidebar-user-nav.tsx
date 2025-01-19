@@ -98,7 +98,7 @@ export function SidebarUserNav({
                     // client_sign_out({
                     client_logout({
                       redirectTo: '/',
-                    });
+                    })
                   }
                 }}
               >

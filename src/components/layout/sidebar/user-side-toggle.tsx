@@ -40,7 +40,8 @@ export function UserSidebarToggle({
 // ComponentProps<typeof SidebarTrigger>
 ) {
   const { toggleSidebar } = useSidebar();
-  const img_src = user?.image ?? `https://avatar.vercel.sh/${user?.email}`
+  // 如果没有登录则 `https://avatar.vercel.sh/Guest`, 如果登录了 但是没有 image 但有 email 则显示 `https://avatar.vercel.sh/${user?.email}`, 如果没有 email 则显示 `https://avatar.vercel.sh/${user?.name}`
+  const img_src = user?.image ?? `https://avatar.vercel.sh/Guest`
   // const img_src_d = `https://raw.githubusercontent.com/Nahida-aa/avatar/refs/heads/main/star-80-d.webp`
 
   const imageLoader = ({ src, width, quality }: { src: string; width: number; quality?: number }) => {

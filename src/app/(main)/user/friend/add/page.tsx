@@ -19,9 +19,9 @@ export default async function AddFriendPage() {
   return (<>
     <SubHeader 
         // user={session?.user} 
-        user={undefined}
-    className='sticky top-0 z-10' > 
-      Add Friend 
+      user={undefined}
+      className='sticky top-0 z-10' > 
+      Find Friend 
     </SubHeader>
     <main className='bg-card/80 h-full'>
         {/* <Input

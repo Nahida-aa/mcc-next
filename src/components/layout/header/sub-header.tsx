@@ -24,7 +24,7 @@ import { MoreMenu } from './home-header';
 export function SubHeader({
   user, className, children,
 }: { 
-  user: UserMeta | undefined, className?: string; children: React.ReactNode; 
+  user?: UserMeta, className?: string; children: React.ReactNode; 
 }
   // { selectedModelId }: { selectedModelId: string }
 ) {

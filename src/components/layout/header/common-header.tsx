@@ -41,7 +41,7 @@ export function CommonHeader(
     user_status = "未登录"
   }
   return (
-    <header className={`flex sticky  py-1.5 items-center px-2 md:px-2 gap-2 justify-between ${className}`}>
+    <header className={`flex sticky  py-1.5 items-center px-2 md:px-2 gap-2 justify-between bg-card ${className}`}>
       <div className='flex gap-1 items-center'>
         <UserSidebarToggle user={user} status={user_status} />
         {/* {windowWidth >= 768 && ( */}
@@ -57,17 +57,17 @@ export function CommonHeader(
       /> */}
       <div className='space-x-1'>
         {/* 搜索按钮: {翻译: Search} */}
-        <Button variant="outline" className='px-2 min-w-10'>
+        <Button variant="outline" className='px-2 min-w-10 bg-background/20'>
           <Search />
         </Button>
         <BetterTooltip content="Chat Bot">
-          <Button variant="outline" className='px-2 min-w-10'>
+          <Button variant="outline" className='px-2 min-w-10 bg-background/20'>
             <Sparkles />
           </Button>
         </BetterTooltip>  
 
         {(windowWidth >= 768) && (
-        <ModeToggle />
+        <ModeToggle className='bg-background/20' />
         )}
 
         {/* {(!open || windowWidth < 768) && ( */}
@@ -78,7 +78,7 @@ export function CommonHeader(
             <PopoverTrigger asChild>          
               <Button
                 variant="outline"
-                className="order-2 md:order-1 md:px-2 px-2 ml-auto md:ml-0  min-w-10"
+                className="bg-background/20 order-2 md:order-1 md:px-2 px-2 ml-auto md:ml-0  min-w-10"
                 onClick={() => {
                 }}
               >

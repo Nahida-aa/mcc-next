@@ -10,11 +10,9 @@ import { ChevronRight, CircleX, Search, X } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { set, z } from "zod"
-
+import { z } from "zod"
 // import { toast as toast_toast } from "@/components/hooks/use-toast"
 import { toast as sonner_toast } from "sonner"
-
 import {
   Form,
   FormControl,
@@ -39,63 +37,12 @@ const FormSchema = z.object({
   }),
 })
 
-// export function InputForm() {
-//   const form = useForm<z.infer<typeof FormSchema>>({
-//     resolver: zodResolver(FormSchema),
-//     defaultValues: {
-//       query: "",
-//     },
-//   })
-
-//   function onSubmit(data: z.infer<typeof FormSchema>) {
-//     // toast({
-//     //   title: "You submitted the following values:",
-//     //   description: (
-//     //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-//     //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-//     //     </pre>
-//     //   ),
-//     // })
-//     sonner_toast("You submitted the following values:", {
-//       description: (
-//         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-//           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-//         </pre>
-//       ),
-//     })
-//   }
-
-//   return (
-//     <Form {...form}>
-//       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-//         <FormField
-//           control={form.control}
-//           name="query"
-//           render={({ field }) => (
-//             <FormItem>
-//               <FormLabel>Username</FormLabel>
-//               <FormControl>
-//                 <Input placeholder="shadcn" {...field} />
-//               </FormControl>
-//               <FormDescription>
-//                 This is your public display name.
-//               </FormDescription>
-//               <FormMessage />
-//             </FormItem>
-//           )}
-//         />
-//         <Button type="submit">Submit</Button>
-//       </form>
-//     </Form>
-//   )
-// }
-
-
 export default function SearchFriendPage() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const query = searchParams.get('query')
   console.log(`query: ${query}`)
+  
   const [searchResults, setSearchResults] = useState<UserLsWithCount_whenAddFriend | null>(null);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -157,17 +104,15 @@ export default function SearchFriendPage() {
 
   return (<>
     <Form {...form}>
-      <SubHeader 
-      user={undefined} 
-      className='sticky top-0 z-10' > 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="">
+      <SubHeader className='sticky top-0 z-10' > 
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <FormField
           control={form.control}
           name="query"
           render={({ field }) => (
             <FormItem>
               <FormControl className=''>
-              <div className='relative w-auto mr-3 '>
+              <div className='relative w-full mr-3 '>
                 <Search size={20} className='absolute left-2 top-1/2 transform -translate-y-1/2 opacity-50' />
                 <Input
                   placeholder='name\email\phone'
@@ -202,22 +147,7 @@ export default function SearchFriendPage() {
         </SubmitButton>
       )}
     </Form>
-      {/* <div className='relative w-full '>
-        <Search size={20} className='absolute left-2 top-1/2 transform -translate-y-1/2 opacity-50' />
-        <Input
-          type='text'
-          placeholder='name\email\phone'
-          className='pl-8 pr-8 focus-visible:ring-1 focus-visible:ring-offset-0  '
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <CircleX
-          size={20}
-          className={`absolute right-2 top-1/2 transform -translate-y-1/2 opacity-50 cursor-pointer ${query ? 'block' : 'hidden'}`}
-          onClick={() => setQuery('')}
-        />
-      </div> */}
-    <main className='bg-background/30 h-full'>
+    <main className=' bg-card/80 h-full'>
       {!form.watch().query && !searchResults && (<div>Enter a query to search for users.</div>)}
       {isLoading && (<div>Searching...</div>)}
       {searchResults && (
@@ -240,14 +170,14 @@ export default function SearchFriendPage() {
                     </div>
                   
                     <div className='h-7'>
-                      <Badge variant="secondary" className=''>{user.gender}{user.age}岁</Badge>
-                      {/* <div>{user.gender}{user.age}</div> */}
+                      {user.gender || user.age && <Badge variant="secondary" className=''>{user.gender}{user.age}岁</Badge>}
                     </div>
                   </div>
                   <Button variant='outline' className='bg-background/20' onClick={(e: any) => {
                     // 阻止事件冒泡
                     e.stopPropagation()
                     console.log("add")
+                    router.push(`/user/friend/add/${user.name}`)
                   }}>add</Button>
                 </div>
               {index !== searchResults.users.length - 1 && <Separator className="mt-" />}
