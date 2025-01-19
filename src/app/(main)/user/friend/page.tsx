@@ -9,6 +9,8 @@ import { CommonHeader } from '@/components/layout/header/common-header';
 import { server_auth } from '@/app/(auth)/auth';
 import { ChevronRight } from 'lucide-react';
 
+import { toast as sonner_toast } from "sonner"
+
 export default async function FriendPage() {
   const [session, cookieStore] = await Promise.all([server_auth(), cookies()]);
 
@@ -25,7 +27,11 @@ export default async function FriendPage() {
               <ChevronRight className='opacity-50' />
             </Link>
           </Button>
-          <Button  className=' bg-muted/60 hover:bg-muted text-foreground  flex justify-between focus-visible:ring-0 focus-visible:ring-offset-0 w-full rounded-none'
+          <Button  className=' bg-muted/60 hover:bg-muted text-foreground  flex justify-between focus-visible:ring-0 focus-visible:ring-offset-0 w-full rounded-none' 
+          // onClick={() => {
+          //   // console.log('team notification');
+          //   // sonner_toast('team notification')
+          // }}
             >
             <span>Team notification</span>
             <ChevronRight className='opacity-50' />

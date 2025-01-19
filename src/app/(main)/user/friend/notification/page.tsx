@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Loader } from '@/components/ui/loader/Loader';
 
-export const FriendNotification = () => {
+const FriendNotification = () => {
   return (
     <Suspense fallback={<Loader />}>
       <h1>Notification</h1>
@@ -10,4 +10,4 @@ export const FriendNotification = () => {
   );
 }
 
-export default FriendNotification;
+export default FriendNotification
