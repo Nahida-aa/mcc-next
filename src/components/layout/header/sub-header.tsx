@@ -22,9 +22,10 @@ import {
 import { MoreMenu } from './home-header';
 
 export function SubHeader({
-  user, className, children,
+  user, className, children, justify,
 }: { 
   user?: UserMeta, className?: string; children: React.ReactNode; 
+  justify?: 'center' | 'between' | 'start' | 'end' | 'evenly' | 'around' ;
 }
   // { selectedModelId }: { selectedModelId: string }
 ) {
@@ -33,10 +34,9 @@ export function SubHeader({
   const { width: windowWidth } = useWindowSize();
 
   return (
-    <header className={`flex sticky py-1.5 items-center justify-between ${className} bg-card/80`}>
-
-      <div className='flex gap-1 items-center'>
-        <Button variant='ghost' size="icon" className='p-0 gap-0' onClick={() => {
+    <header className={`flex sticky py-1.5 items-center justify-between backdrop-blur-md ${className} bg-card/80 z-10 top-0`}>
+      <div className='flex  items-center'>
+        <Button variant='ghost' size="icon" className=' p-0 gap-0 size-8 ml-1' onClick={() => {
           console.log('back')
           router.back()
         }}>
@@ -44,12 +44,10 @@ export function SubHeader({
         </Button>
       </div>
 
-      <div className='w-full h-10 flex items-center justify-center'>
-      {children}
+      <div className={`  w-full h-10 flex items-center ${justify ? `justify-${justify}` : ''}`}>
+        {children}
       </div>
-
-      <div className='w-10'>
-      </div>
+      <div className={`${justify==='center' ? 'w-9' : ''}`}></div>
     </header>
   );
 }

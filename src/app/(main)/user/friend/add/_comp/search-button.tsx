@@ -44,11 +44,13 @@ const SearchButton = ({
         <Button variant='outline' className='bg-muted w-full md:w-64 lg:w-80 xl:w-96 justify-between h-8 '
           onClick={() => router.push(router_push)}
         >
-          <Search size={20} className='opacity-50'/>
+          <div className='w-8'>
+            <Search size={20} className='opacity-50 '/>
+          </div>
           <span className="hidden lg:inline-flex opacity-50 text-xs">Search...</span>
           <span className="inline-flex lg:hidden opacity-50 text-xs">{placeholder}
           </span>
-          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
             <span className="text-xs">⌘</span>K
           </kbd>
         </Button>

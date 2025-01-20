@@ -1,4 +1,5 @@
 import { createRouter } from "@/lib/create-app";
+import index_route from './index'
 // import list_route from './list'
 // import get_route from './get'
 // import create_route from './create'
@@ -11,6 +12,7 @@ import messages_route from './messages'
 
 const router = createRouter()
 
+router.route('', index_route)
 // router.route('', list_route)
 // router.route('', get_route)
 // router.route('', create_route)

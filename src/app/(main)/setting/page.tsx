@@ -43,7 +43,7 @@ export default async function SettingPage() {
   
   return (<>
     <SubHeader 
-      user={undefined}
+      justify='center'
       className='sticky top-0 z-10' > 
       Settings
     </SubHeader>

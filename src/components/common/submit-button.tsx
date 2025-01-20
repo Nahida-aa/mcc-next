@@ -11,17 +11,20 @@ export function SubmitButton({
   isLoading,
   onClick,
   className,
+  variant,
 }: {
   children: React.ReactNode;
   isLoading: boolean;
   onClick?: () => void;
   className?: string;
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | null;
 }) {
   const { pending } = useFormStatus();
 
   console.log(`pending: ${pending}, isLoading: ${isLoading}`);
   return (
     <Button
+      variant={variant}
       type={pending ? 'button' : 'submit'}
       aria-disabled={pending || isLoading}
       disabled={pending || isLoading}

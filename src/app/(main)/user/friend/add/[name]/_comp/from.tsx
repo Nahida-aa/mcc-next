@@ -39,7 +39,7 @@ export const ClientFrom = ({
       });
       const result = await res.json();
       if (res.ok) {
-        sonner_toast("添加成功", {
+        sonner_toast.success("添加成功", {
           description: (
             <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
               <code className="text-white">{JSON.stringify(result, null, 2)}</code>
@@ -48,11 +48,11 @@ export const ClientFrom = ({
         })
         router.back()
       } else {
-        sonner_toast(`An error occurred: ${result.message}`)
+        sonner_toast.warning(`An error occurred: ${result.message}`)
       }
     } catch (error: any) {
       console.error(error);
-      sonner_toast(`An error occurred: ${error.message}`)
+      sonner_toast.error(`An error occurred: ${error.message}`)
     }
   };
   async function onSubmit(data: z.infer<typeof FormSchema>) {

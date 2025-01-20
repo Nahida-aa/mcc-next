@@ -1,5 +1,5 @@
 import { createRouter } from "@/lib/create-app";
-import { friendIdList_byUserId, userLsWithCount_isFriend_by_currentUserId, userLsWithCount_notFriend_by_currentUserId_word, UserLsWithCountSchema_whenAddFriend } from "@/lib/db/q/user/friend";
+import { friendIdList_byUserId, UserLsWithCount, userLsWithCount_isFriend_by_currentUserId, userLsWithCount_notFriend_by_currentUserId_word, UserLsWithCountSchema_whenAddFriend } from "@/lib/db/q/user/friend";
 import { user_table } from "@/lib/db/schema/user";
 import { get_current_user_and_res } from "@/lib/middleware/auth";
 import jsonContent from "@/lib/openapi/helpers/json-content";
@@ -11,10 +11,12 @@ import { and, ilike, notInArray, or } from "drizzle-orm/sql/expressions/conditio
 
 const router = createRouter()
 
+export type UserListIsFriend_ApiResBody = UserLsWithCount | { message: string }
+
 router.openapi(createRoute({
   tags: ['friend'],
   method: "get", path: "/user/list/is_friend",
-  request: {query: offset_limit_query_schema,},
+  request: {query: offset_limit_query_schema },
   responses: {
     [200]: jsonContent(z.object({
       users: z.array(user_meta_schema),
@@ -23,14 +25,15 @@ router.openapi(createRoute({
     [401]: jsonContent(createMessageObjectSchema(), "Unauthorized: xxx"),
   }
 }), async (c) => {
-    const CU_ret = await get_current_user_and_res(c)
-    if (!CU_ret.success) return c.json(CU_ret.json_body, 401)
-    const auth_user = CU_ret.user
-    const {  offset, limit } = c.req.valid("query")
+  const CU_ret = await get_current_user_and_res(c)
+  if (!CU_ret.success) return c.json(CU_ret.json_body, 401)
+  const auth_user = CU_ret.user
+  const {  offset, limit } = c.req.valid("query")
 
-    const {users, count} = await userLsWithCount_isFriend_by_currentUserId(auth_user.id, offset, limit)
-    return c.json({users, count}, 200)
+  const {users, count} = await userLsWithCount_isFriend_by_currentUserId(auth_user.id, offset, limit)
+  return c.json({users, count}, 200)
 })
+
 
 router.openapi(createRoute({
   tags: ['friend'],

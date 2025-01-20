@@ -8,12 +8,12 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { CommonHeader } from '@/components/layout/header/common-header';
 import { server_auth } from '@/app/(auth)/auth';
 import { ChevronRight } from 'lucide-react';
+import { FriendList } from './_comp/friend-list';
 
-import { toast as sonner_toast } from "sonner"
 
 export default async function FriendPage() {
   const [session, cookieStore] = await Promise.all([server_auth(), cookies()]);
-
+  
 
   return (
     <main className='h-full'>
@@ -37,6 +37,7 @@ export default async function FriendPage() {
             <ChevronRight className='opacity-50' />
           </Button>
         </div>
+        <FriendList />
       </section>
     </main>
   )

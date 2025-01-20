@@ -42,11 +42,14 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "sonner": "^1.7.2",
     "swagger-ui-react": "^5.18.2",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^3.1.0",
+    "ws": "^8.18.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {

@@ -80,10 +80,9 @@ router.openapi(createRoute({
     [httpStatus.NOT_FOUND]: jsonContent(createMessageObjectSchema("Chat not found"), "Chat not found"),
   }
 }), async (c) => {
-  const current_user_ret = await get_current_user_and_res(c);
-  // if (!current_user_ret.success) return c.json(current_user_ret.json_body, current_user_ret.status);
-  if (!current_user_ret.success) return c.json(current_user_ret.json_body, 401);
-  const current_user = current_user_ret.user;
+  const CU_ret = await get_current_user_and_res(c)
+  if (!CU_ret.success) return c.json(CU_ret.json_body, 401)
+  const auth_user = CU_ret.user
 
   const { chat_id } = c.req.valid("param");
 

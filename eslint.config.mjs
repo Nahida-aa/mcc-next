@@ -27,6 +27,13 @@ const eslintConfig = [
         },
       ],
     },
+    // settings: {
+    //   "import/resolver": {
+    //     "typescript": {
+    //       "alwaysTryTypes": true
+    //     }
+    //   }
+    // }
   },
 ];
 

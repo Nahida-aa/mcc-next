@@ -1,21 +1,37 @@
 import React from 'react';
-import { chatList_by_userId } from '@/lib/db/q/user/chat';
+import { listChat_by_userId } from '@/lib/db/q/user/chat';
 // import { UserMeta } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { UserMeta } from '@/components/layout/sidebar/user-side-toggle';
 
 export default async function LoggedInIndexPage({ 
-  user, className 
+  session, className 
 }: { 
-  user: UserMeta, 
+  session: { user: UserMeta, token: string };
   className?: string; 
 }) {
+  // if (!session) return <Loader />
+  // // 携带 token 请求聊天列表
+  // const res = await fetch('http://127.0.0.1:3000/api/hono/chats', {
+  //   headers: {
+  //     'Authorization': `Bearer ${session.token}`
+  //   }
+  // })
+  // const ret = await res.json();
+  // if (res.ok) {
+  //   console.log(`chats: ${JSON.stringify(ret)}`)
+  // }
   try {
-    const chats = await chatList_by_userId(user.id);
+    const chats = await listChat_by_userId(session.user.id);
     // if (!chats || chats.length === 0) return <div>没有聊天记录</div>;
     return (
       <main className='space-y-2'>
         <span>当前登录了哦</span>
+        <pre>
+          <code>
+            {JSON.stringify(chats, null, 2)}
+          </code>
+        </pre>
         {/* <HomeHeader user={session?.user} /> */}
         <Button className='h-auto'>
           <a href="/api/hono" target="_blank">

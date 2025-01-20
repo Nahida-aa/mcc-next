@@ -17,9 +17,7 @@ export default async function AddFriendPage() {
 
 
   return (<>
-    <SubHeader 
-        // user={session?.user} 
-      user={undefined}
+    <SubHeader justify='center'
       className='sticky top-0 z-10' > 
       Find Friend 
     </SubHeader>

@@ -67,11 +67,11 @@ export function SignIn_Modal() {
       // const result = await server_sign_in(values)
       const result = await hono_sign_in(values)
       console.log(`app/(auth)/_comp/signIn-modal.tsx: 登录成功: ${JSON.stringify(values.nameOrEmail)}`)
-      sonner_toast(`Welcome back, ${values.nameOrEmail}!`)
+      sonner_toast.success(`Welcome back, ${values.nameOrEmail}!`)
       router.push('/')
     } catch (error: any) {
       console.error(error)
-      sonner_toast(`An error occurred: ${error.message}`)
+      sonner_toast.error(`An error occurred: ${error.message}`)
     }
   }
 

@@ -55,7 +55,7 @@ export const MoreMenu = () => {
 
 
 export function HomeHeader(
-  { user, className }: { user: UserMeta | undefined, className?: string; }
+  { user, className }: { user?: UserMeta , className?: string; }
   // { selectedModelId }: { selectedModelId: string }
 ) {
   const router = useRouter();

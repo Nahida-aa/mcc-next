@@ -3,14 +3,14 @@ import { friend_table } from "@/lib/db/schema/follow";
 import { friendNotification_table } from "@/lib/db/schema/notification";
 import { eq, and, or, inArray, ilike, notInArray } from "drizzle-orm";
 import { chat_table } from "../../schema/message";
-import { User, user_table } from "../../schema/user";
+import { user, User, user_table } from "../../schema/user";
 import { z } from "@hono/zod-openapi";
 
 
-// 检查是否已经存在好友请求或好友关系(有好友关系且关系状态为 pending\accepted
-export const getFriendshipStatus = async (sender_id: string, receiver_id: string) => {
+// 检查是否已经存在好友请求或好友关系
+export const getFriendship = async (sender_id: string, receiver_id: string) => {
   const [friendship] = await db.select({
-    status: friend_table.status
+    user_id: friend_table.user_id,
   }).from(friend_table)
     .where(and(eq(friend_table.user_id, sender_id),
       eq(friend_table.friend_id, receiver_id)));
@@ -24,40 +24,29 @@ export const createFriendRequest = async (
   return await db.transaction(async (tx) => {
     // 创建好友请求通知
     const [notification] = await tx.insert(friendNotification_table).values({
-      type: 'request',
+      status: 'pending',
       content: content,
       receiver_id: receiver_id,
       sender_id: sender_id,
     }).returning();
-
-    // 创建好友关系记录，状态为 'pending': 等待接受
-    await tx.insert(friend_table).values({
-      user_id: sender_id,
-      friend_id: receiver_id,
-      status: 'pending',
-    });
 
     return notification;
   });
 }
 
 // 接受好友请求
-export async function acceptFriendRequest(
+export async function acceptFriendRequest(notification_id: string,
   sender_id: string, receiver_id: string, content: string) {
   return await db.transaction(async (tx) => {
-    // 更新好友关系状态为 'accepted': 已接受,公认的,认可的
-    await tx.update(friend_table)
+    // 创建好友关系
+    await tx.insert(friend_table).values({
+      user_id: receiver_id,
+      friend_id: sender_id,
+    });
+    // 更新好友请求通知状态
+    await tx.update(friendNotification_table)
       .set({ status: 'accepted' })
-      .where(and(
-        eq(friend_table.user_id, receiver_id),
-        eq(friend_table.friend_id, sender_id)));
-    // 创建接受好友请求通知
-    const [notification] = await tx.insert(friendNotification_table).values({
-      type: 'accept',
-      content: '好友请求已接受',
-      receiver_id: sender_id,
-      sender_id: receiver_id,
-    }).returning();
+      .where(eq(friendNotification_table.id, notification_id));
 
     // 检查是否已经存在 Chat 记录
     const existingChats = await tx.select().from(chat_table)
@@ -74,13 +63,13 @@ export async function acceptFriendRequest(
       )
     ))
     // 自动创建一个 Chat 记录
-    if (!existingChats) {
+    if (existingChats.length === 0) {
       await tx.insert(chat_table).values([
         {
           user_id: sender_id,
           target_id: receiver_id,
           target_type: 'user',
-          latest_message: "你们已经是好友了",
+          latest_message: content,
           latest_message_timestamp: new Date(),
           latest_message_count: 1,
         },
@@ -95,23 +84,16 @@ export async function acceptFriendRequest(
       ]);
     }
 
-    return notification;
+    return 
   });
 }
 
 // 拒绝好友请求
 export async function rejectFriendRequest(sender_id: string, receiver_id: string) {
   return await db.transaction(async (tx) => {
-    // 更新好友关系状态为 'rejected'
-    await tx.update(friend_table)
-      .set({ status: 'rejected' })
-      .where(and(
-        eq(friend_table.user_id, receiver_id),
-        eq(friend_table.friend_id, sender_id)))
-
     // 创建拒绝好友请求通知
     const [notification] = await tx.insert(friendNotification_table).values({
-      type: 'reject',
+      status: 'reject',
       content: '好友请求已拒绝',
       receiver_id: sender_id,
       sender_id: receiver_id,
@@ -125,7 +107,6 @@ export const friendIdList_byUserId = async (user_id: string): Promise<string[]> 
   const friends = await db.select({ friend_id: friend_table.friend_id })
     .from(friend_table)
     .where(eq(friend_table.user_id, user_id))
-    .execute();
 
   return friends.map(friend => friend.friend_id);
 }
@@ -151,7 +132,7 @@ export const userLsWithCount_isFriend_by_currentUserId = async (user_id: string,
 
   return { users, count };
 }
-
+export type UserLsWithCount = Awaited<ReturnType<typeof userLsWithCount_isFriend_by_currentUserId>>;
 
 // 定义 User 的 zod 模式
 const UserSchema_whenAddFriend = z.object({

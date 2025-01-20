@@ -113,7 +113,7 @@ export async function server_auth(){
     name: user.name,
     image: user?.image,
     nickname: user?.nickname,
-  }};
+  }, token};
 };
 
 

@@ -71,7 +71,7 @@ export const SignUp_Modal = () => {
       router.push('/')
     } catch (error: any) {
       console.error(error)
-      sonner_toast(`An error occurred: ${error.message}`)
+      sonner_toast.error(`An error occurred: ${error.message}`)
     }
   }
 

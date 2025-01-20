@@ -14,7 +14,7 @@ export const systemNotification_table = pgTable("SystemNotification", {
 
 export const friendNotification_table = pgTable("FriendNotification", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
-  type: varchar("type", { length: 32 }).notNull(), // e.g., 'request', 'accept', 'reject'
+  status: varchar("status", { length: 32 }).notNull().default('pending'), // e.g., 'pending', 'accepted', 'rejected'
   content: varchar("content", { length: 256 }).notNull(),
   receiver_id: uuid("receiver_id").notNull().references(() => user_table.id),
   sender_id: uuid("sender_id").notNull().references(() => user_table.id),

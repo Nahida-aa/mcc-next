@@ -23,8 +23,9 @@ import * as linkSchema from './schema/link';
 import * as groupSchema from './schema/group';
 import * as followSchema from './schema/follow';
 import * as linkUserGroupSchema from './schema/linkUserGroup';
+import * as notificationSchema from './schema/notification';
 
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 const client = postgres(`${process.env.DATABASE_URL!}`);
-export const db = drizzle(client, { schema: {...userSchema, ...linkSchema, ...groupSchema, ...followSchema, ...linkUserGroupSchema} });
+export const db = drizzle(client, { schema: {...userSchema, ...linkSchema, ...groupSchema, ...followSchema, ...linkUserGroupSchema, ...notificationSchema} });

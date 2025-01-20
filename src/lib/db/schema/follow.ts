@@ -34,7 +34,7 @@ export const followRelations = relations(follow_table, ({ one }) => ({
 export const friend_table = pgTable("Friend", {
   user_id: uuid("user_id").notNull().references(() => user_table.id),
   friend_id: uuid("friend_id").notNull().references(() => user_table.id),
-  status: varchar("status", { length: 16 }).notNull().default('pending'), // 'pending', 'accepted', 'rejected'
+  // status: varchar("status", { length: 16 }).notNull().default('pending'), // 'pending', 'accepted', 'rejected'
   is_pinned: boolean("is_pinned").default(false).notNull(), // 顶置状态
   created_at: timestamp("created_at").defaultNow().notNull(),
 }, (table) => [

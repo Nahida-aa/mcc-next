@@ -172,8 +172,8 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild onClick={() => {
                 // toggleSidebar()
-                setOpenMobile(false);
                 router.push('/setting');
+                setOpenMobile(false);
               }}
             >
               <Button variant='ghost' size='icon' className='size-10'>

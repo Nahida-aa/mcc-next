@@ -8,13 +8,14 @@ import { redirect } from 'next/navigation'
 import { ScrollArea } from '@/components/ui/scroll-area';
 import NotLoginIndexPage from './not_login';
 import LoggedInIndexPage from './logged_in';
+import { ClientLoggedInIndexPage } from './_comp/client';
 
 export default async function AA() {
   const [session, cookieStore] = await Promise.all([server_auth(), cookies()]);
   if (!session){
     return (
       <main className=''>
-        <HomeHeader user={undefined} className='sticky top-0 z-10' />
+        <HomeHeader className='sticky top-0 z-10' />
         <div className='overflow-auto h-full flex w-full'>
           <NotLoginIndexPage />
         </div>
@@ -26,7 +27,8 @@ export default async function AA() {
     <main className=''>
       <HomeHeader user={session?.user} className='sticky top-0 z-10' />
       <div className='overflow-auto h-full flex w-full'>
-        <LoggedInIndexPage user={session?.user} />
+        {/* <LoggedInIndexPage session={session} /> */}
+        <ClientLoggedInIndexPage session={session} />
       </div>
     </main>
   )
