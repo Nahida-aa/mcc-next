@@ -40,7 +40,7 @@ const FormSchema = z.object({
 export default function SearchFriendPage() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const query = searchParams.get('query')
+  const query = searchParams?.get('query')
   console.log(`query: ${query}`)
   
   const [searchResults, setSearchResults] = useState<UserLsWithCount_whenAddFriend | null>(null);

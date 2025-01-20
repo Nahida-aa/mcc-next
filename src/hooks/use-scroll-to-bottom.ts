@@ -1,12 +1,6 @@
 'use client'
 import { useEffect, useRef, type RefObject } from 'react';
 
-interface UseScrollToBottomProps {
-}
-interface UseScrollToBottomReturn<T extends HTMLElement> {
-  containerRef: RefObject<T>;
-  endRef: RefObject<T>;
-}
 export function useScrollToBottom<T extends HTMLElement>() {
   const containerRef = useRef<T>(null);
   const endRef = useRef<T>(null);

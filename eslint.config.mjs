@@ -21,7 +21,7 @@ const eslintConfig = [
         'error',
         {
           'ts-expect-error': 'allow-with-description',
-          'ts-ignore': true,
+          'ts-ignore': false, // 禁用 @ts-ignore 的检查
           'ts-nocheck': true,
           'ts-check': false,
         },

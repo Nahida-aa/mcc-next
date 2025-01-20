@@ -21,7 +21,7 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
       //   methods: ['GET', 'POST'],
       // },
       path,
-      // @ts-ignore 某个版本的bug
+      // @ts-ignore 某个版本可能的bug
       addTrailingSlash: false
     });
     res.socket.server.io = io;

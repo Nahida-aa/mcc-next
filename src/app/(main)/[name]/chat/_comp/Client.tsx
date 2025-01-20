@@ -18,12 +18,8 @@ export const ClientMain = ({
   sessionUser,
 }: {
   decodeURLComponentName: string,
-  sessionUser?: UserMeta
+  sessionUser: UserMeta
 }) => {
-  const router = useRouter()
-  if (!sessionUser) {router.push('/sign-in')
-    return
-  }
 
   // 内容发送变化时自动滚动到底部
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>()

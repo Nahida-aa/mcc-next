@@ -10,6 +10,7 @@ import { MessageInput } from "./_comp/MessageInput"
 import { ClientMain } from "./_comp/Client"
 import { server_auth } from "@/app/(auth)/auth"
 import { Loader } from "@/components/ui/loader/Loader"
+import { redirect } from 'next/navigation'
 
 // export default async function AddFriendByNamePage({
 export default async function AddFriendByNamePage({
@@ -20,6 +21,7 @@ export default async function AddFriendByNamePage({
   const name = (await params).name
   const decodeURLComponentName = decodeURIComponent(name)
   const session = await server_auth()
+  if (!session) return redirect('/sign-in')
 
 
   // const [messages, setMessages] = useState<Message[]>([]);
@@ -55,7 +57,7 @@ export default async function AddFriendByNamePage({
   // };
 
   return <main className="flex flex-col h-dvh">
-    <ClientMain decodeURLComponentName={decodeURLComponentName} sessionUser={session?.user} /> 
+    <ClientMain decodeURLComponentName={decodeURLComponentName} sessionUser={session.user} /> 
       
     {/* <section className="bg-background/60  px-4  overflow-y-auto">
     </section> */}
