@@ -24,6 +24,7 @@ import {
 } from 'hono/cookie'
 import jsonContentOneOf from "@/lib/openapi/helpers/json-content-one-of";
 import { create_sessionToken_and_setCookie } from "@/lib/middleware/utils";
+import { sessionTokenWithName_schema } from "./login";
 
 export const register_user_schema = z.object({
   name: z.string().min(1).max(32),
@@ -34,10 +35,6 @@ export const register_user_schema = z.object({
   id_card_info: idCardInfo_insertSchema.omit({front_image_url: true, back_image_url: true})
 });
 
-export const session_token_schema = z.object({
-  session_token: z.string(),
-  token_type: z.string()
-})
 
 const router = createRouter()
 .openapi(createRoute({
@@ -48,7 +45,7 @@ const router = createRouter()
     body: jsonContent(register_user_schema,'create user')
   },
   responses: {
-    [httpStatus.CREATED]: jsonContent(session_token_schema, '成功'),
+    [httpStatus.CREATED]: jsonContent(sessionTokenWithName_schema, '成功'),
     [httpStatus.UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(register_user_schema), 
       'The validation error(s); 验证错误'
@@ -94,7 +91,7 @@ const router = createRouter()
   })
 
   const session_token = await create_sessionToken_and_setCookie(c, db_user)
-  const res = { session_token, token_type: "Bearer" }
+  const res = { session_token, token_type: "Bearer", name: db_user.name }
   return c.json(res, httpStatus.CREATED);
 })
 
@@ -109,7 +106,7 @@ router.openapi(createRoute({
     body: jsonContent(signUp_schema,'create user')
   },
   responses: {
-    [httpStatus.CREATED]: jsonContent(session_token_schema, '成功'),
+    [httpStatus.CREATED]: jsonContent(sessionTokenWithName_schema, '成功'),
     [httpStatus.UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(register_user_schema), 
       'The validation error(s); 验证错误'
@@ -141,7 +138,7 @@ router.openapi(createRoute({
   })
 
   const session_token = await create_sessionToken_and_setCookie(c, db_user)
-  const res = { session_token, token_type: "Bearer" }
+  const res = { session_token, token_type: "Bearer", name: db_user.name }
   return c.json(res, httpStatus.CREATED);
 })
 

@@ -1,6 +1,6 @@
 import { createRouter } from "@/lib/create-app";
 import { createRoute, z } from "@hono/zod-openapi";
-import { group as group_table } from "@/lib/db/schema/group";
+import { group_table } from "@/lib/db/schema/group";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import jsonContent from "@/lib/openapi/helpers/json-content";
 import httpStatus from "@/lib/http-status-codes"

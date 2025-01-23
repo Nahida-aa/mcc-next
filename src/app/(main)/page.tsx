@@ -9,27 +9,37 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import NotLoginIndexPage from './not_login';
 import LoggedInIndexPage from './logged_in';
 import { ClientLoggedInIndexPage } from './_comp/client';
+import { SWRProvider } from '@/components/providers/swr-provider';
+import { ChatsWithCount, listChat_by_userId } from '@/lib/db/q/user/chat';
+import {ScrollShadow} from "@heroui/scroll-shadow";
 
 export default async function AA() {
-  const [session, cookieStore] = await Promise.all([server_auth(), cookies()]);
+  const session = await server_auth();
   if (!session){
     return (
       <main className=''>
-        <HomeHeader className='sticky top-0 z-10' />
+        <HomeHeader />
         <div className='overflow-auto h-full flex w-full'>
           <NotLoginIndexPage />
         </div>
       </main>
     )
   }
-
+  const chats: ChatsWithCount = await listChat_by_userId(session.user.id);
+  const fallback = {
+    '/api/hono/chats': chats
+  }
   return (
+  <SWRProvider value={{ fallback }}>
     <main className=''>
-      <HomeHeader user={session?.user} className='sticky top-0 z-10' />
-      <div className='overflow-auto h-full flex w-full'>
-        {/* <LoggedInIndexPage session={session} /> */}
+    <HomeHeader user={session?.user} className='bg-card/80'  />
+    <ScrollShadow hideScrollBar  className="h-screen absolute top-0">
+      <div className='min-h-12'></div>
+        <LoggedInIndexPage session={session} chats={chats} />
         <ClientLoggedInIndexPage session={session} />
-      </div>
+      {/* <Content /> */}
+    </ScrollShadow>
     </main>
+  </SWRProvider>
   )
 }

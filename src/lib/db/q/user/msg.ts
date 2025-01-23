@@ -1,51 +1,10 @@
 import { db } from "@/lib/db";
-import { message_table, chat_table } from "@/lib/db/schema/message";
+import { message_table, chat_table, link_chat_user_table } from "@/lib/db/schema/message";
 import { user_table } from "@/lib/db/schema/user";
-import { eq, and, sql, or, is, InferSelectModel } from "drizzle-orm";
-import { getChat } from "./chat";
+import { eq, and, sql, or, is, InferSelectModel, inArray, desc, gt, lt } from "drizzle-orm";
+import { Chat_db, getChat, getOrCreate_chat } from "./chat";
+import { exportPages } from "next/dist/export/worker";
 
-type Chat_db = InferSelectModel<typeof chat_table>;
-// 抽取出 检查and创建聊天的逻辑
-export async function getOrCreate_chat(
-  sender_id: string, 
-  target_id: string, 
-  target_type: 'user' | 'group', 
-  content: string,
-  is_returning: boolean = true
-): Promise<Chat_db> {
-  return await db.transaction(async (tx) => {
-    // 检查是否存在对应的聊天
-    let [chat] = await tx.select().from(chat_table)
-      .where(and(
-        eq(chat_table.user_id, sender_id),
-        eq(chat_table.target_id, target_id),
-        eq(chat_table.target_type, target_type)
-      ))
-
-    if (!chat) {
-      // 创建聊天
-      if (is_returning) {
-        [chat] = await tx.insert(chat_table).values({
-          user_id: sender_id,
-          target_id: target_id,
-          target_type: target_type,
-          latest_message: content,
-          latest_message_timestamp: sql`now()`,
-        }).returning();
-      }else {
-        await tx.insert(chat_table).values({
-          user_id: sender_id,
-          target_id: target_id,
-          target_type: target_type,
-          latest_message: content,
-          latest_message_timestamp: sql`now()`,
-        });
-      }
-    }
-
-    return chat;
-  });
-}
 
 export async function sendMessage(
   sender_id: string,
@@ -60,7 +19,7 @@ export async function sendMessage(
     }
     let chat: Chat_db
     if (createChat){
-      chat = await getOrCreate_chat(sender_id, target_id, target_type, content);
+      chat = await getOrCreate_chat(sender_id, target_id, content);
     } else {
       chat = await getChat(sender_id, target_id, target_type);
     }
@@ -72,9 +31,91 @@ export async function sendMessage(
       content: content,
     }).returning();
 
-    // 为目标用户创建一条聊天记录
-    await getOrCreate_chat(target_id, sender_id, 'user', content, false);
-
     return message
   });
 }
+
+export const listMessage_by_chatId = async (chat_id: string, offset: number, limit: number) => {
+  const messagesQ = db.select().from(message_table)
+    .where(eq(message_table.chat_id, chat_id)).orderBy(desc(message_table.created_at))
+  const count = (await messagesQ).length
+  const messages = await messagesQ.offset(offset).limit(limit);
+
+  return { messages, count }
+}
+
+export const listMessageWithSender_by_chatId = async (chat_id: string, offset: number, limit: number) => {
+  const messagesQ = db.select({
+    id: message_table.id,
+    chat_id: message_table.chat_id,
+    sender_id: message_table.sender_id,
+    content: message_table.content,
+    created_at: message_table.created_at,
+    sender: {
+      id: user_table.id,
+      name: user_table.name,
+      nickname: user_table.nickname,
+      image: user_table.image,
+    }
+  }).from(message_table)
+    .leftJoin(user_table, eq(message_table.sender_id, user_table.id))
+    .where(eq(message_table.chat_id, chat_id)).orderBy(desc(message_table.created_at))
+  const count = (await messagesQ).length
+  const messages = await messagesQ.offset(offset).limit(limit);
+
+  return { messages, count }
+}
+
+interface CursorPaginationOptions {
+  limit?: number;
+  cursor?: {
+    id: string;
+    created_at: Date;
+  };
+}
+
+export const listMessageWithSender_by_chatId_cursor = async (chat_id: string, options: CursorPaginationOptions = {}) => {
+  const { limit = 30, cursor } = options;
+  const items = await db.select({
+    id: message_table.id,
+    chat_id: message_table.chat_id,
+    sender_id: message_table.sender_id,
+    content: message_table.content,
+    created_at: message_table.created_at,
+    updated_at: message_table.updated_at,
+    sender: {
+      id: user_table.id,
+      name: user_table.name,
+      nickname: user_table.nickname,
+      image: user_table.image,
+    }
+  }).from(message_table)
+    .leftJoin(user_table, eq(message_table.sender_id, user_table.id))
+    .where(and(
+      eq(message_table.chat_id, chat_id),
+      // 确保为您用于游标的列添加索引
+      cursor
+        ? or(
+            lt(message_table.created_at, cursor.created_at),
+            and(eq(message_table.created_at, cursor.created_at), lt(message_table.id, cursor.id)),
+          )
+        : undefined,
+    )).limit(limit).orderBy(desc(message_table.created_at), desc(message_table.id))
+
+  const next_cursor = items.length > 0 ? {
+    id: items[items.length - 1].id,
+    created_at: items[items.length - 1].created_at
+  } : undefined
+
+  return { items, next_cursor }
+}
+
+
+export const listPrivateChatMessages = async (user_id: string, target_id: string, offset: number, limit: number) => {
+  const chat = await getChat(user_id, target_id, 'user');
+  if (!chat) return { messages: [], count: 0 }
+
+  return await listMessage_by_chatId(chat.id, offset, limit)
+}
+// export type ListPrivateChatMessages 
+export type ListPrivateChatMessages = Awaited<ReturnType<typeof listPrivateChatMessages>>

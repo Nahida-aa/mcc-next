@@ -41,7 +41,7 @@ export function CommonHeader(
     user_status = "未登录"
   }
   return (
-    <header className={`flex sticky  py-1.5 items-center px-2 md:px-2 gap-2 justify-between bg-card ${className}`}>
+    <header className={`flex sticky backdrop-blur-md px-1.5 py-1 items-center md:px-2 gap-2 justify-between bg-card ${className}`}>
       <div className='flex gap-1 items-center'>
         <UserSidebarToggle user={user} status={user_status} />
         {/* {windowWidth >= 768 && ( */}

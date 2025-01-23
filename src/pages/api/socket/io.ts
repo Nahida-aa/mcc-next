@@ -24,10 +24,36 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
       // @ts-ignore 某个版本可能的bug
       addTrailingSlash: false
     });
+    io.on('connection', (socket) => {
+      console.log('New client connected', socket.id);
+
+      // 加入 chat:${chatId} 房间
+      socket.on('joinChatRoom', (chatId) => {
+        socket.join(`chat:${chatId}`);
+        console.log(`User joined room chat:${chatId}`);
+      });
+
+      // 离开 chat:${chatId} 房间
+      socket.on('leaveChatRoom', (chatId) => {
+        socket.leave(`chat:${chatId}`);
+        console.log(`User left room chat:${chatId}`);
+      });
+
+      // 监听客户端断开连接
+      socket.on('disconnect', () => {
+        console.log('Client disconnected', socket.id);
+      });
+
+      // 示例：发送新消息事件 // 一般的 服务端不依赖 通过 ws 监听消息 (可以通过 http 监听 然后调用 ws 发送消息)
+      socket.on('sendMessage', (message) => {
+        io.emit('message', message);
+      });
+    });
     res.socket.server.io = io;
   } else {
     console.log('socket.io already running');
   }
+  // res.socket
   res.end();
 }
 

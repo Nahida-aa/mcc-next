@@ -14,7 +14,6 @@ import { createSelectSchema } from "drizzle-zod"
 import { group_table } from "@/lib/db/schema/group"
 import { offset_limit_query_schema } from "@/lib/schema/query"
 import { ChatsWithCount, listChat_by_userId } from "@/lib/db/q/user/chat"
-import exp from "constants"
 
 const router = createRouter()
 
@@ -30,6 +29,7 @@ router.openapi(createRoute({
     [httpStatus.OK]: jsonContent(z.object({
       chats:z.array(z.object({
         chat: chat_table_schema,
+        is_pinned: z.boolean().nullable(),
         target_user: z.object({
           id: z.string(),
           name: z.string(),

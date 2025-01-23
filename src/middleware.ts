@@ -13,20 +13,61 @@ async function middleware(
   req: NextRequest,
 ) {
   console.log(`app/(auth)/middleware.ts: middleware: req: ${JSON.stringify(req)}`);
+  const rUrl =req.url
   const session = await server_auth();
-  if (!session) {
-    return NextResponse.redirect(new URL('/sign-in', req.url));
-  }
+  if (session) {
+    const res = NextResponse.next()
+    res.cookies.set('name', session.user.name,{
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+      })
+    return res;
+  } else if (needAuthPaths.some((path) => rUrl.startsWith(path))) {
+    if (!session) return NextResponse.redirect(new URL('/sign-in', req.url));
+  } 
+
   return NextResponse.next();
 }
 // export default middleware;
 
+const needAuthPaths = [
+  '/user/status', '/(*)/chat'
+]
+
 export const config = {
   matcher: [
-    // '/', 
-    // '/:id', 
-    // '/api/:path*', 
-    // '/login', 
-    // '/register', 
-    '/user/status'],
-};
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     */
+    {
+      source:
+        '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+      missing: [
+        { type: 'header', key: 'next-router-prefetch' },
+        { type: 'header', key: 'purpose', value: 'prefetch' },
+      ],
+    },
+
+    // {
+    //   source:
+    //     '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    //   has: [
+    //     { type: 'header', key: 'next-router-prefetch' },
+    //     { type: 'header', key: 'purpose', value: 'prefetch' },
+    //   ],
+    // },
+
+    // {
+    //   source:
+    //     '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    //   has: [{ type: 'header', key: 'x-present' }],
+    //   missing: [{ type: 'header', key: 'x-missing', value: 'prefetch' }],
+    // },
+  ],
+}

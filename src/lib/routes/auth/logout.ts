@@ -17,7 +17,6 @@ import { createRouter } from "@/lib/create-app";
 import { createJWT } from "@/lib/core/token";
 import settings from "@/lib/settings";
 import { create_sessionToken_and_setCookie, set_delCookie } from "@/lib/middleware/utils";
-import { session_token_schema } from "./register";
 
 export const logout_in_schema = z.object({
   csrfToken: z.string(),

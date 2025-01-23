@@ -7,8 +7,9 @@ import {
 import { follow_table } from "./follow";
 import { user as user_table } from "./user";
 import { linkUserGroup } from "./linkUserGroup";
+import { chat_table } from "./message";
 
-export const group = pgTable("Group", {
+export const group_table = pgTable("Group", {
   ...uuidCommon,
   image: varchar().default("https://avatar.vercel.sh/guest").notNull(),
   nickname: varchar("nickname", { length: 32 }),
@@ -20,20 +21,23 @@ export const group = pgTable("Group", {
   // index("ix_Group_name").using("btree", table.name.asc().nullsLast().op("text_ops")),
   index("ix_Group_name").on(table.name),
 ]);
-export const group_table = group;
 
-export const groupRelations = relations(group, ({many, one }) => ({
+export const groupRelations = relations(group_table, ({many, one }) => ({
   followers: many(follow_table, { // 粉丝
     relationName: "target_group",
   }),
   creator: one(user_table, {
-    fields: [group.creator_id],
+    fields: [group_table.creator_id],
     references: [user_table.id]
   }),
   members: many(linkUserGroup),
+  chat: one(chat_table, {
+    fields: [group_table.id],
+    references: [chat_table.group_id]
+  }),
   linkGroupProjs: many(linkGroupProj),
   linkGroupResources: many(linkGroupResource),
   linkGroupIdentities: many(linkGroupIdentity),
 }));
 
-export type Group = InferSelectModel<typeof group>;
+export type Group = InferSelectModel<typeof group_table>;

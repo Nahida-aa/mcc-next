@@ -17,7 +17,7 @@ import jsonContentOneOf from "@/lib/openapi/helpers/json-content-one-of";
 import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
 import { string } from "zod";
 import { group_meta_schema } from "@/lib/schema/group";
-import { group as group_table } from "@/lib/db/schema/group";
+import { group_table } from "@/lib/db/schema/group";
 import { follow_table } from "@/lib/db/schema/follow";
 
 const followers_out_schema = z.object({

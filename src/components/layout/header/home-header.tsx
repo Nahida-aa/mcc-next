@@ -19,6 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useAuthSession } from '@/components/providers/auth-provider';
 
 export const MoreMenu = () => {
   const router = useRouter();
@@ -53,19 +54,25 @@ export const MoreMenu = () => {
   )
 }
 
+interface HomeHeaderProps {
+  user?: UserMeta;
+  className?: string;
+}
 
-export function HomeHeader(
-  { user, className }: { user?: UserMeta , className?: string; }
-  // { selectedModelId }: { selectedModelId: string }
+export function HomeHeader({ 
+  // user, 
+  className 
+}: HomeHeaderProps
 ) {
   const router = useRouter();
+  const { data: session } = useAuthSession();
+  const user = session?.user;
   // const { open } = useSidebar();
   // const [more_open, set_more_open] = useState(false);
   // const [listMenu_open, set_listMenu_open] = useState(false);
 
   const { width: windowWidth } = useWindowSize();
   // const displayUser = user || { email: 'guest@example.com', name: 'Guest', image: null };
-  const displayUser = user
   // const user_status = "online" // online, offline, away, 未登录
   let user_status
   if (user) {
@@ -73,8 +80,8 @@ export function HomeHeader(
   } else {
     user_status = "未登录"
   }
-  return (
-    <header className={`flex sticky  p-1.5 items-center gap-2 justify-between ${className}`}>
+  return (<>
+    <header className={`flex  backdrop-blur-md absolute w-full  px-1.5 py-1 items-center gap-2 justify-between top-0 z-10 ${className}`}>
       <div className='flex gap-1 items-center'>
         <UserSidebarToggle user={user} status={user_status} />
         {/* {windowWidth >= 768 && ( */}
@@ -146,5 +153,7 @@ export function HomeHeader(
         )} */}
       </div>
     </header>
+    {/* <div className='min-h-12'></div> */}
+  </>
   );
 }

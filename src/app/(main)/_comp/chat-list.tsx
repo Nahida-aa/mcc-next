@@ -1,15 +1,15 @@
-import type { Chats } from '@/lib/db/q/user/chat';
+import type { ChatLs_userView } from '@/lib/db/q/user/chat';
 
 const ChatList = ({ 
   chats 
-} : { chats: Chats }
+} : { chats: ChatLs_userView }
 ) => {
   return (
     <div>
       {chats.map(item => (
         <div key={item.chat.id} className="chat-item">
           <div className="chat-info">
-            {item.chat.target_type === 'user' ? (
+            {item.chat.type === 'private' ? (
               <>
                 <img src={item.target_user?.image} alt={item.target_user?.name} />
                 <div>{item.target_user?.name}</div>

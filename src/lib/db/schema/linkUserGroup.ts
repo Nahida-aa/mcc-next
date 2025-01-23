@@ -1,6 +1,6 @@
 import { foreignKey, pgTable, primaryKey, uuid, varchar } from "drizzle-orm/pg-core";
 import { timestamps } from "./columnsHelpers";
-import { group as group_table } from "./group";
+import { group_table } from "./group";
 import { user as user_table } from "./user";
 import { relations } from "drizzle-orm/relations";
 

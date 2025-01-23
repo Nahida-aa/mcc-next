@@ -4,6 +4,9 @@ import "@/style/globals.css";
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from "@/components/ui/sonner"
 import { SocketProvider } from "@/components/providers/socket-provider";
+import { AuthSessionProvider } from "@/components/providers/auth-provider";
+import { server_auth } from "./(auth)/auth";
+import { HeroUIProvider } from "@heroui/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +31,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await server_auth();
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -41,9 +45,13 @@ export default async function RootLayout({
           // enableSystem
           disableTransitionOnChange
         >
-          <SocketProvider>
-            {children}
-          </SocketProvider>
+          <HeroUIProvider>
+          <AuthSessionProvider session={session}>
+            <SocketProvider>
+              {children}
+            </SocketProvider>
+          </AuthSessionProvider>
+          </HeroUIProvider>
           <Toaster position="top-right" richColors   />
         </ThemeProvider>
       </body>

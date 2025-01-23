@@ -17,8 +17,13 @@ import { createRouter } from "@/lib/create-app";
 import { createJWT } from "@/lib/core/token";
 import settings from "@/lib/settings";
 import { create_sessionToken_and_setCookie } from "@/lib/middleware/utils";
-import { session_token_schema } from "./register";
 
+export const sessionTokenWithName_schema = z.object({
+  session_token: z.string(),
+  token_type: z.string(),
+  name: z.string(),
+})
+export type SessionTokenWithName = z.infer<typeof sessionTokenWithName_schema>;
 export const login_schema = z.object({
   name: z.string().min(1),
   password: z.string().min(6),
@@ -35,7 +40,7 @@ const router = createRouter()
     )
   },
   responses: {
-    [httpStatus.OK]: jsonContent(session_token_schema,
+    [httpStatus.OK]: jsonContent(sessionTokenWithName_schema,
       '登录成功，响应头中会自动设置 sessionToken 到 Cookie 中',
     ),
     [httpStatus.NOT_FOUND]: jsonContent(
@@ -63,9 +68,7 @@ const router = createRouter()
     return c.json({message: "用户名或密码错误"}, 401);
   }
   const session_token = await create_sessionToken_and_setCookie(c, db_user)
-  return c.json({ session_token,  token_type: "Bearer" }, 200);
+  return c.json({ session_token,  token_type: "Bearer", name: db_user.name }, 200);
 })
-
-
 
 export default router

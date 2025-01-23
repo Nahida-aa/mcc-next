@@ -31,6 +31,7 @@ export const user = pgTable("User", {
   last_login: timestamp("last_login"),
   followers_count: integer("followers_count").default(0).notNull(), // 粉丝数
   following_count: integer("following_count").default(0).notNull(), // 关注数(包括团队)
+  status: varchar("status").notNull().default("online"), // online | offline | away | busy | invisible
   is_superuser: boolean("is_superuser").default(false).notNull(),
   is_staff: boolean("is_staff").default(false).notNull(),
   is_active: boolean("is_active").default(true).notNull(),

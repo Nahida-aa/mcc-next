@@ -2,10 +2,10 @@ import { db } from "@/lib/db";
 import { friend_table } from "@/lib/db/schema/follow";
 import { friendNotification_table } from "@/lib/db/schema/notification";
 import { eq, and, or, inArray, ilike, notInArray } from "drizzle-orm";
-import { chat_table } from "../../schema/message";
+import { chat_table, link_chat_user_table } from "../../schema/message";
 import { user, User, user_table } from "../../schema/user";
 import { z } from "@hono/zod-openapi";
-
+import { createChat, getPrivateChat } from "./chat";
 
 // 检查是否已经存在好友请求或好友关系
 export const getFriendship = async (sender_id: string, receiver_id: string) => {
@@ -34,6 +34,10 @@ export const createFriendRequest = async (
   });
 }
 
+
+
+
+
 // 接受好友请求
 export async function acceptFriendRequest(notification_id: string,
   sender_id: string, receiver_id: string, content: string) {
@@ -48,42 +52,13 @@ export async function acceptFriendRequest(notification_id: string,
       .set({ status: 'accepted' })
       .where(eq(friendNotification_table.id, notification_id));
 
-    // 检查是否已经存在 Chat 记录
-    const existingChats = await tx.select().from(chat_table)
-    .where(or(
-      and(
-        eq(chat_table.user_id, sender_id),
-        eq(chat_table.target_id, receiver_id),
-        eq(chat_table.target_type, 'user')
-      ),
-      and(
-        eq(chat_table.user_id, receiver_id),
-        eq(chat_table.target_id, sender_id),
-        eq(chat_table.target_type, 'user')
-      )
-    ))
-    // 自动创建一个 Chat 记录
-    if (existingChats.length === 0) {
-      await tx.insert(chat_table).values([
-        {
-          user_id: sender_id,
-          target_id: receiver_id,
-          target_type: 'user',
-          latest_message: content,
-          latest_message_timestamp: new Date(),
-          latest_message_count: 1,
-        },
-        {
-          user_id: receiver_id,
-          target_id: sender_id,
-          target_type: 'user',
-          latest_message: content,
-          latest_message_timestamp: new Date(),
-          latest_message_count: 1,
-        }
-      ]);
-    }
+    // 检查是否已经存在私聊的 Chat 记录
+    let chat = await getPrivateChat(sender_id, receiver_id);
 
+    // 自动创建一个 Chat 记录
+    if (!chat) {
+      await createChat('private', [sender_id, receiver_id], content);
+    }
     return 
   });
 }
@@ -132,7 +107,7 @@ export const userLsWithCount_isFriend_by_currentUserId = async (user_id: string,
 
   return { users, count };
 }
-export type UserLsWithCount = Awaited<ReturnType<typeof userLsWithCount_isFriend_by_currentUserId>>;
+export type UserLsWithCount = Awaited<ReturnType<typeof userLsWithCount_isFriend_by_currentUserId>>
 
 // 定义 User 的 zod 模式
 const UserSchema_whenAddFriend = z.object({

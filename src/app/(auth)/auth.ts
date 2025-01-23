@@ -4,7 +4,7 @@ import { compare } from 'bcrypt-ts';
 import NextAuth, { type User, type Session } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
-export const guestUserId = '93a35827-8b95-4a34-adec-1860657534df'
+const guestUserId = '93a35827-8b95-4a34-adec-1860657534df'
 
 interface ExtendedSession extends Session {
   user: User;
@@ -82,39 +82,11 @@ import { cookies } from 'next/headers'
 import { NextApiRequest } from 'next';
 import { verifyJWT } from '@/lib/core/token';
 import { SessionTokenPayload } from '@/lib/middleware/auth';
+// import { cookieOptional } from './actions';
 
 // import { redirect } from "next/navigation";
 
-export async function server_auth(){
-  const cookieStore = await cookies();
-  const token = cookieStore.get('session_token')?.value;
-  
-  if (!token) {
-    return null;
-  }
-  let de_payload = null
-  try{
-    de_payload = await verifyJWT(token) as SessionTokenPayload
-  } catch (error) {
-    console.error(`app/(auth)/auth.ts::server_auth: token 解析失败: ${error}`);
-    return null;
-  }
-  const user = de_payload.user as NonNullable<SessionTokenPayload['user']>
-  // // 解密 token
-  // const payload = token.split('.')[1];
-  // const base64 = payload.replace(/-/g, '+').replace(/_/g, '/'); // 将 Base64 URL 安全编码转换为标准 Base64 编码
-  // const padding = '='.repeat((4 - (payload.length % 4)) % 4);
-  // const decodedPayload = atob(base64 + padding);
-  // const session_payload = JSON.parse(decodedPayload);
-  // console.log(`app/(auth)/auth.ts::server_auth: payload: ${JSON.stringify(session_payload)}`);
-  return { user: {
-    id: user.id,
-    email: user?.email || '',
-    name: user.name,
-    image: user?.image,
-    nickname: user?.nickname,
-  }, token};
-};
+
 
 
 export interface AuthConfig {
@@ -125,13 +97,13 @@ export interface AuthConfig {
    */
   basePath?: string
 }
-export function createActionURL(
+export async function createActionURL(
   action: string,
   protocol: string,
   headers: Headers,
   // envObject: any,
   config: Pick<AuthConfig, "basePath">
-): URL {
+): Promise<URL> {
   const basePath = config?.basePath ?? "api/auth"
 
   const detectedHost = headers.get("x-forwarded-host") ?? headers.get("host")
@@ -150,3 +122,50 @@ export function createActionURL(
   }
   return new URL(`${sanitizedUrl}/${action}`)
 }
+
+export type AuthSession = {
+  user: {
+    id: string;
+    name: string;
+    image: string;
+    nickname?: string;
+    email?: string;
+  };
+  token: string;
+};
+export type ServerAuthFunc = () => Promise<AuthSession | null>;
+export const server_auth: ServerAuthFunc = async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('session_token')?.value;
+  
+  if (!token) {
+    return null;
+  }
+  let de_payload = null
+  try{
+    de_payload = await verifyJWT(token) as SessionTokenPayload
+  } catch (error) {
+    console.error(`app/(auth)/auth.ts::server_auth: token 解析失败: ${error}`);
+    return null;
+  }
+  const user = de_payload.user as NonNullable<SessionTokenPayload['user']>;
+  // cookieStore.set('name', user.name, {
+  //   httpOnly: true,
+  //   secure: process.env.NODE_ENV === 'production',
+  //   maxAge: 60 * 60 * 24 * 30, // 30 days
+  // });
+  // // 解密 token
+  // const payload = token.split('.')[1];
+  // const base64 = payload.replace(/-/g, '+').replace(/_/g, '/'); // 将 Base64 URL 安全编码转换为标准 Base64 编码
+  // const padding = '='.repeat((4 - (payload.length % 4)) % 4);
+  // const decodedPayload = atob(base64 + padding);
+  // const session_payload = JSON.parse(decodedPayload);
+  // console.log(`app/(auth)/auth.ts::server_auth: payload: ${JSON.stringify(session_payload)}`);
+  return { user: {
+    id: user.id,
+    email: user?.email || '',
+    name: user.name,
+    image: user?.image,
+    nickname: user?.nickname,
+  }, token};
+};

@@ -36,7 +36,7 @@ export async function get_session_token_payload(c: Context) {
   if (!token) {
     return null
   }
-  console.log('get_session_token_payload::token:', token)
+  // console.log('get_session_token_payload::token:', token)
   return verifyJWT(token) as SessionTokenPayload
 }
 
@@ -52,7 +52,7 @@ export async function get_session_token_payload_and_res(c: Context): Promise<
         status: httpStatus.UNAUTHORIZED, success: false
       }
     }
-    console.log('get_session_token_payload_and_res::session_token_payload:', session_token_payload)
+    // console.log('get_session_token_payload_and_res::session_token_payload:', session_token_payload)
     return { session_token_payload, success: true }
   } catch (error) {
     return {

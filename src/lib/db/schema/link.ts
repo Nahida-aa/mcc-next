@@ -1,69 +1,12 @@
 import { pgTable, varchar, index, timestamp, serial, integer, uniqueIndex, boolean, foreignKey, primaryKey, uuid } from "drizzle-orm/pg-core"
 import { relations } from "drizzle-orm/relations"
-import { group } from "./group";
+import { group_table } from "./group";
 import { identity, user } from "./user";
 import { tag } from "./tag";
 import { proj } from "./proj";
 import { resource } from "./resource";
 import { timestamps, uuidCommon } from "./columnsHelpers"
 
-// export const linkGroupFollow = pgTable("LinkGroupFollow", {
-// 	user_id: uuid("user_id").notNull(),
-// 	target_group_id: uuid("group_id").notNull(),
-// 	created_at: timestamp("created_at").defaultNow().notNull(),
-// }, (table) => [
-// 	foreignKey({
-// 			columns: [table.target_group_id],
-// 			foreignColumns: [group.id],
-// 			name: "LinkGroupFollow_target_group_id_fkey"
-// 		}),
-// 	foreignKey({
-// 			columns: [table.user_id],
-// 			foreignColumns: [user.id],
-// 			name: "LinkGroupFollow_user_id_fkey"
-// 		}),
-// 	primaryKey({ columns: [table.user_id, table.target_group_id], name: "LinkGroupFollow_pkey"}),
-// ]);
-
-// export const linkUserFollow = pgTable("LinkUserFollow", {
-//   user_id: uuid("user_id").notNull(), // 原 followerId
-//   target_user_id: uuid("target_user_id").notNull(), // 原 followedId
-// 	created_at: timestamp("created_at").defaultNow().notNull(),
-// }, (table) => [
-// 	foreignKey({
-// 			columns: [table.target_user_id],
-// 			foreignColumns: [user.id],
-// 			name: "LinkUserFollow_target_user_id_fkey"
-// 		}),
-// 	foreignKey({
-// 			columns: [table.user_id],
-// 			foreignColumns: [user.id],
-// 			name: "LinkUserFollow_user_id_fkey"
-// 		}),
-// 	primaryKey({ columns: [table.user_id, table.target_user_id], name: "LinkUserFollow_pkey"}),
-// ]);
-// export const linkUserFollowRelations = relations(linkUserFollow, ({one}) => ({
-// 	target_user: one(user, {
-// 		fields: [linkUserFollow.target_user_id],
-// 		references: [user.id],
-// 		relationName: "linkUserFollow_target_user_id"
-// 	}),
-// 	user: one(user, {
-// 		fields: [linkUserFollow.user_id],
-// 		references: [user.id],
-// 		relationName: "linkUserFollow_user_id"
-// 	}),
-// }));
-// export const linkGroupFollowRelations = relations(linkGroupFollow, ({one}) => ({
-// 	targetGroup: one(group, {
-// 		fields: [linkGroupFollow.target_group_id],
-// 		references: [group.id]
-// 	}),
-// 	user: one(user, {
-// 		fields: [linkGroupFollow.user_id],
-// 		references: [user.id]
-// 	}),
-// }));
 
 export const linkGroupProj = pgTable("LinkGroupProj", {
 	...timestamps,
@@ -78,7 +21,7 @@ export const linkGroupProj = pgTable("LinkGroupProj", {
 		}),
 	foreignKey({
 			columns: [table.group_id],
-			foreignColumns: [group.id],
+			foreignColumns: [group_table.id],
 			name: "LinkGroupProj_group_id_fkey"
 		}),
 	primaryKey({ columns: [table.group_id, table.proj_id], name: "LinkGroupProj_pkey"}),
@@ -97,7 +40,7 @@ export const linkGroupResource = pgTable("LinkGroupResource", {
 		}),
 	foreignKey({
 			columns: [table.group_id],
-			foreignColumns: [group.id],
+			foreignColumns: [group_table.id],
 			name: "LinkGroupResource_group_id_fkey"
 		}),
 	primaryKey({ columns: [table.group_id, table.resource_id], name: "LinkGroupResource_pkey"}),
@@ -158,7 +101,7 @@ export const linkGroupIdentity = pgTable("LinkGroupIdentity", {
 		}),
 	foreignKey({
 			columns: [table.group_id],
-			foreignColumns: [group.id],
+			foreignColumns: [group_table.id],
 			name: "LinkGroupIdentity_group_id_fkey"
 		}),
 	primaryKey({ columns: [table.group_id, table.identity_id], name: "LinkGroupIdentity_pkey"}),

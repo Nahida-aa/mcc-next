@@ -5,62 +5,56 @@ import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { AlignJustify } from "lucide-react"
 import { useState } from "react"
-import { Message } from "./_comp/MessageList"
 import { MessageInput } from "./_comp/MessageInput"
-import { ClientMain } from "./_comp/Client"
-import { server_auth } from "@/app/(auth)/auth"
+import { ChatMain } from "./_comp/Client"
+
 import { Loader } from "@/components/ui/loader/Loader"
 import { redirect } from 'next/navigation'
+import { db } from "@/lib/db"
+import { user_table } from "@/lib/db/schema/user"
+import { eq } from "drizzle-orm";
+import { listMessageWithSender_by_chatId_cursor, listPrivateChatMessages } from "@/lib/db/q/user/msg"
+import { getChat } from "@/lib/db/q/user/chat"
+import { SWRProvider } from "@/components/providers/swr-provider"
+import { server_auth } from "@/app/(auth)/auth"
+import { MsgLsCursor } from "@/lib/routes/chats/messages"
 
-// export default async function AddFriendByNamePage({
 export default async function AddFriendByNamePage({
   params,
 }: {
-  params: Promise<{ name: string }>
+  params: Promise<{ name: string }>;
 }) {
-  const name = (await params).name
+  'use server'
+  const { name } = await params
+  console.log('name', name)
   const decodeURLComponentName = decodeURIComponent(name)
   const session = await server_auth()
   if (!session) return redirect('/sign-in')
+  const [dbUser] = await db.select({
+    id: user_table.id,
+    name: user_table.name,
+    email: user_table.email,
+    image: user_table.image,
+    nickname: user_table.nickname,
+    status: user_table.status,
+  }).from(user_table).where(eq(user_table.name, decodeURLComponentName))
+  const chat = await getChat(session.user.id, dbUser.id, 'user')
+  // console.log('chat', chat)
+  const msgLs_forServer = await listPrivateChatMessages(session.user.id, dbUser.id, 0, 30)
+  // console.log('msgLs_forServer', msgLs_forServer)
+  const msgsKey = `/api/hono/chats/${chat.id}/msgs/cursor`
+  const chat_id = chat.id
+  const limit = 10
 
-
-  // const [messages, setMessages] = useState<Message[]>([]);
-  // const currentUser = "currentUser"; // Replace with actual current user ID
-
-  // useEffect(() => {
-  //   const ws = new WebSocket("ws://your-websocket-url");
-
-  //   ws.onmessage = (event) => {
-  //     const newMessage = JSON.parse(event.data);
-  //     setMessages((prevMessages) => [...prevMessages, newMessage]);
-  //   };
-
-  //   return () => {
-  //     ws.close();
-  //   };
-  // }, []);
-
-  // const handleSendMessage = (message: string) => {
-  //   const newMessage = {
-  //     id: Date.now().toString(),
-  //     sender: currentUser,
-  //     content: message,
-  //     timestamp: new Date().toISOString(),
-  //   };
-  //   setMessages((prevMessages) => [...prevMessages, newMessage]);
-
-  //   // Send message to WebSocket server
-  //   const ws = new WebSocket("ws://your-websocket-url");
-  //   ws.onopen = () => {
-  //     ws.send(JSON.stringify(newMessage));
-  //   };
-  // };
-
-  return <main className="flex flex-col h-dvh">
-    <ClientMain decodeURLComponentName={decodeURLComponentName} sessionUser={session.user} /> 
-      
-    {/* <section className="bg-background/60  px-4  overflow-y-auto">
-    </section> */}
-
+  const [msgs,]: [MsgLsCursor,] = await Promise.all([listMessageWithSender_by_chatId_cursor(chat_id, {limit}),]);
+  const fallback = {
+    [msgsKey]: msgs
+  }
+  return <SWRProvider value={{ fallback }}><main className="flex flex-col h-dvh">
+    <ChatMain decodeURLComponentName={decodeURLComponentName} sessionUser={session.user} targetUser_forServer={dbUser}
+      msgsForDB={msgs}
+      chat_forServer={chat}
+    /> 
   </main>
+  </SWRProvider>
 }

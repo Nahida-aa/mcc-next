@@ -5,7 +5,7 @@ import { createRouter } from "@/lib/create-app";
 import NameParamsSchema from "@/lib/openapi/schemas/name-params";
 import { createRoute, z } from "@hono/zod-openapi";
 import { user as user_table } from "@/lib/db/schema/user";
-import { group as group_table } from "@/lib/db/schema/group";
+import { group_table } from "@/lib/db/schema/group";
 import { offset_limit_query_schema } from "@/lib/schema/query";
 import { get_current_user_and_res } from "@/lib/middleware/auth";
 import jsonContent from "@/lib/openapi/helpers/json-content";

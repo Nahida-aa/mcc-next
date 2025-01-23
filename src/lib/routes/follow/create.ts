@@ -6,7 +6,7 @@ import httpStatus from "@/lib/http-status-codes"
 import { db } from "@/lib/db";
 import { eq, sql } from "drizzle-orm";
 import { user as user_table } from "@/lib/db/schema/user";
-import { group as group_table } from "@/lib/db/schema/group";
+import { group_table } from "@/lib/db/schema/group";
 import { follow_table } from "@/lib/db/schema/follow";
 import { StatusCode } from "hono/utils/http-status";
 
@@ -98,7 +98,7 @@ router.openapi(createRoute({
 // TODO: 目标是将 follower_id 和 target_id 作为联合主键, 我感觉可能会冲突, 应该再加上 target_type, 不过另外一方面我设计的 user 和 group 的 name 是唯一的, 所以 可以考虑不用 id 作为主键
 export async function follow_a_group(group_name: string, follower_user: { id: string, name: string }): Promise<{ message: string, success: boolean, status: number }> {
   // 查询group是否存在
-  const target_group = await db.query.group.findFirst({ where: eq(user_table.name, group_name) })
+  const target_group = await db.query.group_table.findFirst({ where: eq(user_table.name, group_name) })
   if (!target_group) return { message: `group: ${group_name} 不存在`, success: false, status: httpStatus.NOT_FOUND }
 
   // 查询是否已经关注
