@@ -48,9 +48,10 @@ interface MessageListProps {
 }
 
 export const MessageListComp: React.FC<MessageListProps> = ({ messages, targetUser, currentUser, chat }) => {
-  const { data, error, isLoading, size, setSize, mutate: mutateMsgs } = useMsgQuery(`/api/hono/chats/${chat.id}/msgs/cursor`)
-  console.log('data', data)
-  const msgs = data ? data.map((item) => item.items).flat() : []
+  // const { data, error, isLoading, size, setSize, mutate: mutateMsgs } = useMsgQuery(`/api/hono/chats/${chat.id}/msgs/cursor`)
+  // console.log('data', data)
+  // const msgs = data ? data.map((item) => item.items).flat() : []
+  const msgs = messages
   return (
     <section className='flex flex-col-reverse gap-6'>
       {/* {messages.map((message, index) => (
@@ -131,8 +132,8 @@ export const MessageItem= ( {
 }
 
 export const MsgAvatar = ({ src, alt, className, size, mdSize }: { src: string, alt: string, className?: string, size?: number, mdSize?: number, }) => {
-  return <div className={`size-${size||8} md:size-${mdSize||10}  ${className}`}>
-    <NextImage src={src} width={(size || 10)*4} height={(size || 10)*4} alt={alt} fill={false} className={`rounded-full min-w-${size||8} md:min-w-${size||10}`} />
+  return <div className={`size-8 md:size-10  ${className}`}>
+    <NextImage src={src} width={(size || 10)*4} height={(size || 10)*4} alt={alt} fill={false} className={`rounded-full min-w-8 md:min-w-10`} />
   </div>
 }
 

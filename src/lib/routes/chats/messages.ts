@@ -102,6 +102,7 @@ router.openapi(createRoute({
 const msgLsCursorSchema = z.object({
   items: z.array(z.object({
     id: z.string(),
+    chat_id: z.string(),
     sender_id: z.string(),
     sender: z.object({
       id: z.string(),

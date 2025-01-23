@@ -52,13 +52,15 @@ export const ChatMain = ({
   const wsChatRoomKey = `$chat:${chatId}`
 
   const msgsApiUrl = `/api/hono/chats/${chatId}/msgs/cursor`
-  const { data, error, isLoading: msgsIsLoading, size, setSize, mutate: mutateMsgLists } = useMsgQuery(msgsApiUrl)
-  const msgs = data ? data.map((item) => item.items).flat() : []
+  // const { data, error, isLoading: msgsIsLoading, size, setSize, mutate: mutateMsgLists } = useMsgQuery(msgsApiUrl)
+  // const msgs = data ? data.map((item) => item.items).flat() : []
+  const msgs = msgsForDB.items
   // 内容发送变化时自动滚动到底部
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>()
   // const chatView = messagesContainerRef.current
   // if (chatView)  chatView.scrollTop = chatView.scrollHeight - chatView.clientHeight;
   const [clientMessageLs, setClientMessageLs] = useState<ClientMessageI[]>(msgs)
+
   const [content, setContent] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
@@ -76,6 +78,14 @@ export const ChatMain = ({
     }
   };
 
+  const update = (newMessage: ClientMessageI) => {
+    // mutateMsgLists((oldMsgLists) => {
+    //   if (!oldMsgLists) return [{items: [newMessage]}]
+    //   return [{items: [newMessage]}, ...oldMsgLists]
+    // }, false); // 乐观更新
+    setClientMessageLs((prevClientMessageLs) => [newMessage, ...prevClientMessageLs]); // react state 更新 
+  }
+  
   useMsgSocket({ chatId })
   const { socket } = useSocket();
   useEffect(() => {
@@ -83,10 +93,7 @@ export const ChatMain = ({
       socket.emit('joinChatRoom', chatId);
       console.log('client send joinChatRoom', chatId)
       const handleMessage = (newMessage: ClientMessageI) => {
-        mutateMsgLists((oldMsgLists) => {
-          if (!oldMsgLists) return [{items: [newMessage]}]
-          return [{items: [newMessage]}, ...oldMsgLists]
-        }, false);
+        update(newMessage)
       };
       socket.on('message', handleMessage); // 由于 socket room 机制 可能因为环境等问题 受到影响
       socket.on(`${wsChatRoomKey}:message`, handleMessage);
@@ -153,15 +160,8 @@ export const ChatMain = ({
       created_at: new Date(),
       status: 'pending' // 'pending' | 'sent' | 'received' | 'read' | 'failed' | 'resending'
     };
-    // react state 更新 
-    // setClientMessageLs((prevClientMessageLs) => [ newMessage, ...prevClientMessageLs]);
-
-    // mutateMsgLists(async(oldData)=>{ // 乐观更新
-    //     if (!oldData) return [{items: [newMessage]}]
-    //     return [ { items: [newMessage] }, ...oldData ]
-    //   }
-    // , false
-    // )
+    
+    // update(newMessage)
 
     await apiSendMessage(targetUser_forServer.id, content, 'user')
   }
@@ -196,7 +196,9 @@ export const ChatMain = ({
     ref={messagesContainerRef}
     >
       <div className='h-10 py-1.5 min-h-10'></div>
-      <MessageListComp messages={msgs} targetUser={targetUser_forServer} currentUser={sessionUser} chat={chat_forServer} />
+      <MessageListComp
+      messages={clientMessageLs} 
+      targetUser={targetUser_forServer} currentUser={sessionUser} chat={chat_forServer} />
       <div
         ref={messagesEndRef}
         className="shrink-0 min-w-[24px] h-14"

@@ -47,10 +47,12 @@ export default async function AddFriendByNamePage({
   const limit = 10
 
   const [msgs,]: [MsgLsCursor,] = await Promise.all([listMessageWithSender_by_chatId_cursor(chat_id, {limit}),]);
-  const fallback = {
-    [msgsKey]: msgs
-  }
-  return <SWRProvider value={{ fallback }}><main className="flex flex-col h-dvh">
+  // const fallback = {
+  //   [msgsKey]: msgs
+  // }
+  return <SWRProvider 
+  // value={{ fallback }}
+  ><main className="flex flex-col h-dvh">
     <ChatMain decodeURLComponentName={decodeURLComponentName} sessionUser={session.user} targetUser_forServer={dbUser}
       msgsForDB={msgs}
       chat_forServer={chat}
