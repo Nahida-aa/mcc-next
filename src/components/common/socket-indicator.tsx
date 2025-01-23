@@ -2,20 +2,38 @@
 
 import { useSocket } from '@/components/providers/socket-provider'
 import { Badge } from '@/components/ui/badge'
+import { useEffect, useState } from 'react'
 
 export const SocketIndicator = () => {
   const { isConnected } = useSocket()
+  const [onlineSeconds, setOnlineSeconds] = useState(0)
+  const [offlineSeconds, setOfflineSeconds] = useState(0)
 
-  if (!isConnected) return <Badge content="Connecting" className='bg-yellow-600'  >
-    Fallback: Polling every 1s
-  </Badge>
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+
+    if (isConnected) {
+      setOfflineSeconds(0) // 重置离线计时器
+      timer = setInterval(() => {
+        setOnlineSeconds((prevSeconds) => prevSeconds + 1)
+      }, 1000)
+    } else {
+      setOnlineSeconds(0) // 重置在线计时器
+      timer = setInterval(() => {
+        setOfflineSeconds((prevSeconds) => prevSeconds + 1)
+      }, 1000)
+    }
+
+    return () => {
+      clearInterval(timer)
+    }
+  }, [isConnected])
 
   return (
     <Badge
-      content={isConnected ? 'Connected' : 'Disconnected'}
-      className='bg-emerald-600'
+      className={isConnected ? 'bg-emerald-600' : 'bg-yellow-600'}
     >
-      Live: Real-time updates
+      {isConnected ? `Live: Real-time updates -(${onlineSeconds}s)` : `Fallback: Polling every 1s -(${offlineSeconds}s)`}
     </Badge>
   )
 }
