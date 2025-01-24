@@ -43,14 +43,13 @@ export interface ClientMessageI {
 
 interface MessageListProps {
   messages: ClientMessage[];
-  msgLists?: MsgLsCursor[]
   targetUser: UserMeta;
   currentUser: UserMeta
   chat: ChatForDB
 }
 
-export const MessageListComp: React.FC<MessageListProps> = ({ messages, msgLists,  targetUser, currentUser, chat }) => {
-  // const { data, error, isLoading, size, setSize, mutate: mutateMsgs } = useMsgQuery(`/api/hono/chats/${chat.id}/msgs/cursor`)
+export const MessageListComp: React.FC<MessageListProps> = ({ messages,  targetUser, currentUser, chat }) => {
+  const { data: msgLists, error, isLoading, size, setSize, mutate: mutateMsgs } = useMsgQuery(`/api/hono/chats/${chat.id}/msgs/cursor`)
   // console.log('data', data)
   // const msgs = data ? data.map((item) => item.items).flat() : []
   const msgs = msgLists ? msgLists.map((item) => item.items).flat() : messages

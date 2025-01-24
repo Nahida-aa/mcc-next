@@ -19,6 +19,7 @@ export const useMsgQuery = (apiUrl: string) => {
   const { data, error, isLoading, size, setSize, mutate } = useSWRInfinite<MsgLsCursorI>(getKey, fetcher, {
     revalidateOnFocus: false, //窗口聚焦时自动重新验证
     refreshInterval: isConnected ? 0 : 1000, // if have ws 则不轮询
+    // refreshInterval: 1000, // if have ws 则不轮询
   });
 
   const hasNextPage: boolean = data ? data[size - 1]?.next_cursor ? true : false : false

@@ -89,8 +89,8 @@ export const ChatMain = ({
       if (!oldMsgLists) return [{items: [newMessage]}]
       return [{items: [newMessage]}, ...oldMsgLists]
     }, false); // 乐观更新
-    console.log('mutateMsgLists::data', msgLists)
-    console.log('mutateMsgLists::size: ', size)
+    console.log('updateDate::mutateMsgLists::data', msgLists)
+    console.log('updateDate::mutateMsgLists::size: ', size)
   }
     
   // useMsgSocket({ chatId, updateDate })
@@ -209,7 +209,7 @@ export const ChatMain = ({
     >
       <div className='h-12 py-1.5 min-h-12' />
       <MessageListComp
-        messages={clientMessageList.items} msgLists={msgLists}
+        messages={clientMessageList.items}
         targetUser={targetUser_forServer} currentUser={sessionUser} chat={chatForDB} />
       <div
         ref={messagesEndRef}
