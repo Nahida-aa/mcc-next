@@ -209,7 +209,7 @@ export const ChatMain = ({
     >
       <div className='h-12 py-1.5 min-h-12' />
       <MessageListComp
-        messages={clientMessageList.items} 
+        messages={clientMessageList.items} msgLists={msgLists}
         targetUser={targetUser_forServer} currentUser={sessionUser} chat={chatForDB} />
       <div
         ref={messagesEndRef}

@@ -20,6 +20,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
+import { MsgLsCursor } from '@/lib/routes/chats/messages';
 
 export type ClientMessage =  {
   id: string;
@@ -42,16 +43,17 @@ export interface ClientMessageI {
 
 interface MessageListProps {
   messages: ClientMessage[];
+  msgLists?: MsgLsCursor[]
   targetUser: UserMeta;
   currentUser: UserMeta
   chat: ChatForDB
 }
 
-export const MessageListComp: React.FC<MessageListProps> = ({ messages, targetUser, currentUser, chat }) => {
+export const MessageListComp: React.FC<MessageListProps> = ({ messages, msgLists,  targetUser, currentUser, chat }) => {
   // const { data, error, isLoading, size, setSize, mutate: mutateMsgs } = useMsgQuery(`/api/hono/chats/${chat.id}/msgs/cursor`)
   // console.log('data', data)
   // const msgs = data ? data.map((item) => item.items).flat() : []
-  const msgs = messages
+  const msgs = msgLists ? msgLists.map((item) => item.items).flat() : messages
   return (
     <section className='flex flex-col-reverse  gap-6'>
       {/* {messages.map((message, index) => (

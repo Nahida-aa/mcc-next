@@ -35,18 +35,18 @@ export const createFriendRequest = async (
 }
 
 
-
-
-
 // 接受好友请求
 export async function acceptFriendRequest(notification_id: string,
   sender_id: string, receiver_id: string, content: string) {
   return await db.transaction(async (tx) => {
     // 创建好友关系
-    await tx.insert(friend_table).values({
-      user_id: receiver_id,
-      friend_id: sender_id,
-    });
+    await tx.insert(friend_table).values([{
+        user_id: receiver_id,
+        friend_id: sender_id,
+      }, {
+        user_id: sender_id,
+        friend_id: receiver_id,
+      }]);
     // 更新好友请求通知状态
     await tx.update(friendNotification_table)
       .set({ status: 'accepted' })

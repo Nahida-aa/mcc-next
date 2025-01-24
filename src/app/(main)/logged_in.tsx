@@ -13,13 +13,13 @@ export default async function LoggedInIndexPage({
 }) {
   try {
     console.log('chats: ', chats);
-    // if (!chats || chats.length === 0) return <div>没有聊天记录</div>;
+    if (!chats || chats.count === 0) return <div>没有聊天记录</div>;
     return (
       <main className='space-y-2'>
         <span>server当前登录了哦</span>
         <pre>
           <code>
-            {JSON.stringify(chats, null, 2)}
+            {JSON.stringify(chats.count, null, 2)}
           </code>
         </pre>
       </main>
