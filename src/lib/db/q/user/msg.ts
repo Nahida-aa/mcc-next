@@ -3,8 +3,39 @@ import { message_table, chat_table, link_chat_user_table } from "@/lib/db/schema
 import { user_table } from "@/lib/db/schema/user";
 import { eq, and, sql, or, is, InferSelectModel, inArray, desc, gt, lt } from "drizzle-orm";
 import { Chat_db, getChat, getOrCreate_chat } from "./chat";
-import { exportPages } from "next/dist/export/worker";
 
+export async function sendMessageV2(
+  msg: {
+    chat_id?: string,
+    sender_id: string,
+    content: string,
+    created_at: Date,
+  },
+  target_id: string
+) {
+  return await db.transaction(async (tx) => {
+    const { chat_id, sender_id, content, created_at  } = msg
+
+    if (chat_id) {
+      const [message] = await tx.insert(message_table).values({
+        chat_id: chat_id,
+        sender_id: sender_id,
+        content: content,
+        created_at: created_at,
+      }).returning();
+      return message
+    }
+    const chat: Chat_db = await getOrCreate_chat(sender_id, target_id, content);
+    
+    // 创建消息
+    const [message] = await tx.insert(message_table).values({
+      chat_id: chat.id,
+      ...msg
+    }).returning();
+
+    return message
+  });
+}
 
 export async function sendMessage(
   sender_id: string,

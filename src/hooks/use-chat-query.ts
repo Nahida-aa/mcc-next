@@ -14,15 +14,23 @@ export const useMsgQuery = (apiUrl: string) => {
       return `${apiUrl}?limit=10&cursor_id=${id}&cursor_created_at=${created_at}`
     }
     // 在首页时，没有 `previousPageData`
-    if (pageIndex === 0) return `${apiUrl}?limit=10`;
+    if (pageIndex === 0) return apiUrl;
   }
   const { data, error, isLoading, size, setSize, mutate } = useSWRInfinite<MsgLsCursorI>(getKey, fetcher, {
     revalidateOnFocus: false, //窗口聚焦时自动重新验证
     refreshInterval: isConnected ? 0 : 1000, // if have ws 则不轮询
   });
 
+  const hasNextPage: boolean = data ? data[size - 1]?.next_cursor ? true : false : false
+
+  const fetchNextPage = () => {
+    setSize(size + 1);
+    console.log('fetchNextPage::size', size)
+    console.log('fetchNextPage::data', data)
+  }
+
   return {
-    data, error, isLoading, size, setSize, mutate
+    data, error, isLoading, size, setSize, mutate, hasNextPage, fetchNextPage
   };
 }
 

@@ -38,24 +38,23 @@ export default async function AddFriendByNamePage({
     nickname: user_table.nickname,
     status: user_table.status,
   }).from(user_table).where(eq(user_table.name, decodeURLComponentName))
-  const chat = await getChat(session.user.id, dbUser.id, 'user')
+  const chatForDB = await getChat(session.user.id, dbUser.id, 'user')
   // console.log('chat', chat)
-  const msgLs_forServer = await listPrivateChatMessages(session.user.id, dbUser.id, 0, 30)
+  // const msgLs_forServer = await listPrivateChatMessages(session.user.id, dbUser.id, 0, 30)
   // console.log('msgLs_forServer', msgLs_forServer)
-  const msgsKey = `/api/hono/chats/${chat.id}/msgs/cursor`
-  const chat_id = chat.id
-  const limit = 10
+  const msgListKey = `/api/hono/chats/${chatForDB.id}/msgs/cursor`
+  const chat_id = chatForDB.id
 
-  const [msgs,]: [MsgLsCursor,] = await Promise.all([listMessageWithSender_by_chatId_cursor(chat_id, {limit}),]);
-  // const fallback = {
-  //   [msgsKey]: msgs
-  // }
+  const [msgList,]: [MsgLsCursor,] = await Promise.all([listMessageWithSender_by_chatId_cursor(chat_id),]);
+  const fallback = {
+    [msgListKey]: msgList
+  }
   return <SWRProvider 
-  // value={{ fallback }}
+  value={{ fallback }}
   ><main className="flex flex-col h-dvh">
     <ChatMain decodeURLComponentName={decodeURLComponentName} sessionUser={session.user} targetUser_forServer={dbUser}
-      msgsForDB={msgs}
-      chat_forServer={chat}
+      msgListForDB={msgList}
+      chatForDB={chatForDB}
     /> 
   </main>
   </SWRProvider>

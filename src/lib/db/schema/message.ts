@@ -8,7 +8,7 @@ export const message_table = pgTable("Message", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
   chat_id: uuid("chat_id").notNull().references(() => chat_table.id),
   sender_id: uuid("sender_id").notNull().references(() => user_table.id),
-  content: varchar("content", { length: 256 }).notNull(),
+  content: varchar("content").notNull(),
   ...timestamps,
 }, (table) => [
   index('created_at_idx').on(table.created_at),

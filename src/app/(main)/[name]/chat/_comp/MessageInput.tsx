@@ -4,47 +4,6 @@ import { Input } from '@/components/ui/input';
 import { CirclePlus, Smile } from 'lucide-react';
 import React, { useState } from 'react';
 
-{/* <div className=" bg-red-500">
-你好<br />    最早<br />    最早<br />    最早<br />
-  最早<br />    最早<br /> 最早<br />最早<br />
-  最早<br />
-  88778<br />    你好<br />
-  你好<br />    你好<br />
-  你好<br />   不好<br />
-</div>
-<div className=" bg-blue-500">
-你好<br />    你好<br />    你好<br />    你好<br />
-  你好<br />    你好<br /> 你好<br />你好<br />
-  你好<br />
-  88778<br />    你好<br />
-  你好<br />    你好<br />
-  你好<br />   不好<br />
-</div>
-<div className=" bg-green-500">          你好<br />    你好<br />    你好<br />    你好<br />
-  你好<br />    你好<br /> 你好<br />你好<br />
-  你好<br />
-  88778<br />    你好<br />
-  你好<br />    你好<br />
-  你好<br />   不好<br /></div>
-<div className=" bg-blue-500">          你好<br />    你好<br />    你好<br />    你好<br />
-  你好<br />    你好<br /> 你好<br />你好<br />
-  你好<br />
-  88778<br />    你好<br />
-  你好<br />    你好<br />
-  你好<br />   不好<br /></div>
-<div className=" bg-red-500">          你好<br />    你好<br />    你好<br />    你好<br />
-  你好<br />    你好<br /> 你好<br />你好<br />
-  你好<br />
-  88778<br />    你好<br />
-  你好<br />    你好<br />
-  你好<br />   不好<br /></div>
-<div className=" bg-green-500">          你好<br />    最新<br />    最后<br />    最后<br />
-  最后<br />    最后<br /> 最后<br />最后<br />
-  h<br />
-  88778<br />    资源<br />
-  最后<br />    最新<br />
-  你好<br />   不好<br /></div> */}
-
 interface MessageInputProps {
   onSendMessage: (content: string) => void;
 }

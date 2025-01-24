@@ -53,7 +53,7 @@ export const MessageListComp: React.FC<MessageListProps> = ({ messages, targetUs
   // const msgs = data ? data.map((item) => item.items).flat() : []
   const msgs = messages
   return (
-    <section className='flex flex-col-reverse gap-6'>
+    <section className='flex flex-col-reverse  gap-6'>
       {/* {messages.map((message, index) => (
         <Fragment key={index}>
         <MessageItem

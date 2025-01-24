@@ -3,7 +3,7 @@ import { SubHeader } from '@/components/layout/header/sub-header'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useScrollToBottom } from '@/hooks/use-scroll-to-bottom'
+import { useMsgScroll, useScrollToBottom } from '@/hooks/use-scroll-to-bottom'
 import { AlignJustify, CirclePlus, Mic, Plus, Send, Smile, Sparkles } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { MessageInput } from './MessageInput'
@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import useSWR from 'swr' //pnpm add swr
+import useSWR from 'swr' //pnpm add swr SWR 的缓存是存储在内存中的，这意味着当页面刷新或应用重新加载时，缓存的数据会丢失
 import { fetcher, generateUUID } from '@/lib/utils'
 import { UserMetaWithStatus } from '@/lib/routes/users/get'
 import { Textarea } from '@/components/ui/textarea'
@@ -37,95 +37,108 @@ const saveFailedMessage = (message: ClientMessage) => {
 
 export const ChatMain = ({
   decodeURLComponentName,
-  chat_forServer,
+  chatForDB,
   sessionUser,
   targetUser_forServer,
-  msgsForDB,
+  msgListForDB,
 }: {
   decodeURLComponentName: string,
-  chat_forServer: ChatForDB,
+  chatForDB: ChatForDB,
   sessionUser: UserMeta,
   targetUser_forServer: UserMetaWithStatus,
-  msgsForDB: MsgLsCursor
-}) => {
-  const chatId = chat_forServer.id
-  const wsChatRoomKey = `$chat:${chatId}`
-
-  const msgsApiUrl = `/api/hono/chats/${chatId}/msgs/cursor`
-  // const { data, error, isLoading: msgsIsLoading, size, setSize, mutate: mutateMsgLists } = useMsgQuery(msgsApiUrl)
+  msgListForDB: MsgLsCursor
+}) => {  
+  const msgListKey = `/api/hono/chats/${chatForDB.id}/msgs/cursor`
+  const { data: msgLists, error, isLoading: msgsIsLoading, size, setSize, mutate: mutateMsgLists, hasNextPage, fetchNextPage } = useMsgQuery(msgListKey)
+  console.log('ChatMain::msgLists', msgLists)
   // const msgs = data ? data.map((item) => item.items).flat() : []
-  const msgs = msgsForDB.items
-  // 内容发送变化时自动滚动到底部
-  const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>()
-  // const chatView = messagesContainerRef.current
-  // if (chatView)  chatView.scrollTop = chatView.scrollHeight - chatView.clientHeight;
-  const [clientMessageLs, setClientMessageLs] = useState<ClientMessageI[]>(msgs)
 
+  const [clientMessageList, setClientMessageList] = useState<MsgLsCursor>(msgListForDB)
+  
   const [content, setContent] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
-
+  
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   useEffect(() => {
     adjustHeight()
   }, []);
+  
+  const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>()
+  useMsgScroll({ msgLsRef: messagesContainerRef, bottomRef: messagesEndRef, shouldLoadMore: hasNextPage, loadMore: fetchNextPage, count: size })
 
   const adjustHeight = () => {
     if (textareaRef.current) {
       console.log('resizeTextarea', textareaRef.current.scrollHeight)
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      messagesEndRef.current!.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   };
-
-  const update = (newMessage: ClientMessageI) => {
-    // mutateMsgLists((oldMsgLists) => {
-    //   if (!oldMsgLists) return [{items: [newMessage]}]
-    //   return [{items: [newMessage]}, ...oldMsgLists]
-    // }, false); // 乐观更新
-    setClientMessageLs((prevClientMessageLs) => [newMessage, ...prevClientMessageLs]); // react state 更新 
+  const resetHeight = () => {
+    textareaRef.current!.style.height = 'auto';
+    messagesEndRef.current!.style.height = 'auto';
   }
   
-  useMsgSocket({ chatId })
+  const updateDate = (newMessage: ClientMessageI) => {
+    const newClientMessageList = {items:[newMessage, ...clientMessageList.items], next_cursor: clientMessageList.next_cursor}
+    console.log('updateDate::newClientMessageList', newClientMessageList)  // 变成 1+30
+    setClientMessageList(newClientMessageList); // react state 更新 
+    console.log('updatedDate::clientMessageList', clientMessageList) // 会变成: 30
+    mutateMsgLists((oldMsgLists) => {
+      if (!oldMsgLists) return [{items: [newMessage]}]
+      return [{items: [newMessage]}, ...oldMsgLists]
+    }, false); // 乐观更新
+    console.log('mutateMsgLists::data', msgLists)
+    console.log('mutateMsgLists::size: ', size)
+  }
+    
+  // useMsgSocket({ chatId, updateDate })
+  const wsChatRoomKey = `$chat:${chatForDB.id}`
   const { socket } = useSocket();
   useEffect(() => {
-    if (socket && chatId) {
-      socket.emit('joinChatRoom', chatId);
-      console.log('client send joinChatRoom', chatId)
+    if (socket && chatForDB.id) {
+      // socket.emit('joinChatRoom', chatId);
+      // console.log('client send joinChatRoom', chatId)
       const handleMessage = (newMessage: ClientMessageI) => {
-        update(newMessage)
+        console.log('client receive message', newMessage)
+        updateDate(newMessage)
       };
-      socket.on('message', handleMessage); // 由于 socket room 机制 可能因为环境等问题 受到影响
+      // socket.on('message', handleMessage); // 由于 socket room 机制 可能因为环境等问题 受到影响
       socket.on(`${wsChatRoomKey}:message`, handleMessage);
       return () => {
-        socket.emit('leaveChatRoom', chatId);
-        socket.off('message', handleMessage);
+        // socket.emit('leaveChatRoom', chatId);
+        // socket.off('message', handleMessage);
       };
     }
-  }, [socket, chatId]);
-
+  }, [socket, chatForDB.id]);
+    
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(event.target.value);
-    adjustHeight();
+    if (event.target.value.length <= 4500) {
+      setContent(event.target.value);
+      adjustHeight();
+    } else {
+      sonner_toast.info('Message is too long!');
+    }
   };
-  
+    
   const apiSendMessage = async (target_id: string, content: string, target_type: string) => {
     try {
       // const res = await fetch(`/api/hono/chats/messages`, {
-      const res = await fetch(`/api/socket/msg`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ sessionUserId: sessionUser.id, target_id, content, target_type }),
-      });
-      const ret = await res.json();
-      if (res.ok) {
-        sonner_toast.success(`Message sent: ${content}`);
-        return ret;
-      } else {
-        sonner_toast.warning(`An error occurred: ${ret.message}`);
-      }
+        const res = await fetch(`/api/socket/msg`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ sessionUserId: sessionUser.id, target_id, content, target_type }),
+        });
+        const ret = await res.json();
+        if (res.ok) {
+          sonner_toast.success(`Message sent: ${content}`);
+          return ret;
+        } else {
+          sonner_toast.warning(`An error occurred: ${ret.message}`);
+        }
     } catch (error: any) {
       
       console.error(error.message)
@@ -136,9 +149,7 @@ export const ChatMain = ({
   }
   async function onSend() {
     setContent('')
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-    }
+    resetHeight();
     setIsLoading(true)
     sonner_toast("You submitted the following values:", {
       description: (
@@ -153,18 +164,19 @@ export const ChatMain = ({
     })
     const newMessage: ClientMessageI = {
       id: Date.now().toString(),
-      chat_id: chatId,
+      chat_id: chatForDB.id,
       sender_id: sessionUser.id,
       sender: sessionUser,
       content: content,
       created_at: new Date(),
       status: 'pending' // 'pending' | 'sent' | 'received' | 'read' | 'failed' | 'resending'
     };
-    
-    // update(newMessage)
-
+  
+    updateDate(newMessage)
+  
     await apiSendMessage(targetUser_forServer.id, content, 'user')
   }
+  
   return <>
     <SubHeader justify="between"> 
       <div className="flex gap-2 items-center">
@@ -192,19 +204,18 @@ export const ChatMain = ({
     </SubHeader>
     {/* overflow-y-auto */}
     <div 
-    className=" h-screen absolute w-full top-0  px-4 flex flex-col flex-1  gap-6 overflow-y-scroll aa-scroll" 
-    ref={messagesContainerRef}
+      ref={messagesContainerRef}
+      className=" h-screen  w-full top-0  px-4 flex flex-col flex-1  gap-6 overflow-y-scroll aa-scroll " 
     >
-      <div className='h-10 py-1.5 min-h-10'></div>
+      <div className='h-12 py-1.5 min-h-12' />
       <MessageListComp
-      messages={clientMessageLs} 
-      targetUser={targetUser_forServer} currentUser={sessionUser} chat={chat_forServer} />
+        messages={clientMessageList.items} 
+        targetUser={targetUser_forServer} currentUser={sessionUser} chat={chatForDB} />
       <div
         ref={messagesEndRef}
-        className="shrink-0 min-w-[24px] h-14"
+        className="shrink-0 min-w-[24px] h-auto min-h-12 max-h-[calc(75dvh)]"
       />
     </div>
-    
     <footer className="w-full absolute bottom-0 h-auto p-2 px-3 bg-card/80 backdrop-blur-md z-10">
       <div  className="w-full flex gap-2">
           {content ? <Button
@@ -231,7 +242,7 @@ export const ChatMain = ({
             <Textarea
               className=' min-h-8 max-h-[calc(75dvh)]   py-1 pl-2 pr-9 border-0  outline-0 rounded-2xl md:text-base
               focus-visible:ring-0 resize-none
-              focus-visible:ring-offset-0 bg-muted '
+              focus-visible:ring-offset-0 bg-muted aa-scroll-hidden'
               rows={1}
               ref={textareaRef}
               value={content}
@@ -248,6 +259,7 @@ export const ChatMain = ({
                 }
               }}
             />
+            {/* <small className='absolute right-0 bottom-8 text-xs'>{content.length}</small> */}
             <Button
               className="size-8 min-w-8 p-0  rounded-full [&>svg]:size-5 [&_svg]:size-5 absolute  bg-muted right-0 bottom-0"
               variant='ghost'

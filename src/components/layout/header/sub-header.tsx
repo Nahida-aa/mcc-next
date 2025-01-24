@@ -33,8 +33,9 @@ export function SubHeader({
 
   const { width: windowWidth } = useWindowSize();
 
+  // sticky
   return (
-    <header className={`flex sticky px-1.5 py-1 items-center justify-between backdrop-blur-md ${className} bg-card/80 z-10 top-0`}>
+    <header className={`flex  absolute w-full px-1.5 py-1 items-center justify-between backdrop-blur-md ${className} bg-card/80 z-10 top-0`}>
       <div className='flex  items-center'>
         <Button variant='ghost' size="icon" className=' p-0 gap-0 size-8 ml-1' onClick={() => {
           console.log('back')
