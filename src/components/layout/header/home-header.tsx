@@ -81,7 +81,7 @@ export function HomeHeader({
     user_status = "未登录"
   }
   return (<>
-    <header className={`flex  backdrop-blur-md absolute w-full  px-1.5 py-1 items-center gap-2 justify-between top-0 z-10 ${className}`}>
+    <header className={`flex  backdrop-blur-md absolute w-full  px-2 py-1 items-center gap-2 justify-between top-0 z-10 ${className}`}>
       <div className='flex gap-1 items-center'>
         <UserSidebarToggle user={user} status={user_status} />
         {/* {windowWidth >= 768 && ( */}

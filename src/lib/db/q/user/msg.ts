@@ -2,7 +2,8 @@ import { db } from "@/lib/db";
 import { message_table, chat_table, link_chat_user_table } from "@/lib/db/schema/message";
 import { user_table } from "@/lib/db/schema/user";
 import { eq, and, sql, or, is, InferSelectModel, inArray, desc, gt, lt } from "drizzle-orm";
-import { Chat_db, getChat, getOrCreate_chat } from "./chat";
+import { Chat_db, getChat, getOrCreateChat } from "./chat";
+import { ClientMessageI } from "@/app/(main)/chat/[name]/_comp/MessageList";
 
 export async function sendMessageV2(
   msg: {
@@ -25,7 +26,7 @@ export async function sendMessageV2(
       }).returning();
       return message
     }
-    const chat: Chat_db = await getOrCreate_chat(sender_id, target_id, content);
+    const chat: Chat_db = await getOrCreateChat(sender_id, target_id, content);
     
     // 创建消息
     const [message] = await tx.insert(message_table).values({
@@ -38,31 +39,32 @@ export async function sendMessageV2(
 }
 
 export async function sendMessage(
-  sender_id: string,
+  message:  ClientMessageI,
   target_id: string,
-  content: string,
-  target_type: 'user' | 'group',
-  createChat: boolean = true
+  target_type: string, //'user' | 'group' | 'self
+  createChat: boolean = true // false
 ) {
   return await db.transaction(async (tx) => {
-    if (target_type === 'user' && sender_id === target_id) {
-      throw new Error('不能给自己发消息');
-    }
     let chat: Chat_db
     if (createChat){
-      chat = await getOrCreate_chat(sender_id, target_id, content);
+      chat = await getOrCreateChat(message.sender_id, target_id, message.content);
     } else {
-      chat = await getChat(sender_id, target_id, target_type);
+      // 如果 不创建则更新 chat 
+      [chat] = await tx.update(chat_table).set({
+        latest_sender_id: message.sender_id,
+        latest_message: message.content,
+        latest_message_timestamp: new Date(),
+      }).where(eq(chat_table.id, message.chat_id)).returning();
     }
 
     // 创建消息
-    const [message] = await tx.insert(message_table).values({
+    const [newMessage] = await tx.insert(message_table).values({
       chat_id: chat.id,
-      sender_id: sender_id,
-      content: content,
+      sender_id: message.sender_id,
+      content: message.content,
     }).returning();
 
-    return message
+    return newMessage
   });
 }
 
@@ -142,11 +144,11 @@ export const listMessageWithSender_by_chatId_cursor = async (chat_id: string, op
 }
 
 
-export const listPrivateChatMessages = async (user_id: string, target_id: string, offset: number, limit: number) => {
+export const listUserChatMessages = async (user_id: string, target_id: string, offset: number, limit: number) => {
   const chat = await getChat(user_id, target_id, 'user');
   if (!chat) return { messages: [], count: 0 }
 
   return await listMessage_by_chatId(chat.id, offset, limit)
 }
-// export type ListPrivateChatMessages 
-export type ListPrivateChatMessages = Awaited<ReturnType<typeof listPrivateChatMessages>>
+// export type ListUserChatMessages 
+export type ListUserChatMessages = Awaited<ReturnType<typeof listUserChatMessages>>

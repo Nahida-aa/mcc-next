@@ -27,7 +27,7 @@ router.openapi(createRoute({
   request: {query: offset_limit_query_schema },
   responses: {
     [httpStatus.OK]: jsonContent(z.object({
-      chats:z.array(z.object({
+      items:z.array(z.object({
         chat: chat_table_schema,
         is_pinned: z.boolean().nullable(),
         target_user: z.object({
@@ -52,10 +52,10 @@ router.openapi(createRoute({
   const auth_user = CU_ret.user
   const { offset, limit } = c.req.valid("query")
 
-  const {chats, count} = await listChat_by_userId(auth_user.id, offset, limit)
+  const {items, count} = await listChat_by_userId(auth_user.id, offset, limit)
 
   return c.json({
-    chats,
+    items,
     count,
   }, httpStatus.OK);
 });

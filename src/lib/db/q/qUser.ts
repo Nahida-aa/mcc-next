@@ -104,6 +104,16 @@ export const getByName = async (name: string) => {
   return users
 }
 
+export const getMetaByName = async (name: string) => {
+  const [user] = await db.select({id: user_table.id,
+    name: user_table.name,
+    email: user_table.email,
+    image: user_table.image,
+    nickname: user_table.nickname,
+    status: user_table.status,}).from(usersTable).where(eq(usersTable.name, name));
+  return user
+}
+
 export const updatePassword = async (name: string, hashPassword: string) => {
   const result = await db.update(usersTable).set({ password: hashPassword }).where(eq(usersTable.name, name));
   return result;

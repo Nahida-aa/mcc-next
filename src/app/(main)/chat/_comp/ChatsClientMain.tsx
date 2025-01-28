@@ -9,63 +9,21 @@ import { ChatsWithCountApiResBody } from '@/lib/routes/chats';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/utils';
 import { NetworkIcon, WifiOffIcon } from 'lucide-react';
+import { CodeBlock } from '@/components/common/md/pre';
+import { ChatList} from './ChatItem';
 
-export function ClientLoggedInIndexPage({ 
+export function ChatsClientMain({ 
   session, className 
 }: { 
   session: { user: UserMeta, token: string };
   className?: string; 
 }) {
-  // const [isOnline, setIsOnline] = useState(navigator.onLine)
-  // useEffect(() => {
-  //   const handleOnline = () => setIsOnline(true);
-  //   const handleOffline = () => setIsOnline(false);
-  //   window.addEventListener('online', handleOnline);
-  //   window.addEventListener('offline', handleOffline);
-  //   return () => {
-  //     window.removeEventListener('online', handleOnline);
-  //     window.removeEventListener('offline', handleOffline);
-  //   };
-  // }, []);
-  
-  // if (isOnline) {}
   const { data: chatLsWithCount, error, isLoading } = useSWR<ChatsWithCount>('/api/hono/chats', fetcher)
-  // const [chats, setChats] = React.useState<ChatsWithCount['chats']>([]);
-
-  // useEffect(() => {
-  //   const fetchChats = async () => {
-  //     try {
-  //       const res = await fetch('/api/hono/chats')
-  //       const data: ChatsWithCountApiResBody = await res.json()
-  //       if (res.ok) {
-  //         const chatsData = data as ChatsWithCount
-  //         setChats(chatsData.chats)
-  //         localStorage.setItem('chats', JSON.stringify(chatsData.chats));
-  //         console.log(data)
-  //       } else {
-  //         const msgData = data as { message: string }
-  //         sonner_toast.warning(msgData.message)
-  //       }
-  //     } catch (error: any) {
-  //       console.error(error)
-  //       sonner_toast.error(error.message)
-  //     }
-  //   }
-
-  //   const storedChats = localStorage.getItem('chats');
-  //   if (storedChats) {
-  //     setChats(JSON.parse(storedChats));
-  //   } else {
-  //     fetchChats();
-  //   }
-  // }, []);
-  // if (isLoading) return <div>client loading...</div>
   try {
     // const chats = await chatList_by_userId(session.user.id);
     // if (!chats || chats.length === 0) return <div>没有聊天记录</div>;
     return (
-      <main className='space-y-2'>
-        <span>client 当前登录了哦</span>
+      <main className='space-y-2 bg-background/80'>
         {/* {isOnline ? (
           <>
             <NetworkIcon className="h-8 w-8 text-green-500" />
@@ -77,11 +35,11 @@ export function ClientLoggedInIndexPage({
             <span className="text-red-500">Offline</span>
           </>
         )} */}
-        <pre>
-          <code>
-            {JSON.stringify(chatLsWithCount, null, 2)}
-          </code>
-        </pre>
+        <ChatList chatsWithCount={chatLsWithCount} />
+        <CodeBlock value={JSON.stringify(chatLsWithCount, null, 2)} language='json' 
+          options={{ lineNumbers: 'on',
+            wrapLines:true,
+          }} />
         {/* <HomeHeader user={session?.user} /> */}
         <Button className='h-auto'>
           <a href="/api/hono" target="_blank">

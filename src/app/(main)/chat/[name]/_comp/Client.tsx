@@ -21,13 +21,20 @@ import { fetcher, generateUUID } from '@/lib/utils'
 import { UserMetaWithStatus } from '@/lib/routes/users/get'
 import { Textarea } from '@/components/ui/textarea'
 import NextImage from 'next/image'
-import { ListPrivateChatMessages } from '@/lib/db/q/user/msg'
+import { ListUserChatMessages } from '@/lib/db/q/user/msg'
 import { ChatForDB } from '@/lib/db/q/user/chat'
 import { useMsgQuery } from '@/hooks/use-chat-query'
 import { MsgLsCursor } from '@/lib/routes/chats/messages'
 import next from 'next'
 import { useSocket } from '@/components/providers/socket-provider'
 import { useMsgSocket } from '@/hooks/use-chat-ws'
+
+type ApiSendMessageParm =  {
+  message: ClientMessageI
+  target_id: string
+  target_type: string
+}
+export type ApiSendMessageBody = ApiSendMessageParm
 
 const saveFailedMessage = (message: ClientMessage) => {
   const failedMessages = JSON.parse(localStorage.getItem('failedMessages') || '[]');
@@ -37,18 +44,18 @@ const saveFailedMessage = (message: ClientMessage) => {
 
 export const ChatMain = ({
   decodeURLComponentName,
-  chatForDB,
+  dbChat,
   sessionUser,
   targetUser_forServer,
   msgListForDB,
 }: {
   decodeURLComponentName: string,
-  chatForDB: ChatForDB,
+  dbChat: ChatForDB,
   sessionUser: UserMeta,
   targetUser_forServer: UserMetaWithStatus,
   msgListForDB: MsgLsCursor
 }) => {  
-  const msgListKey = `/api/hono/chats/${chatForDB.id}/msgs/cursor`
+  const msgListKey = `/api/hono/chats/${dbChat.id}/msgs/cursor`
   const { data: msgLists, error, isLoading: msgsIsLoading, size, setSize, mutate: mutateMsgLists, hasNextPage, fetchNextPage } = useMsgQuery(msgListKey)
   console.log('ChatMain::msgLists', msgLists)
   // const msgs = data ? data.map((item) => item.items).flat() : []
@@ -93,11 +100,10 @@ export const ChatMain = ({
     console.log('updateDate::mutateMsgLists::size: ', size)
   }
     
-  // useMsgSocket({ chatId, updateDate })
-  const wsChatRoomKey = `$chat:${chatForDB.id}`
   const { socket } = useSocket();
+  // useMsgSocket({ socket, chatId: dbChat.id, updateDate })
   useEffect(() => {
-    if (socket && chatForDB.id) {
+    if (socket && dbChat.id) {
       // socket.emit('joinChatRoom', chatId);
       // console.log('client send joinChatRoom', chatId)
       const handleMessage = (newMessage: ClientMessageI) => {
@@ -105,13 +111,13 @@ export const ChatMain = ({
         updateDate(newMessage)
       };
       // socket.on('message', handleMessage); // 由于 socket room 机制 可能因为环境等问题 受到影响
-      socket.on(`${wsChatRoomKey}:message`, handleMessage);
+      socket.on(`$chat:${dbChat.id}:message`, handleMessage);
       return () => {
         // socket.emit('leaveChatRoom', chatId);
         // socket.off('message', handleMessage);
       };
     }
-  }, [socket, chatForDB.id]);
+  }, [socket, dbChat.id]);
     
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (event.target.value.length <= 4500) {
@@ -121,8 +127,11 @@ export const ChatMain = ({
       sonner_toast.info('Message is too long!');
     }
   };
-    
-  const apiSendMessage = async (target_id: string, content: string, target_type: string) => {
+  
+
+  const apiSendMessage = async ({
+    message, target_id, target_type
+  }:ApiSendMessageParm) => {
     try {
       // const res = await fetch(`/api/hono/chats/messages`, {
         const res = await fetch(`/api/socket/msg`, {
@@ -130,7 +139,7 @@ export const ChatMain = ({
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ sessionUserId: sessionUser.id, target_id, content, target_type }),
+          body: JSON.stringify({ message, target_id, target_type }),
         });
         const ret = await res.json();
         if (res.ok) {
@@ -164,7 +173,7 @@ export const ChatMain = ({
     })
     const newMessage: ClientMessageI = {
       id: Date.now().toString(),
-      chat_id: chatForDB.id,
+      chat_id: dbChat.id,
       sender_id: sessionUser.id,
       sender: sessionUser,
       content: content,
@@ -174,7 +183,7 @@ export const ChatMain = ({
   
     updateDate(newMessage)
   
-    await apiSendMessage(targetUser_forServer.id, content, 'user')
+    await apiSendMessage({message: newMessage,target_id: targetUser_forServer.id,target_type: 'user'})
   }
   
   return <>
@@ -188,7 +197,7 @@ export const ChatMain = ({
         px-1 mt-[0.125rem] h-8 gap-0 flex-col items-start ' 
         variant={'ghost'} onClick={() => {
           router.push(`/${decodeURLComponentName}`)
-        } }
+        }}
         >
           <div className="text-[0.8rem] font-medium leading-[1.25rem]">{targetUser_forServer?.nickname || targetUser_forServer?.name || "Guest"}</div>
           <div className='text-xs text-gray-400 leading-3'>{targetUser_forServer.status}</div>
@@ -210,7 +219,7 @@ export const ChatMain = ({
       <div className='h-12 py-1.5 min-h-12' />
       <MessageListComp
         messages={clientMessageList.items}
-        targetUser={targetUser_forServer} currentUser={sessionUser} chat={chatForDB} />
+        targetUser={targetUser_forServer} currentUser={sessionUser} chat={dbChat} />
       <div
         ref={messagesEndRef}
         className="shrink-0 min-w-[24px] h-auto min-h-12 max-h-[calc(75dvh)]"

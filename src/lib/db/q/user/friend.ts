@@ -5,7 +5,7 @@ import { eq, and, or, inArray, ilike, notInArray } from "drizzle-orm";
 import { chat_table, link_chat_user_table } from "../../schema/message";
 import { user, User, user_table } from "../../schema/user";
 import { z } from "@hono/zod-openapi";
-import { createChat, getPrivateChat } from "./chat";
+import { createChat, getUserChat } from "./chat";
 
 // 检查是否已经存在好友请求或好友关系
 export const getFriendship = async (sender_id: string, receiver_id: string) => {
@@ -53,11 +53,11 @@ export async function acceptFriendRequest(notification_id: string,
       .where(eq(friendNotification_table.id, notification_id));
 
     // 检查是否已经存在私聊的 Chat 记录
-    let chat = await getPrivateChat(sender_id, receiver_id);
+    let chat = await getUserChat(sender_id, receiver_id);
 
     // 自动创建一个 Chat 记录
     if (!chat) {
-      await createChat('private', [sender_id, receiver_id], content);
+      await createChat('user', [sender_id, receiver_id], content);
     }
     return 
   });

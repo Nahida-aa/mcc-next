@@ -5,7 +5,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 import { server_auth } from '../(auth)/auth';
 import { HomeHeader } from '@/components/layout/header/home-header';
-import { NavigationSidebar } from './_comp/side';
+import { NavigationSidebar } from './chat/_comp/side';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
