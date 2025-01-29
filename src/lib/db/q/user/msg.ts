@@ -4,6 +4,7 @@ import { user_table } from "@/lib/db/schema/user";
 import { eq, and, sql, or, is, InferSelectModel, inArray, desc, gt, lt } from "drizzle-orm";
 import { Chat_db, getChat, getOrCreateChat } from "./chat";
 import { ClientMessageI } from "@/app/(main)/chat/[name]/_comp/MessageList";
+import { UserMeta } from "@/lib/schema/user";
 
 export async function sendMessageV2(
   msg: {
@@ -38,15 +39,24 @@ export async function sendMessageV2(
   });
 }
 
+type MessageData = {
+  id?: string;
+  chat_id?: string;
+  sender_id: string;
+  sender?: UserMeta | null;
+  content: string;
+  created_at?: Date; // utc
+  status?: string
+}
 export async function sendMessage(
-  message:  ClientMessageI,
+  message:  MessageData,
   target_id: string,
   target_type: string, //'user' | 'group' | 'self
   createChat: boolean = true // false
 ) {
   return await db.transaction(async (tx) => {
     let chat: Chat_db
-    if (createChat){
+    if (createChat || !message.chat_id) {
       chat = await getOrCreateChat(message.sender_id, target_id, message.content);
     } else {
       // 如果 不创建则更新 chat 

@@ -45,7 +45,10 @@ router.openapi(createRoute({
   const { target_id, content, target_type } = c.req.valid("json");
 
   // try {
-    const message = await sendMessage(current_user.id, target_id, content, target_type);
+    const message = await sendMessage({
+      sender_id: current_user.id,
+      content: content,
+    }, target_id, target_type);
     return c.json(message, httpStatus.CREATED);
   // } catch (error: any) {
   //   // return c.json({ message: error.message }, httpStatus.INTERNAL_SERVER_ERROR);
