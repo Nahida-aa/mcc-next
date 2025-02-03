@@ -14,6 +14,7 @@ export const timestamps_with_deleted_at = {
 
 export const commonColumns = {
   name: varchar({ length: 32 }).notNull(),
+  summary: varchar({ length: 255 }), // 简介字段
   description: text(),
   ...timestamps
 }
