@@ -12,7 +12,7 @@ import { PlusIcon, VercelIcon } from '@/components/icons';
 import { useSidebar } from '@/components/ui/sidebar';
 import { UserMeta, UserSidebarToggle } from '../sidebar/user-side-toggle';
 import { ModeToggle } from '@/components/common/ModeToggle';
-import { Search, AlignRight, X, Sparkles, UserRound, House, UserRoundPlus } from 'lucide-react';
+import { Search, AlignRight, X, Sparkles, UserRound, House, UserRoundPlus, Box } from 'lucide-react';
 // import { useState } from 'react';
 import {
   Popover,
@@ -27,10 +27,10 @@ export const MoreMenu = () => {
   console.log('currentPath:', currentPath)
   const menuItems = [
     { path: '/', label: 'Home', icon: <House /> },
-    { path: '/user/friend', label: 'Friends', icon: <UserRound /> },
+    // { path: '/user/friend', label: 'Friends', icon: <UserRound /> },
     { path: '/user/friend/add', label: 'Add Friend'
       , icon: <UserRoundPlus /> },
-    { path: '/item2', label: 'Item 2', icon: <UserRound /> },
+    { path: '/new/project', label: 'New project', icon: <Box /> },
   ];
   return (
     <ul className="flex flex-col gap-1 ">
@@ -131,7 +131,6 @@ export function HomeHeader({
                 onClick={() => {
                 }}
               >
-              
                 <PlusIcon />
               </Button>
             </PopoverTrigger>

@@ -40,28 +40,28 @@ export const ChatItem = ({
     <li className='flex'>
       <ContextMenu >
       <ContextMenuTrigger asChild onClick={handlePressEnd}>
-      <Button variant="light" className='w-full h-auto rounded-none hover:bg-sidebar-accent justify-start p-2 data-[focus-visible=true]:bg-sidebar-accent data-[focus-visible=true]:outline-0' 
-      // onPressStart={handlePressStart}
-      // onPressEnd={handlePressEnd}
-      // onPressUp={handlePressEnd}
-      >
-      <NextImage src={target?.image || ''} width={48} height={48} alt={target?.name || 'no'} fill={false} className={`rounded-full min-w-12`} />
-      <div className='flex flex-col flex-1'>
-        <div className='flex justify-between'>
-          <span>{target?.name}</span>
-          <span className='text-sm  text-muted-foreground'>
-          {formattedTime}
-          </span>
-        </div>
-        <div className='flex justify-between'>
-          <span className='text-sm text-muted-foreground'>{item.chat.latest_message}</span>
-        </div>
-      </div>
-      </Button>
+        <Button variant="light" className='w-full h-auto rounded-none hover:bg-sidebar-accent justify-start px-3 py-2 data-[focus-visible=true]:bg-sidebar-accent data-[focus-visible=true]:outline-0' 
+        // onPressStart={handlePressStart}
+        // onPressEnd={handlePressEnd}
+        // onPressUp={handlePressEnd}
+        >
+          <NextImage src={target?.image || ''} width={48} height={48} alt={target?.name || 'no'} fill={false} className={`rounded-full min-w-12`} />
+          <div className='flex flex-col flex-1'>
+            <div className='flex justify-between'>
+              <span>{target?.name}</span>
+              <span className='text-sm  text-muted-foreground'>
+              {formattedTime}
+              </span>
+            </div>
+            <div className='flex justify-between'>
+              <span className='text-sm text-muted-foreground'>{item.chat.latest_message}</span>
+            </div>
+          </div>
+        </Button>
       </ContextMenuTrigger>
-      <ContextMenuContent>
-        右键菜单
-      </ContextMenuContent>
+        <ContextMenuContent>
+          右键菜单
+        </ContextMenuContent>
       </ContextMenu>
     </li>
   );

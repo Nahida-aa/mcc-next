@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users</title>
+  <style>
+    .user-card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+    }
+    .user-card img {
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .user-card .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Users</h1>
+    <ul id="user-list">
+    </ul>
+  </main>
+  <script>
+    async function fetchUsers() {
+      const res = await fetch('https://mcc.nahida-aa.us.kg/api/hono/users', {
+        mode: 'no-cors',
+        headers: {
+          Accept: '*/*'
+        }
+      });
+      const data = await res.json();
+      return data;
+    }
+
+    function createUserCard(user) {
+      const li = document.createElement('li');
+      li.className = 'user-card';
+
+      const img = document.createElement('img');
+      img.src = user.image;
+      img.alt = user.name;
+      img.width = 50;
+      img.height = 50;
+
+      const userInfo = document.createElement('div');
+      userInfo.className = 'user-info';
+
+      const name = document.createElement('span');
+      name.textContent = `Name: ${user.name}`;
+
+      const age = document.createElement('span');
+      age.textContent = `Age: ${user.age !== null ? user.age : 'N/A'}`;
+
+      const status = document.createElement('span');
+      status.textContent = `Status: ${user.status}`;
+
+      userInfo.appendChild(name);
+      userInfo.appendChild(age);
+      userInfo.appendChild(status);
+
+      li.appendChild(img);
+      li.appendChild(userInfo);
+
+      return li;
+    }
+
+    async function renderUsers() {
+      const userList = document.getElementById('user-list');
+      const users = await fetchUsers();
+
+      users.forEach(user => {
+        const userCard = createUserCard(user);
+        userList.appendChild(userCard);
+      });
+    }
+
+    renderUsers();
+  </script>
+</body>
+</html>

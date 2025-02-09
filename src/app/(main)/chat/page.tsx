@@ -36,7 +36,7 @@ export default async function AA() {
     {/* <ScrollShadow hideScrollBar  className="h-screen absolute top-0"> */}
       <div className='min-h-12'></div>
         {/* <LoggedInIndexPage session={session} chats={chats} /> */}
-        <ChatsClientMain session={session} />
+      <ChatsClientMain session={session} />
       {/* <Content /> */}
     {/* </ScrollShadow> */}
     </main>

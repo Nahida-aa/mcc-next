@@ -207,7 +207,7 @@ export const ChatMain = ({
       <SocketIndicator />
       <div className="flex items-center">
         <Button variant='ghost' size="icon" className='p-0 gap-0 size-8 mr-1'>
-          <AlignJustify size={32} className='min-w-8 min-h-8 opacity-50' />
+          <AlignJustify size={24} className='min-w-6 min-h-6 opacity-50' />
         </Button>
       </div>
     </SubHeader>

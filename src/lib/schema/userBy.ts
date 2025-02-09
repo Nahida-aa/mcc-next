@@ -23,6 +23,7 @@ export const user_selectSchema = createSelectSchema(user)
     id_card_info: idCardInfo_selectSchema.nullable(),
   });
 
+
 export const idCardInfo_insertSchema = createInsertSchema(idCardInfo)
   .omit({id: true, user_id: true, is_real_name: true})
   .required({

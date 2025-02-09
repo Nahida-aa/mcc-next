@@ -61,6 +61,15 @@ export const GET = handle(app)
 export const POST = handle(app)
 export const PATCH = handle(app);
 export const DELETE = handle(app);
+// export const OPTIONS = handle(app);
+
+// const handler = handle(app);
+
+// export const GET = handler;
+// export const POST = handler;
+// export const PATCH = handler;
+// export const PUT = handler;
+// export const OPTIONS = handler;
 
 export type AppType = typeof routes[number];
 // export type AppTypes = typeof _app;

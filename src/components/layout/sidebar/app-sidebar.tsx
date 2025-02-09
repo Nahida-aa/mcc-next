@@ -22,11 +22,17 @@ import {
 import { BetterTooltip } from '@/components/common/BetterTooltip';
 import Link from 'next/link';
 import { UserMeta } from './user-side-toggle';
-import { ChevronDown, ChevronRight, LogIn, PencilLine, QrCode, Settings, Star, X } from 'lucide-react';
+import { Box, Check, ChevronDown, ChevronRight, FileIcon, FileUser, LogIn, MessageCircle, Milestone, PencilLine, QrCode, Settings, ShipWheel, Star, UserRound, X } from 'lucide-react';
 import { UserSidebarFooter } from './footer';
 import { ModeToggle } from '@/components/common/ModeToggle';
 import { ShadcnAvatar } from '@/components/common/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {Button as UIButton} from "@heroui/react";
+import { SidebarContentMenuComponent } from './content';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
+
+
 
 
 export function AppSidebar({ user }: { user: UserMeta | undefined }) {
@@ -41,21 +47,47 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
   }
   const img_src = user?.image ?? `https://avatar.vercel.sh/Guest`
 
+  const sideHeadSelects = [
+    {value: "nav",label: "Navigate list",icon: Milestone},
+    { value: 'chat', label: 'Chat list', icon: MessageCircle },
+    {value: "me",label: "Profile",icon: FileUser,},
+  ]
+  const [selected, setSelected] = useState('nav');
+
   return (
     <Sidebar className="group-data-[side=left]:border-r-0 backdrop-blur-md Sidebar">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className='flex'>
+            <UIButton onPressStart={() => {router.push('/')}} isIconOnly className='w-9 h-9 min-w-9' variant="light" ><ShipWheel size={20} /> </UIButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton >
+                <SidebarMenuButton className='[&_svg]:size-5 h-9'>
                   Select Workspace
                   <ChevronDown className="ml-auto" />
-                  
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+              {sideHeadSelects.map((sideHeadSelect) => (
+                <DropdownMenuItem key={sideHeadSelect.value}
+                >
+                  <SidebarMenuButton
+                    className="flex items-center gap-2"
+                    onClick={() => setSelected(sideHeadSelect.value)}
+                  >
+                    <sideHeadSelect.icon className="size-5" />
+                    <span>{sideHeadSelect.label}</span>
+                    <Check
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        selected === sideHeadSelect.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                  </SidebarMenuButton>
+                </DropdownMenuItem>
+              ))}
                 <DropdownMenuItem>
+
                   <span>
                     Navigate list
                   </span>
@@ -68,7 +100,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
             <Button
               variant="ghost"
               type="button"
-              className="p-2 h-fit"
+              className="p-2 h-fit [&>svg]:size-5 [&_svg]:size-5"
               onClick={() => {
                 toggleSidebar()
                 // setOpen(false);
@@ -84,7 +116,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
       </SidebarHeader>
       <SidebarContent>
         <section className=''>
-          <div className='flex gap-2 mx-2' >
+          <div className='flex gap-2 my-1.5 mx-3' >
             <ShadcnAvatar src={img_src} size={14} className='size-14' onclick={()=>{
               if (user) router.push(`/${user.name}`);
             }} />
@@ -154,16 +186,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
           </div>
         </section>
         <section>
-        <SidebarMenu className='mx-2 w-auto gap-0 bg-muted rounded-md'>
-          <SidebarMenuItem>
-            <SidebarMenuButton className='rounded-t-none justify-between opacity-75'>
-              <span className='flex items-center gap-2'>
-                <Star className=' size-4' /> My stars 
-              </span>
-              <ChevronRight className='' />
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+          <SidebarContentMenuComponent />
         </section>
       </SidebarContent>
       {/* <UserSidebarFooter user={user} status={user_status} /> */}
