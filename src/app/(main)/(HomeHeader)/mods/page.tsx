@@ -3,8 +3,8 @@ import { Loader } from '@/components/ui/loader/Loader';
 import { server_auth } from '@/app/(auth)/auth';
 import { HomeHeader } from '@/components/layout/header/home-header';
 
-export const ModsPage = async () => {
-  const session = await server_auth();
+const ModsPage = async () => {
+  // const session = await server_auth();
   return (
     <Suspense fallback={<Loader />}>
       <div className='min-h-12' />
