@@ -19,8 +19,8 @@ export default async function AA() {
     return (
       <main className=''>
         <HomeHeader />
-        <div className='overflow-auto h-full flex w-full'>
-        <div className='min-h-12' />
+        <div className='overflow-auto h-full w-full'>
+          <div className='min-h-12' />
           <NotLoginIndexPage />
         </div>
       </main>
