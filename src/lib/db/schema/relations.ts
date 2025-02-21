@@ -8,7 +8,7 @@ import {
 	linkUserIdentity, linkUserProj, linkUserResource } from "./link";
 import { group_table } from "./group";
 import { tag } from "./tag";
-import { proj } from "./proj";
+import { proj_table } from "./proj";
 import { resource } from "./resource";
 
 
@@ -17,9 +17,9 @@ import { resource } from "./resource";
 
 
 export const linkGroupProjRelations = relations(linkGroupProj, ({one}) => ({
-	proj: one(proj, {
+	proj: one(proj_table, {
 		fields: [linkGroupProj.proj_id],
-		references: [proj.id]
+		references: [proj_table.id]
 	}),
 	group: one(group_table, {
 		fields: [linkGroupProj.group_id],
@@ -27,7 +27,7 @@ export const linkGroupProjRelations = relations(linkGroupProj, ({one}) => ({
 	}),
 }));
 
-export const projRelations = relations(proj, ({many}) => ({
+export const projRelations = relations(proj_table, ({many}) => ({
 	linkGroupProjs: many(linkGroupProj),
 	linkUserProjs: many(linkUserProj),
 }));
@@ -49,9 +49,9 @@ export const resourceRelations = relations(resource, ({many}) => ({
 }));
 
 export const linkUserProjRelations = relations(linkUserProj, ({one}) => ({
-	proj: one(proj, {
+	proj: one(proj_table, {
 		fields: [linkUserProj.proj_id],
-		references: [proj.id]
+		references: [proj_table.id]
 	}),
 	user: one(user, {
 		fields: [linkUserProj.user_id],

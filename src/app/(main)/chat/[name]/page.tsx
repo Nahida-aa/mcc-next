@@ -10,7 +10,7 @@ import { ChatMain } from "./_comp/Client"
 import * as qUser from '~/lib/db/q/qUser'
 import * as qChat from '~/lib/db/q/user/chat'
 
-import { Loader } from "~/components/ui/loading/Loading"
+import { Loading } from "~/components/ui/loading/Loading"
 import { redirect } from 'next/navigation'
 import { db } from "~/lib/db"
 import { user_table } from "~/lib/db/schema/user"

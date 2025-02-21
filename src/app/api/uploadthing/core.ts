@@ -82,11 +82,8 @@ export const ourFileRouter = {
       return { foo: "bar" as const, [UTFiles]: filesWithMyIds };
     })
     .onUploadComplete(({ file, metadata }) => {
-      metadata;
-      // ^?
-      file.customId;
-      //   ^?
-      console.log("ourFileRouter:upload completed", file);
+  
+      console.log("ourFileRouter: 2: upload completed, file:", file, "metadata:", metadata);
     }),
 } satisfies FileRouter;
 

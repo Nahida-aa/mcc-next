@@ -157,7 +157,7 @@ export default function SearchFriendPage() {
             <li key={index} className={`flex items-center justify-between bg-muted hover:bg-muted/75 `} onClick={() => {console.log(user)
               router.push(`/${user.name}`)
             }}>
-              <ShadcnAvatar src={user.image} size={14} className='my-3 ml-3' />
+              <ShadcnAvatar src={user.image??`https://avatar.vercel.sh/${user.name}`} size={14} className='my-3 ml-3' />
               <div className='w-full mx-3'>
                 <div className='w-full flex items-center my-3'>
                   <div className='h-14 w-full '>

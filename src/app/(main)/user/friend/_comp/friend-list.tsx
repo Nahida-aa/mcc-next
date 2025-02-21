@@ -39,7 +39,7 @@ export const FriendList = () => {
         {friends.map((friend) => (
           <SidebarMenuItem key={friend.id}>
             <SidebarMenuButton className='p-3 h-12 rounded-none'>
-              <ShadcnAvatar src={friend.image} size={8} className='my-3 ' />
+              <ShadcnAvatar src={friend.image??`https://avatar.vercel.sh/${friend.name}`} size={8} className='my-3 ' />
               <div className='h-8'>
                 <div className='text-xs'>{friend.nickname || friend.name}</div>
                 <div className='text-xs opacity-50'>[离线]</div>

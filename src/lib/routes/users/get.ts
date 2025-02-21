@@ -108,7 +108,7 @@ export const userMetaWithStatus_schema = z.object({
   id: z.string().uuid(),
   name: z.string(),
   email: z.string().nullable().optional(), // nullable -> 可以为 null, optional -> 可以不传(不传时为 undefined)
-  image: z.string(),
+  image: z.string().nullable(),
   nickname: z.string().nullable().optional(),
   status: z.string()
 })

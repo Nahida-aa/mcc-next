@@ -158,3 +158,4 @@ const ASelectTrigger = React.forwardRef<
     {children}
   </SelectPrimitive.Trigger>
 ))
+ASelectTrigger.displayName = SelectPrimitive.Trigger.displayName

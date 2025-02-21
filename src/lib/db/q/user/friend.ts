@@ -117,7 +117,7 @@ const UserSchema_whenAddFriend = z.object({
   email: z.string().nullable(),
   phone: z.string().nullable(),
   nickname: z.string().nullable(),
-  image: z.string(),
+  image: z.string().nullable(),
   description: z.string().nullable(),
   gender: z.string().nullable(),
   age: z.number().nullable(),

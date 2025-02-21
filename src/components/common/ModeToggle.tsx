@@ -54,8 +54,12 @@ export const  ModeToggle = ({
   const { theme, setTheme } = useTheme()
 
   const onClick = () => {
-    theme === "dark" ? setTheme("light") : setTheme("dark")
-  }
+    if (theme === "dark") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
+  } // 57:5  Error: Expected an assignment or function call and instead saw an expression.  @typescript-eslint/no-unused-expressions
 
   return (
     <Button variant={variant} size="icon" className={` ${className}`} onClick={onClick}>

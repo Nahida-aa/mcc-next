@@ -59,13 +59,13 @@ router.openapi(createRoute({
           id: z.string(),
           name: z.string(),
           nickname: z.string().nullable(),
-          image: z.string(),
+          image: z.string().nullable(),
         }).nullable(),
         receiver: z.object({
           id: z.string(),
           name: z.string(),
           nickname: z.string().nullable(),
-          image: z.string(),
+          image: z.string().nullable(),
         }).nullable(),
       })),
       count: z.number()

@@ -27,7 +27,7 @@ const createGroupSchema = z.object({
   members: z.array(z.object({
     id: z.string(),
     name: z.string(),
-    image: z.string().optional(),
+    image: z.string().nullable().optional(),
   })).optional(),
 })
 export type CreateGroupReq = z.infer<typeof createGroupSchema>;
@@ -37,9 +37,9 @@ router.openapi(createRoute({
     body: jsonContent(createGroupSchema, "create group"),
   },
   responses: {
-    [httpStatus.CREATED]: jsonContent(group_selectSchema, "created group"),
+    [httpStatus.CREATED]: jsonContent(createGroupSchema, "created group"),
     [httpStatus.UNAUTHORIZED]: jsonContent(createMessageObjectSchema('Unauthorized'),'Unauthorized: 未登录'),
-    [httpStatus.UNPROCESSABLE_ENTITY]: jsonContent(createErrorSchema(group_insertSchema),'The validation error(s); 验证错误'),
+    [httpStatus.UNPROCESSABLE_ENTITY]: jsonContent(createErrorSchema(createGroupSchema),'The validation error(s); 验证错误'),
   },
 }), async (c) => {
   const CU_ret = await get_current_user_and_res(c)

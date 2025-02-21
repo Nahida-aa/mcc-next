@@ -86,10 +86,9 @@ interface Dependency {
   dependency_type: string // required, optional, incompatible, embedded
 }
 
-// 定义版本模型
-interface GameVersion {
-
-}
+// // 定义版本模型
+// interface GameVersion {
+// }
 
 
 export const defaultChannels = [

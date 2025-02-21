@@ -108,7 +108,7 @@ export const MessageItem= ( {
   const canRecall = isOwn && !recall
   return (
     <div className={`flex w-full  ${isOwn ? 'justify-end' : 'justify-start'}`}>
-      {!isOwn ? <MsgAvatar src={targetUser.image} alt={targetUser.name} />: <div className='min-w-10' />}
+      {!isOwn ? <MsgAvatar src={targetUser.image?? `https://avatar.vercel.sh/${targetUser.name}`} alt={targetUser.name} />: <div className='min-w-10' />}
       <ContextMenu>
       <ContextMenuTrigger>
         <div className={`p-2 rounded-lg mx-2  ${isOwn ? 'bg-blue-500 text-white ' : 'bg-gray-200 text-black'}`}>
@@ -127,7 +127,7 @@ export const MessageItem= ( {
         右键菜单
       </ContextMenuContent>
       </ContextMenu>
-      {isOwn ? <MsgAvatar src={currentUser.image} alt={currentUser.name} />:<div className='min-w-10' />}
+      {isOwn ? <MsgAvatar src={currentUser.image?? `https://avatar.vercel.sh/${currentUser.name}`} alt={currentUser.name} />:<div className='min-w-10' />}
     </div>
   );
 }

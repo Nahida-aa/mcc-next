@@ -73,7 +73,7 @@ router.openapi(createRoute({
           id: z.string(),
           name: z.string(),
           email: z.string().nullable().optional(),
-          image: z.string(),
+          image: z.string().nullable(),
           nickname: z.string().nullable().optional(),
         }).nullable(),
         content: z.string(),
@@ -111,7 +111,7 @@ const msgLsCursorSchema = z.object({
       id: z.string(),
       name: z.string(),
       email: z.string().nullable().optional(),
-      image: z.string(),
+      image: z.string().nullable(),
       nickname: z.string().nullable().optional(),
     }).nullable(),
     content: z.string(),
@@ -132,7 +132,7 @@ export interface Msg {
     id: string;
     name: string;
     email?: string | null;
-    image: string;
+    image?: string|null;
     nickname?: string | null ;
   } | null;
   content: string;

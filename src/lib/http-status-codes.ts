@@ -360,7 +360,7 @@ export const UNAVAILABLE_FOR_LEGAL_REASONS: ClientErrorStatusCode = 451;
  * - 请求头中的某些字段缺失或格式不正确。
  * - 请求参数的类型不符合预期（例如，期望一个整数，但实际传递的是字符串）
  */
-export const UNPROCESSABLE_ENTITY: 422 = 422;
+export const UNPROCESSABLE_ENTITY = 422;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.13
  *
