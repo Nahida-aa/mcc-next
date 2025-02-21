@@ -1,8 +1,8 @@
 import { decode } from 'hono/jwt'
-import { createRouter } from "@/lib/create-app";
+import { createRouter } from "~/lib/create-app";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
-import settings from "@/lib/settings";
-import { verifyJWT } from "@/lib/core/token";
+import settings from "~/lib/settings";
+import { verifyJWT } from "~/lib/core/token";
 import {
   getCookie,
   getSignedCookie,
@@ -10,8 +10,8 @@ import {
   setSignedCookie,
   deleteCookie,
 } from 'hono/cookie'
-import jsonContent from '@/lib/openapi/helpers/json-content';
-import { createCSRFToken } from '@/lib/core/token';
+import jsonContent from '~/lib/openapi/helpers/json-content';
+import { createCSRFToken } from '~/lib/core/token';
 
 import register_route from './register'
 import session_route from './session'

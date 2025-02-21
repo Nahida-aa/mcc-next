@@ -1,9 +1,9 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import jsonContent from "@/lib/openapi/helpers/json-content";
-import httpStatus from "@/lib/http-status-codes"
-import { notFoundSchema } from "@/lib/constans";
-import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
-import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
+import jsonContent from "~/lib/openapi/helpers/json-content";
+import httpStatus from "~/lib/http-status-codes"
+import { notFoundSchema } from "~/lib/constans";
+import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
+import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
 import { login_schema } from "./login";
 
 const loginUseNameOrEmailOrPhoneSchema = z.object({

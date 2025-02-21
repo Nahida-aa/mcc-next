@@ -1,4 +1,4 @@
-import { SubHeader } from "@/components/layout/header/sub-header"
+import { SubHeader } from "~/components/layout/header/sub-header"
 
 export default async function Page({
   params,

@@ -2,9 +2,9 @@
 
 import { useFormStatus } from 'react-dom';
 
-import { LoaderIcon } from '@/components/icons';
+import { LoaderIcon } from '~/components/icons';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '~/components/ui/button';
 
 export function SubmitButton({
   children,
@@ -33,14 +33,20 @@ export function SubmitButton({
     >
 
       {children}
-      {(pending || isLoading) && (
-        <span className="animate-spin  ">
-          <LoaderIcon />
-        </span>
-      )}
+      {(pending || isLoading) && (<LoadingIcon />)}
       <output aria-live="polite" className="sr-only">
         {pending || isLoading ? 'Loading' : 'Submit form'}
       </output>
     </Button>
+  );
+}
+
+export const LoadingIcon = ({
+  className, size = 16,
+}: {
+  className?: string, size?: number,
+}) => {
+  return (
+      <LoaderIcon className={`animate-spin ${className}`} size={size} />
   );
 }

@@ -1,8 +1,8 @@
 import useSWRInfinite from 'swr/infinite';
 import { useState } from 'react';
-import { fetcher } from '@/lib/utils';
-import { useSocket } from '@/components/providers/socket-provider';
-import { MsgLsCursor, MsgLsCursorI } from '@/lib/routes/chats/messages';
+import { fetcher } from '~/lib/utils';
+import { useSocket } from '~/components/providers/socket-provider';
+import { MsgLsCursor, MsgLsCursorI } from '~/lib/routes/chats/messages';
 
 export const useMsgQuery = (apiUrl: string) => {
   const { isConnected } = useSocket()

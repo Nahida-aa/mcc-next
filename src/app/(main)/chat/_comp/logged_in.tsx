@@ -1,8 +1,8 @@
 import React from 'react';
-import { ChatsWithCount, listChat_by_userId } from '@/lib/db/q/user/chat';
-// import { UserMeta } from '@/lib/types';
-import { Button } from '@/components/ui/button';
-import { UserMeta } from '@/components/layout/sidebar/user-side-toggle';
+import { ChatsWithCount, listChat_by_userId } from '~/lib/db/q/user/chat';
+// import { UserMeta } from '~/lib/types';
+import { Button } from '~/components/ui/button';
+import { UserMeta } from '~/components/layout/sidebar/user-side-toggle';
 
 export default async function LoggedInIndexPage({ 
   session, className, chats

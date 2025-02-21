@@ -1,15 +1,15 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { ChatsWithCount, listChat_by_userId } from '@/lib/db/q/user/chat';
-// import { UserMeta } from '@/lib/types';
-import { Button } from '@/components/ui/button';
-import { UserMeta } from '@/components/layout/sidebar/user-side-toggle';
+import { ChatsWithCount, listChat_by_userId } from '~/lib/db/q/user/chat';
+// import { UserMeta } from '~/lib/types';
+import { Button } from '~/components/ui/button';
+import { UserMeta } from '~/components/layout/sidebar/user-side-toggle';
 import { toast as sonner_toast } from "sonner"
-import { ChatsWithCountApiResBody } from '@/lib/routes/chats';
+import { ChatsWithCountApiResBody } from '~/lib/routes/chats';
 import useSWR from 'swr';
-import { fetcher } from '@/lib/utils';
+import { fetcher } from '~/lib/utils';
 import { NetworkIcon, WifiOffIcon } from 'lucide-react';
-import { CodeBlock } from '@/components/common/md/pre';
+import { CodeBlock } from '~/components/common/md/pre';
 import { ChatList} from './ChatItem';
 
 export function ChatsClientMain({ 

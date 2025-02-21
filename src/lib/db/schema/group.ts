@@ -11,8 +11,9 @@ import { chat_table } from "./message";
 
 export const group_table = pgTable("Group", {
   ...uuidCommon,
-  image: varchar().default("https://avatar.vercel.sh/guest").notNull(),
+  image: varchar(),
   nickname: varchar("nickname", { length: 32 }),
+  description: varchar({ length: 65536 }),
   email: varchar('email', { length: 64 }),
   members_count: integer("members_count").default(1).notNull(),
   followers_count: integer("followers_count").default(0).notNull(),

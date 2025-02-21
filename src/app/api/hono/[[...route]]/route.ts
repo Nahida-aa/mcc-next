@@ -3,19 +3,21 @@ import { handle } from 'hono/vercel'
 export const dynamic = 'force-dynamic'
 // export const runtime = 'edge'
 // export const runtime = "nodejs";
-import configOpenAPI from '@/lib/conf-openapi'
-import createApp, { createRouter } from '@/lib/create-app'
+import configOpenAPI from '~/lib/conf-openapi'
+import createApp, { createRouter } from '~/lib/create-app'
 // import { logger } from 'hono-pino'; // pnpm add hono-pino pino
 
-import test from '@/lib/routes/test/index'
-import auth from '@/lib/routes/auth/index'
-import users from '@/lib/routes/users/route'
-// import users_get from '@/server/routes/users/get'
-import user from '@/lib/routes/user/route'
-import groups from '@/lib/routes/groups/route'
-import follow from '@/lib/routes/follow/route'
-import friend from '@/lib/routes/friend/route'
-import chats from '@/lib/routes/chats/route'
+import test from '~/lib/routes/test/index'
+import auth from '~/lib/routes/auth/index'
+import users from '~/lib/routes/users/route'
+// import users_get from '~/server/routes/users/get'
+import user from '~/lib/routes/user/route'
+import groups from '~/lib/routes/groups/route'
+import follow from '~/lib/routes/follow/route'
+import friend from '~/lib/routes/friend/route'
+import chats from '~/lib/routes/chats/route'
+import project from '~/lib/routes/project/route'
+import upload from '~/lib/routes/upload/route'
 
 // const app = new Hono().basePath('/api/hono')
 // const app = new OpenAPIHono().basePath('/api/hono')
@@ -34,6 +36,8 @@ const routes = [
   follow,
   friend,
   chats,
+  project,
+  upload,
 ] as const;
 
 configOpenAPI(app)

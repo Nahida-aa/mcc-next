@@ -1,7 +1,7 @@
 'use client'
 
-import { useSocket } from '@/components/providers/socket-provider'
-import { Badge } from '@/components/ui/badge'
+import { useSocket } from '~/components/providers/socket-provider'
+import { Badge } from '~/components/ui/badge'
 import { useEffect, useState } from 'react'
 
 export const SocketIndicator = () => {

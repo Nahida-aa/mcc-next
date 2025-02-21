@@ -12,14 +12,14 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '~/components/ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
-import { client_logout, client_sign_out } from '@/app/(auth)/client';
-import { UserMeta } from '@/components/layout/sidebar/user-side-toggle';
+} from '~/components/ui/sidebar';
+import { client_logout, client_sign_out } from '~/app/(auth)/client';
+import { UserMeta } from '~/components/layout/sidebar/user-side-toggle';
 
 interface UserAvatarProps {
   user?: UserMeta 

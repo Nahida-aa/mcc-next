@@ -1,6 +1,6 @@
 'use client'
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
 import { CirclePlus, Smile } from 'lucide-react';
 import React, { useState } from 'react';
 

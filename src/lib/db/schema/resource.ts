@@ -15,7 +15,7 @@ export const resource = pgTable("Resource", {
   downloadCount: integer("download_count").default(0).notNull(),
   favoriteCount: integer("favorite_count").default(0).notNull(),
   isActive: boolean("is_active").default(true).notNull(),
-  image: varchar("image").notNull(), // 头像图片
+  image: varchar("image"), // 头像图片
   banner: varchar("banner"), // 横幅图片
   compatibility: jsonb("compatibility").$type<ResourceCompatibility>(),
   platforms: jsonb("platforms").$type<string[]>().notNull(), // [ NeoForge , Forge , Fabric , Quilt ]

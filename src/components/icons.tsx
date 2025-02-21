@@ -296,13 +296,13 @@ export const FileIcon = ({ size = 16 }: { size?: number }) => {
   );
 };
 
-export const LoaderIcon = ({ size = 16 }: { size?: number }) => {
+export const LoaderIcon = ({ size = 16, className="" }: { size?: number, className?:string }) => {
   return (
     <svg
       height={size}
       strokeLinejoin="round"
       viewBox="0 0 16 16"
-      width={size}
+      width={size} className={className}
       style={{ color: 'currentcolor' }}
     >
       <g clipPath="url(#clip0_2393_1490)">

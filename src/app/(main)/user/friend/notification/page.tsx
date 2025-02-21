@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
-import { Loader } from '@/components/ui/loader/Loader';
-import { SubHeader } from '@/components/layout/header/sub-header';
-import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { Loader } from '~/components/ui/loading/Loading';
+import { SubHeader } from '~/components/layout/header/sub-header';
+import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar';
 import { Bell, FileUser, PersonStanding, Plus } from 'lucide-react';
-import { server_auth } from '@/app/(auth)/auth';
+import { server_auth } from '~/app/(auth)/auth';
 import { FriendNotificationList } from './_comp/notification';
 
 const FriendNotification = async () => {

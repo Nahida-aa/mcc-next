@@ -1,22 +1,22 @@
-import jsonContent from "@/lib/openapi/helpers/json-content";
+import jsonContent from "~/lib/openapi/helpers/json-content";
 import { createRoute, z } from "@hono/zod-openapi";
-import httpStatus from "@/lib/http-status-codes"
-import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
+import httpStatus from "~/lib/http-status-codes"
+import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
 import { not } from "drizzle-orm";
-import { notFoundSchema } from "@/lib/constans";
-import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
-import { idCardInfo_insertSchema, } from "@/lib/schema/userBy"
-import {user as userTable, idCardInfo as idCardInfoTable, User, idCardInfo, } from "@/lib/db/schema/user"
+import { notFoundSchema } from "~/lib/constans";
+import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
+import { idCardInfo_insertSchema, } from "~/lib/schema/userBy"
+import {user as userTable, idCardInfo as idCardInfoTable, User, idCardInfo, } from "~/lib/db/schema/user"
 import { createInsertSchema } from "drizzle-zod";
 
-import { db } from "@/lib/db";
+import { db } from "~/lib/db";
 import { eq } from "drizzle-orm";
 import { compare, hash, hashSync } from "bcrypt-ts";
 
-import { createRouter } from "@/lib/create-app";
-import { createJWT } from "@/lib/core/token";
-import settings from "@/lib/settings";
-import { create_sessionToken_and_setCookie, set_delCookie } from "@/lib/middleware/utils";
+import { createRouter } from "~/lib/create-app";
+import { createJWT } from "~/lib/core/token";
+import settings from "~/lib/settings";
+import { create_sessionToken_and_setCookie, set_delCookie } from "~/lib/middleware/utils";
 
 export const logout_in_schema = z.object({
   csrfToken: z.string(),

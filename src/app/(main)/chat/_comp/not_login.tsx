@@ -1,7 +1,7 @@
 // 未登录: 的主页: src/app/(main)/not_login.tsx
 
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "~/components/ui/button";
+import { ScrollArea } from "~/components/ui/scroll-area";
 
 // 未登录状态下 显示
 export default function NotLoginIndexPage() {

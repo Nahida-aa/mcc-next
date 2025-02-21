@@ -1,6 +1,6 @@
 'use client';
-import { ShadcnAvatar } from '@/components/common/avatar';
-import { User_whenAddFriend, UserLsWithCount_whenAddFriend } from '@/lib/db/q/user/friend';
+import { ShadcnAvatar } from '~/components/common/avatar';
+import { User_whenAddFriend, UserLsWithCount_whenAddFriend } from '~/lib/db/q/user/friend';
 import React, { useEffect, useState } from 'react'
 import { ClientFrom } from './from';
 

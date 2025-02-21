@@ -1,6 +1,6 @@
-import { user } from "@/lib/db/schema/user";
-import { createJWT, verifyJWT } from "@/lib/core/token";
-import settings from "@/lib/settings";
+import { user } from "~/lib/db/schema/user";
+import { createJWT, verifyJWT } from "~/lib/core/token";
+import settings from "~/lib/settings";
 import { z } from "@hono/zod-openapi";
 import {
   getCookie,

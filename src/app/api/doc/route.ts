@@ -1,4 +1,4 @@
-import { getApiDocs } from '@/app/(main)/docs/swagger';
+import { getApiDocs } from '~/app/(main)/docs/swagger';
 import { NextRequest, NextResponse } from 'next/server';
 
 

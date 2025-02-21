@@ -1,12 +1,14 @@
-import { db } from "@/lib/db";
-import { chat_table, link_chat_user_table } from "@/lib/db/schema/message";
-import { user_table } from "@/lib/db/schema/user";
+import { db } from "~/lib/db";
+import { chat_table, link_chat_user_table } from "~/lib/db/schema/message";
+import { user_table } from "~/lib/db/schema/user";
 import { eq, and, inArray, aliasedTable, or, not, InferSelectModel, sql } from "drizzle-orm";
 import { group_table } from "../../schema/group";
 
 export interface Chat {
   id: string;
   latest_message: string;
+  latest_message_count: number;
+  latest_sender_type: string;
   latest_message_timestamp: Date;
   latest_sender_id: string;
   created_at: Date;
@@ -23,8 +25,19 @@ export interface ChatTargetGroup {
   id: string;
   name: string;
   image: string;
+  members: {
+    id: string;
+    name: string;
+    image: string;
+  }[];
 }
-
+export interface ChatWithTarget {
+  chat: Chat;
+  is_pinned: boolean | null;
+  target_user: ChatTargetUser | null;
+  target_group: ChatTargetGroup | null;
+  latest_sender: ChatTargetUser | null;
+}
 
 export type ChatsWithCount = Awaited<ReturnType<typeof listChat_by_userId>>
 // 返回用户聊天列表的函数
@@ -33,6 +46,8 @@ export async function listChat_by_userId(currentUser_id: string,
 ) {
   try {
     const latestSender_table = aliasedTable(user_table, "latestSender_table")
+    // const groupMembers_table = aliasedTable(user_table, "groupMembers_table");
+
     const chatsQ = db.select({ 
       chat: chat_table,
       is_pinned: link_chat_user_table.is_pinned,
@@ -46,6 +61,17 @@ export async function listChat_by_userId(currentUser_id: string,
         id: group_table.id,
         name: group_table.name,
         image: group_table.image,
+        members: sql`array(
+          select jsonb_build_object(
+            'id', ${user_table.id},
+            'name', ${user_table.name},
+            'image', ${user_table.image}
+          )
+          from ${link_chat_user_table}
+          left join ${user_table} on ${link_chat_user_table.user_id} = ${user_table.id}
+          where ${link_chat_user_table.chat_id} = ${chat_table.id}
+          limit 4
+        )`.as('members')
       },
       latest_sender: {
         id: latestSender_table.id,
@@ -62,7 +88,7 @@ export async function listChat_by_userId(currentUser_id: string,
     .orderBy(chat_table.latest_message_timestamp)
 
     const count = (await chatsQ).length
-    const chats = await chatsQ.offset(offset).limit(limit)
+    const chats = await chatsQ.offset(offset).limit(limit) as ChatWithTarget[]
 
     return { items: chats, count }
   } catch (error) {
@@ -70,8 +96,6 @@ export async function listChat_by_userId(currentUser_id: string,
     throw error;
   }
 }
-
-
 
 export const getUserChat = async (user1_id: string, user2_id: string) => {
   const [chat] = await db.select().from(chat_table)
@@ -117,9 +141,12 @@ export const createChat = async (
     console.log('createChat', type, user_ids, content, group_id)
     console.log('latest_sender_id: ', user_ids[user_ids.length - 1])
     
+    // TODO
     const [chat] = await tx.insert(chat_table).values({
       type: type,
       latest_message: content,
+      latest_message_count: 1,
+      latest_sender_type: 'system',
       latest_message_timestamp: sql`now()`,
       latest_sender_id: user_ids[user_ids.length - 1],
       group_id: group_id,

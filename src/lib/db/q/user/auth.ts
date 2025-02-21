@@ -1,5 +1,5 @@
-import { hash_password } from '@/lib/core/auth';
-import * as QUser  from '@/lib/db/q/qUser';
+import { hash_password } from '~/lib/core/auth';
+import * as QUser  from '~/lib/db/q/qUser';
 
 export async function changePassword(userName: string, newPassword: string)
 // : Promise<boolean> 

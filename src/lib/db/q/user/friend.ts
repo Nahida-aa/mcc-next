@@ -1,7 +1,7 @@
-import { db } from "@/lib/db";
-import { friend_table } from "@/lib/db/schema/follow";
-import { friendNotification_table } from "@/lib/db/schema/notification";
-import { eq, and, or, inArray, ilike, notInArray } from "drizzle-orm";
+import { db } from "~/lib/db";
+import { friend_table } from "~/lib/db/schema/follow";
+import { friendNotification_table } from "~/lib/db/schema/notification";
+import { eq, and, or, inArray, ilike, notInArray, not } from "drizzle-orm";
 import { chat_table, link_chat_user_table } from "../../schema/message";
 import { user, User, user_table } from "../../schema/user";
 import { z } from "@hono/zod-openapi";
@@ -9,18 +9,19 @@ import { createChat, getUserChat } from "./chat";
 
 // 检查是否已经存在好友请求或好友关系
 export const getFriendship = async (sender_id: string, receiver_id: string) => {
+  console.log('getFriendship. sender_id:', sender_id, 'receiver_id:', receiver_id)
   const [friendship] = await db.select({
     user_id: friend_table.user_id,
   }).from(friend_table)
     .where(and(eq(friend_table.user_id, sender_id),
       eq(friend_table.friend_id, receiver_id)));
-
+  console.log('friendship.return', friendship)
   return friendship
 }
 
 // 创建好友请求
-export const createFriendRequest = async (
-  sender_id: string, receiver_id: string, content: string) => {
+export const createFriendRequest = async (sender_id: string, receiver_id: string, content: string) => {
+  console.log('sender_id:', sender_id, 'receiver_id:', receiver_id, 'content:', content)
   return await db.transaction(async (tx) => {
     // 创建好友请求通知
     const [notification] = await tx.insert(friendNotification_table).values({
@@ -147,13 +148,14 @@ export const userLsWithCount_notFriend_by_currentUserId_word = async (currentUse
     age: user_table.age,
   }).from(user_table)
     .where(and(
+      not(eq(user_table.id, currentUserId)), // 排除当前用户
+      notInArray(user_table.id, friendIds),
       or(
         ilike(user_table.name, `%${keyword}%`),
         ilike(user_table.email, `%${keyword}%`),
         ilike(user_table.phone, `%${keyword}%`),
         ilike(user_table.nickname, `%${keyword}%`)
       ),
-      notInArray(user_table.id, friendIds)
     ));
   const count = (await usersQuery).length
   const users = await usersQuery.offset(offset).limit(limit).execute()

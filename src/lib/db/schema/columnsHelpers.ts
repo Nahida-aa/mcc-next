@@ -2,20 +2,19 @@
 import { serial, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const timestamps = {
-  updated_at: timestamp("updated_at").$onUpdate(() => new Date()),
-  created_at: timestamp("created_at").defaultNow().notNull(),
+  created_at: timestamp().defaultNow().notNull(),
+  updated_at: timestamp().$onUpdate(() => new Date()),
   // deletedAt: timestamp("deleted_at"),
 }
 
 export const timestamps_with_deleted_at = {
   ...timestamps,
-  deleted_at: timestamp("deleted_at"),
+  deleted_at: timestamp(),
 }
 
 export const commonColumns = {
-  name: varchar({ length: 32 }).notNull(),
-  summary: varchar({ length: 255 }), // 简介字段
-  description: text(),
+  name: varchar({ length: 255 }).notNull(),
+  summary: varchar({ length: 2048 }), // 摘要
   ...timestamps
 }
 
@@ -28,7 +27,7 @@ export const autoIncrementCommon = {
 }
 
 export const uuidCommon = {
-  id: uuid('id').primaryKey().notNull().defaultRandom(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   ...commonColumns
 }
 
@@ -38,6 +37,6 @@ export const autoIncrementWithTimestamps = {
 }
 
 export const uuidWithTimestamps = {
-  id: uuid('id').primaryKey().notNull().defaultRandom(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   ...timestamps
 }

@@ -1,18 +1,18 @@
-import { HomeHeader } from '@/components/layout/header/home-header'
+import { HomeHeader } from '~/components/layout/header/home-header'
 import React from 'react'
 import { cookies } from 'next/headers';
 import Link from 'next/link'; // 对 next 内的 router 的跳转
-import { Button } from '@/components/ui/button';
+import { Button } from '~/components/ui/button';
 import { redirect } from 'next/navigation'
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { server_auth } from '@/app/(auth)/auth';
-import { SubHeader } from '@/components/layout/header/sub-header';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { server_auth } from '~/app/(auth)/auth';
+import { SubHeader } from '~/components/layout/header/sub-header';
 import { Bell, FileUser, LogIn, LogOut, MessageCircleQuestion, Palette, PencilLine, PersonStanding, Plus, QrCode, Search, Settings, Star, UserRound } from 'lucide-react';
-import { Input } from "@/components/ui/input"
+import { Input } from "~/components/ui/input"
 import SearchButton from '../user/friend/add/_comp/search-button';
-import { Card } from '@/components/ui/card';
-import { SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { ShieldLockIcon } from '@/components/icons';
+import { Card } from '~/components/ui/card';
+import { SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar';
+import { ShieldLockIcon } from '~/components/icons';
 import {
   Dialog,
   DialogClose,
@@ -22,8 +22,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import LogoutButton from '@/app/(auth)/_comp/LogoutButton';
+} from "~/components/ui/dialog"
+import LogoutButton from '~/app/(auth)/_comp/LogoutButton';
 
 const baseSettings = [
   { name: 'Account and security', url: '/setting/account', icon: () => <UserRound /> },

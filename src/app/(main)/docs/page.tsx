@@ -1,4 +1,4 @@
-import { getApiDocs } from "@/app/(main)/docs/swagger";
+import { getApiDocs } from "~/app/(main)/docs/swagger";
 import ReactSwagger from "./react-swagger";
 import SwaggerUIHono from "./hono-doc";
 

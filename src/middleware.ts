@@ -1,9 +1,9 @@
 import NextAuth from 'next-auth';
 
-import { authConfig } from '@/app/(auth)/auth.config';
+import { authConfig } from '~/app/(auth)/auth.config';
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { auth, server_auth } from "@/app/(auth)/auth";
+import { auth, server_auth } from "~/app/(auth)/auth";
 
 
 export default auth(middleware)
@@ -16,6 +16,7 @@ async function middleware(
   const rUrl =req.url
   const session = await server_auth();
   if (session) {
+    console.log(`app/(auth)/middleware.ts: middleware: session: ${JSON.stringify(session)}`);
     const res = NextResponse.next()
     res.cookies.set('name', session.user.name,{
         httpOnly: true,
@@ -26,14 +27,14 @@ async function middleware(
     return res;
   } else if (needAuthPaths.some((path) => rUrl.startsWith(path))) {
     if (!session) return NextResponse.redirect(new URL('/sign-in', req.url));
-  } 
-
+  }  
+  console.log(`app/(auth)/middleware.ts: middleware: session: ${JSON.stringify(session)}`);
   return NextResponse.next();
 }
 // export default middleware;
 
 const needAuthPaths = [
-  '/user/status', '/(*)/chat'
+  '/user/status',  '/user/friend/add', '/api/uploadthing'
 ]
 
 export const config = {

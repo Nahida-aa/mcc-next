@@ -3,10 +3,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { toast as sonner_toast } from "sonner"
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
-import { SubmitButton } from '@/components/common/submit-button'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/ui/form'
+import { Textarea } from '~/components/ui/textarea'
+import { Button } from '~/components/ui/button'
+import { SubmitButton } from '~/components/common/submit-button'
 import { useRouter } from 'next/navigation'
 
 const FormSchema = z.object({
@@ -30,7 +30,7 @@ export const ClientFrom = ({
 
   const handle_sendFriendReq = async (data: z.infer<typeof FormSchema>) => {
     try {
-      const res = await fetch("/api/hono/user/add/friend/send_req", {
+      const res = await fetch("/api/hono/user/friend/request/send", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

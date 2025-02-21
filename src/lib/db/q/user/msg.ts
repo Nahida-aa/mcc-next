@@ -1,10 +1,10 @@
-import { db } from "@/lib/db";
-import { message_table, chat_table, link_chat_user_table } from "@/lib/db/schema/message";
-import { user_table } from "@/lib/db/schema/user";
+import { db } from "~/lib/db";
+import { message_table, chat_table, link_chat_user_table } from "~/lib/db/schema/message";
+import { user_table } from "~/lib/db/schema/user";
 import { eq, and, sql, or, is, InferSelectModel, inArray, desc, gt, lt } from "drizzle-orm";
 import { Chat_db, getChat, getOrCreateChat } from "./chat";
-import { ClientMessageI } from "@/app/(main)/chat/[name]/_comp/MessageList";
-import { UserMeta } from "@/lib/schema/user";
+import { ClientMessageI } from "~/app/(main)/chat/[name]/_comp/MessageList";
+import { UserMeta } from "~/lib/schema/user";
 
 export async function sendMessageV2(
   msg: {

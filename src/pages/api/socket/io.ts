@@ -2,7 +2,7 @@ import { Server as HttpServer } from 'http';
 import { NextApiRequest } from 'next';
 import { Server as SocketIOServer } from 'socket.io'; // pnpm i socket.io pnpm i socket.io-client
 
-import { NextApiResponseServerIO} from '@/lib/types/index';
+import { NextApiResponseServerIO} from '~/lib/types/index';
 
 export const config = {
   api: {

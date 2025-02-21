@@ -28,12 +28,15 @@ export const messageRelations = relations(message_table, ({ one }) => ({
 export const chat_table = pgTable("Chat", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
   latest_message: varchar("latest_message", { length: 256 }), // 最新消息内容
-  latest_message_timestamp: timestamp("latest_message_timestamp").notNull(), // 最新消息时间戳
-  latest_sender_id: uuid("latest_sender_id").notNull().references(() => user_table.id), // 最新消息发送者ID
+  latest_message_count: integer("latest_message_count").default(0).notNull(), // 最新消息数量
+  latest_message_timestamp: timestamp("latest_message_timestamp").defaultNow().notNull(), // 最新消息时间戳
+  latest_sender_type: varchar("latest_sender_type", { length: 64 }).notNull(), // user, system
+  latest_sender_id: uuid("latest_sender_id").references(() => user_table.id), // 最新消息发送者ID
   type: varchar("type", { length: 64 }).notNull(), // 'user' or 'group' or self
   group_id: uuid("group_id").references(() => group_table.id), // 仅在群聊时使用
   created_at: timestamp("created_at").defaultNow().notNull(),
 });
+
 
 export const chatRelations = relations(chat_table, ({ many, one }) => ({
   users: many(link_chat_user_table),

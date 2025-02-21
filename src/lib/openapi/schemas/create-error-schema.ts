@@ -35,3 +35,7 @@ const createErrorSchema = <
 };
 
 export default createErrorSchema;
+
+export {
+  createErrorSchema,
+}

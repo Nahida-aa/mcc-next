@@ -22,8 +22,9 @@ type PlatformInfo = typeof platform_info_default;
 export const user = pgTable("User", {
   ...uuidCommon,
   password: varchar("password", { length: 64 }),
-  image: varchar().default("https://avatar.vercel.sh/guest").notNull(), // ?
+  image: varchar(), // 插入时生成默认头像
   nickname: varchar("nickname", { length: 32 }),
+  description: varchar({ length: 65536 }),
   email: varchar('email', { length: 64 }),
   phone: varchar("phone", { length: 64 }), // 逻辑必填
   gender: varchar(),
@@ -66,6 +67,8 @@ export const idCardInfo = pgTable("IDCardInfo", {
 			name: "IDCardInfo_user_id_fkey"
 		}),
 ]);
+
+export const idCardInfo_table = idCardInfo;
 
 export const userRelations = relations(user, ({one, many}) => ({
   home: one(home),

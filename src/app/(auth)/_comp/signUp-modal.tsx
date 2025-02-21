@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "~/components/ui/dialog"
 
 import {
   Form,
@@ -18,17 +18,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "~/components/ui/form"
 
-import { Input } from '@/components/ui/input';
-// import { Label } from '@/components/ui/label';
+import { Input } from '~/components/ui/input';
+// import { Label } from '~/components/ui/label';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
 // import { useTransition } from "react"; // const [isPending, startTransition] = useTransition() // 或许很有用, 不使用可能有问题, 但是我怀疑是 react 的问题
-import { SubmitButton } from "@/components/common/submit-button";
+import { SubmitButton } from "~/components/common/submit-button";
 import {  hono_sign_in, hono_signUp, server_sign_in } from "../actions";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

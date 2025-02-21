@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
-import { Loader } from '@/components/ui/loader/Loader';
-import { server_auth } from '@/app/(auth)/auth';
-import { HomeHeader } from '@/components/layout/header/home-header';
+import { Loader } from '~/components/ui/loading/Loading';
+import { server_auth } from '~/app/(auth)/auth';
+import { HomeHeader } from '~/components/layout/header/home-header';
 
 const ModsPage = async () => {
   // const session = await server_auth();

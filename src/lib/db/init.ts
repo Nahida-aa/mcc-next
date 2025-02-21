@@ -8,39 +8,49 @@ import { user as usersTable, identity, idCardInfo as idCardInfoTable, home  } fr
 import { 
   // linkUserFollow, linkGroupFollow, 
   linkUserProj, linkUserResource, linkUserIdentity } from './schema/link';
-import { proj } from './schema/proj';
+import { proj_table } from './schema/proj';
 import { resource } from './schema/resource';
 import { tag } from './schema/tag';
 import * as qUser from "./q/qUser"
 // import { QLinkUserFollow } from './q/qUserFollow';
 import { console } from 'inspector';
+import { ReqRegisterUserBody } from '../routes/auth/register';
 
-export async function dropAllTables() {
-  const tables = [
-    'Group',
-    'LinkGroupFollow',
-    'LinkGroupIdentity',
-    'LinkGroupProj',
-    'LinkGroupResource',
-    'LinkUserFollow',
-    'LinkUserGroup',
-    'LinkUserIdentity',
-    'LinkUserProj',
-    'LinkUserResource',
-    'Proj',
-    'Resource',
-    'Tag',
-    'Home',
-    'IDCardInfo',
-    'Identity',
-    'User'
-  ];
-
-  for (const table of tables) {
-    await db.execute(`DROP TABLE IF EXISTS "${table}" CASCADE`);
-  }
-}
+const localhost = 'http://localhost:3000';
 async function createUserLines() {
+  const testUsers: ReqRegisterUserBody[] = [
+    {
+      name: "test1",
+      password: "string",
+      phone: "124567890",
+      id_card_info: {
+        id_card_number: "124567890"
+      }
+    },{
+      name: "test2",
+      password: "string",
+      image: 'https://avatars.githubusercontent.com/u/96083926?s=80&v=4',
+      phone: "124567890",
+      id_card_info: {
+        id_card_number: "124567890"
+      }
+    },{
+      name: "测试用户",
+      password: "string",
+      image: 'https://avatars.githubusercontent.com/u/188596056?v=4',
+      phone: "124567890",
+      id_card_info: {
+        id_card_number: "124567890"
+      }
+    }
+  ]
+  // const res = await fetch("/api/hono/auth/register", {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(testUsers[0]),
+  // });
   // 初始创建三个用户
   const user1 = await qUser.create({
     name: 'test1',
@@ -64,7 +74,7 @@ async function createUserLines() {
   const user3 = await qUser.create({
     name: '测试用户',
     password: '1234ts',
-    image: 'https://avatars.githubusercontent.com/u/96083926?s=80&v=4',
+    image: 'https://avatars.githubusercontent.com/u/188596056?v=4',
     idCardInfo: {
       id_card_number: '1234ts123456',
     },

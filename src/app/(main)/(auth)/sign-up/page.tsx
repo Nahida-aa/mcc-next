@@ -1,5 +1,5 @@
 import React from 'react'
-import { SignUp_Modal } from '@/app/(auth)/_comp/signUp-modal';
+import { SignUp_Modal } from '~/app/(auth)/_comp/signUp-modal';
 
 export default function page() {
   return (

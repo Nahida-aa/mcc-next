@@ -1,15 +1,15 @@
 "use client";
-import { HomeHeader } from '@/components/layout/header/home-header'
+import { HomeHeader } from '~/components/layout/header/home-header'
 import React, { useEffect, useState } from 'react'
 import { cookies } from 'next/headers';
 import Link from 'next/link'; // 对 next 内的 router 的跳转
-import { Button } from '@/components/ui/button';
+import { Button } from '~/components/ui/button';
 import { redirect, useRouter } from 'next/navigation'
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { server_auth } from '@/app/(auth)/auth';
-import { SubHeader } from '@/components/layout/header/sub-header';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { server_auth } from '~/app/(auth)/auth';
+import { SubHeader } from '~/components/layout/header/sub-header';
 import { Search } from 'lucide-react';
-import { Input } from "@/components/ui/input"
+import { Input } from "~/components/ui/input"
 import {
   Command,
   CommandDialog,
@@ -20,7 +20,7 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/components/ui/command"
+} from "~/components/ui/command"
 
 
 const SearchButton = ({

@@ -1,4 +1,4 @@
-import { idCardInfo, user } from "@/lib/db/schema/user";
+import { idCardInfo, user } from "~/lib/db/schema/user";
 import { z } from "@hono/zod-openapi";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 

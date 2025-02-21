@@ -4,22 +4,22 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation'
 import { useWindowSize } from 'usehooks-ts';
 
-// import { ModelSelector } from '@/components/model-selector';
-import { SidebarToggle } from '@/components/layout/sidebar/sidebar-toggle';
-import { Button } from '@/components/ui/button';
-import { BetterTooltip } from '@/components/common/BetterTooltip';
-import { PlusIcon, VercelIcon } from '@/components/icons';
-import { useSidebar } from '@/components/ui/sidebar';
+// import { ModelSelector } from '~/components/model-selector';
+import { SidebarToggle } from '~/components/layout/sidebar/sidebar-toggle';
+import { Button } from '~/components/ui/button';
+import { BetterTooltip } from '~/components/common/BetterTooltip';
+import { PlusIcon, VercelIcon } from '~/components/icons';
+import { useSidebar } from '~/components/ui/sidebar';
 import { UserMeta, UserSidebarToggle } from '../sidebar/user-side-toggle';
-import { ModeToggle } from '@/components/common/ModeToggle';
-import { Search, AlignRight, X, Sparkles, UserRound, House, UserRoundPlus, Box } from 'lucide-react';
+import { ModeToggle } from '~/components/common/ModeToggle';
+import { Search, AlignRight, X, Sparkles, UserRound, House, UserRoundPlus, Box, Users } from 'lucide-react';
 // import { useState } from 'react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { useAuthSession } from '@/components/providers/auth-provider';
+} from "~/components/ui/popover"
+import { useAuthSession } from '~/components/providers/auth-provider';
 
 export const MoreMenu = () => {
   const router = useRouter();
@@ -28,8 +28,8 @@ export const MoreMenu = () => {
   const menuItems = [
     { path: '/', label: 'Home', icon: <House /> },
     // { path: '/user/friend', label: 'Friends', icon: <UserRound /> },
-    { path: '/user/friend/add', label: 'Add Friend'
-      , icon: <UserRoundPlus /> },
+    { path: '/user/friend/add', label: 'Add Friend \\ group', icon: <UserRoundPlus /> },
+    { path: '/user/new/group', label: 'New group', icon: <Users /> },
     { path: '/new/project', label: 'New project', icon: <Box /> },
   ];
   return (
@@ -71,7 +71,7 @@ export function HomeHeader({
   // const [more_open, set_more_open] = useState(false);
   // const [listMenu_open, set_listMenu_open] = useState(false);
 
-  const { width: windowWidth } = useWindowSize();
+  // const { width: windowWidth } = useWindowSize();
   // const displayUser = user || { email: 'guest@example.com', name: 'Guest', image: null };
   // const user_status = "online" // online, offline, away, 未登录
   let user_status
@@ -115,9 +115,9 @@ export function HomeHeader({
           </Button>
         </BetterTooltip>  
 
-        {(windowWidth >= 768) && (
-        <ModeToggle className='bg-background/20' />
-        )}
+        {/* {(windowWidth >= 768) && ( */}
+        <ModeToggle className='bg-background/20 hidden md:inline-flex' />
+        {/* )} */}
 
         {/* {(!open || windowWidth < 768) && ( */}
         {/* add 已被我改装为 more */}

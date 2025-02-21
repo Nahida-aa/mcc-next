@@ -1,12 +1,13 @@
-import type { ChatsWithCount } from '@/lib/db/q/user/chat';
+import type { ChatsWithCount } from '~/lib/db/q/user/chat';
 import {Listbox, ListboxItem} from "@heroui/react";
 import NextImage from 'next/image'
 import {Button} from "@heroui/react";
 import { toast as sonner_toast } from "sonner"
 import { useRouter } from 'next/navigation';
-import { formatTimestamp } from '@/lib/utils';
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
+import { formatTimestamp } from '~/lib/utils';
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '~/components/ui/context-menu';
 import { useEffect, useRef, useState } from 'react';
+import { GroupAvatar } from '~/components/common/avatar';
 
 interface ChatListProps {
   chatsWithCount?: ChatsWithCount
@@ -28,7 +29,11 @@ export const ChatItem = ({
 }: {
   item: ChatsWithCount['items'][0]
 }) => {
-  const target = item.chat.type === 'group' ? item.target_group : item.target_user
+  const type = item.chat.type;
+  const target = type === 'group' ? item.target_group : item.target_user
+  const avatar_url = target?.image
+  const avatar_url_ls = type === 'group' ? item.target_group?.members?.map((m) => m.image) as string[] : []
+  const images = ["https://avatar.vercel.sh/test1", "https://avatars.githubusercontent.com/u/96083926?s=80&v=4", "https://avatars.githubusercontent.com/u/188596056?v=4"]
   const timestamp = new Date(item.chat.latest_message_timestamp);
   const formattedTime = formatTimestamp(timestamp);
   const router = useRouter();
@@ -45,7 +50,8 @@ export const ChatItem = ({
         // onPressEnd={handlePressEnd}
         // onPressUp={handlePressEnd}
         >
-          <NextImage src={target?.image || ''} width={48} height={48} alt={target?.name || 'no'} fill={false} className={`rounded-full min-w-12`} />
+          {type === 'group' && !avatar_url ? (<GroupAvatar images={avatar_url_ls} size={48} />):(<NextImage src={target?.image || ''} width={48} height={48} alt={target?.name || 'no'} fill={false} className={`rounded-full min-w-12`} />)}
+
           <div className='flex flex-col flex-1'>
             <div className='flex justify-between'>
               <span>{target?.name}</span>

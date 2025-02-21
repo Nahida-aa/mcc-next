@@ -1,24 +1,24 @@
-import { createRouter } from "@/lib/create-app";
-import NameParamsSchema from "@/lib/openapi/schemas/name-params";
+import { createRouter } from "~/lib/create-app";
+import NameParamsSchema from "~/lib/openapi/schemas/name-params";
 import { createRoute, z } from "@hono/zod-openapi";
-// import httpStatus from "@/lib/http-status-codes"
-import httpStatus from "@/lib/http-status-codes"
-import jsonContent from "@/lib/openapi/helpers/json-content";
+// import httpStatus from "~/lib/http-status-codes"
+import httpStatus from "~/lib/http-status-codes"
+import jsonContent from "~/lib/openapi/helpers/json-content";
 import { eq, is, sql } from "drizzle-orm";
-import { get_current_user_and_res, get_session_token_payload, get_session_token_payload_and_res } from "@/lib/middleware/auth";
-import { db } from "@/lib/db";
-import { user as user_table } from "@/lib/db/schema/user";
-// import { linkGroupFollow, linkUserFollow } from "@/server/db/schema/link";
+import { get_current_user_and_res, get_session_token_payload, get_session_token_payload_and_res } from "~/lib/middleware/auth";
+import { db } from "~/lib/db";
+import { user as user_table } from "~/lib/db/schema/user";
+// import { linkGroupFollow, linkUserFollow } from "~/server/db/schema/link";
 import { createSelectSchema } from "drizzle-zod";
-import { user_meta_schema } from "@/lib/schema/user";
-import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
-import { offset_limit_query_schema } from "@/lib/schema/query";
-import jsonContentOneOf from "@/lib/openapi/helpers/json-content-one-of";
-import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
+import { user_meta_schema } from "~/lib/schema/user";
+import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
+import { offset_limit_query_schema } from "~/lib/schema/query";
+import jsonContentOneOf from "~/lib/openapi/helpers/json-content-one-of";
+import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
 import { string } from "zod";
-import { group_meta_schema } from "@/lib/schema/group";
-import { group_table } from "@/lib/db/schema/group";
-import { follow_table } from "@/lib/db/schema/follow";
+import { group_meta_schema } from "~/lib/schema/group";
+import { group_table } from "~/lib/db/schema/group";
+import { follow_table } from "~/lib/db/schema/follow";
 
 const followers_out_schema = z.object({
   followers: z.array(z.object({

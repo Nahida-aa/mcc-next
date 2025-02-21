@@ -3,7 +3,7 @@ import { relations } from "drizzle-orm/relations"
 import { group_table } from "./group";
 import { identity, user } from "./user";
 import { tag } from "./tag";
-import { proj } from "./proj";
+import { proj_table } from "./proj";
 import { resource } from "./resource";
 import { timestamps, uuidCommon } from "./columnsHelpers"
 
@@ -16,7 +16,7 @@ export const linkGroupProj = pgTable("LinkGroupProj", {
 }, (table) => [
 	foreignKey({
 			columns: [table.proj_id],
-			foreignColumns: [proj.id],
+			foreignColumns: [proj_table.id],
 			name: "LinkGroupProj_proj_id_fkey"
 		}),
 	foreignKey({
@@ -54,7 +54,7 @@ export const linkUserProj = pgTable("LinkUserProj", {
 }, (table) => [
 	foreignKey({
 			columns: [table.proj_id],
-			foreignColumns: [proj.id],
+			foreignColumns: [proj_table.id],
 			name: "LinkUserProj_proj_id_fkey"
 		}),
 	foreignKey({

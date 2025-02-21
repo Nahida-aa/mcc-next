@@ -1,13 +1,13 @@
-import { createRouter } from "@/lib/create-app"
-import { db } from "@/lib/db"
-import { userLsWithCount_isFriend_by_currentUserId } from "@/lib/db/q/user/friend"
-import { friendNotification_table } from "@/lib/db/schema/notification"
-import { user_table } from "@/lib/db/schema/user"
-import { get_current_user_and_res } from "@/lib/middleware/auth"
-import jsonContent from "@/lib/openapi/helpers/json-content"
-import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object"
-import { offset_limit_query_schema } from "@/lib/schema/query"
-import { user_meta_schema } from "@/lib/schema/user"
+import { createRouter } from "~/lib/create-app"
+import { db } from "~/lib/db"
+import { userLsWithCount_isFriend_by_currentUserId } from "~/lib/db/q/user/friend"
+import { friendNotification_table } from "~/lib/db/schema/notification"
+import { user_table } from "~/lib/db/schema/user"
+import { get_current_user_and_res } from "~/lib/middleware/auth"
+import jsonContent from "~/lib/openapi/helpers/json-content"
+import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object"
+import { offset_limit_query_schema } from "~/lib/schema/query"
+import { user_meta_schema } from "~/lib/schema/user"
 import { createRoute, z } from "@hono/zod-openapi"
 import { aliasedTable } from "drizzle-orm"
 import { and, eq, ilike, notInArray, or } from "drizzle-orm/sql/expressions/conditions";
@@ -41,6 +41,7 @@ export type FriendNotificationList_ApiResBody = FriendNotificationList_ApiResBod
 router.openapi(createRoute({
   tags: ['friend'],
   method: "get", path: "/friend/notification/list",
+  summary: "列出好友通知",
   request: {query: offset_limit_query_schema },
   responses: {
     [200]: jsonContent(z.object({

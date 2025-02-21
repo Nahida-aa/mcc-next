@@ -1,10 +1,10 @@
 import { Context, MiddlewareHandler, Next } from 'hono'
 // import { Context, Next } from "@hono/zod-openapi";
 import { getCookie } from 'hono/cookie'
-import { verifyJWT } from '@/lib/core/token'
+import { verifyJWT } from '~/lib/core/token'
 import { Session } from 'next-auth'
 import { json } from 'stream/consumers'
-import httpStatus from "@/lib/http-status-codes"
+import httpStatus from "~/lib/http-status-codes"
 import { StatusCode } from 'hono/utils/http-status'
 
 export type SessionTokenPayload = {

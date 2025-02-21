@@ -1,5 +1,5 @@
 'use client'
-import { fetcher } from "@/lib/utils";
+import { fetcher } from "~/lib/utils";
 import React, { useState } from "react";
 import useSWRInfinite from "swr/infinite";
 

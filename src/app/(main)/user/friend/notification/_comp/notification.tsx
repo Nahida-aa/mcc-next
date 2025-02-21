@@ -1,13 +1,13 @@
 'use client'
-import { ShadcnAvatar } from '@/components/common/avatar'
-import { Button } from '@/components/ui/button'
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
-import { FriendNotificationList_ApiResBody, FriendNotificationList_ApiResBody_OK } from '@/lib/routes/friend/notification'
-import router from '@/lib/routes/test'
+import { ShadcnAvatar } from '~/components/common/avatar'
+import { Button } from '~/components/ui/button'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar'
+import { FriendNotificationList_ApiResBody, FriendNotificationList_ApiResBody_OK } from '~/lib/routes/friend/notification'
+import router from '~/lib/routes/test'
 import { ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
-
+import React, { Suspense, useEffect } from 'react'
+import {Button as UIButton} from "@heroui/react";
 import { toast as sonner_toast } from "sonner"
 
 export const FriendNotificationList = ({
@@ -17,6 +17,7 @@ export const FriendNotificationList = ({
 }) => {
   const router = useRouter()
   const [items, setItems] = React.useState<FriendNotificationList_ApiResBody_OK['notifications']>([])
+  const [isLoading, setIsLoading] = React.useState(true)
   useEffect(() => {
     console.log('FriendNotificationList')
     const fetchNotifications = async () => {
@@ -32,16 +33,17 @@ export const FriendNotificationList = ({
           sonner_toast.warning(errorData.message)
           // console.error(errorData.message)
         }
-      }
-      catch (error: any) {
+      } catch (error: any) {
         sonner_toast.error(error.message)
         console.error(error)
       }
+      setIsLoading(false)
     }
     fetchNotifications()
   }, [])
-  return <>
-    <SidebarMenu className='gap-0'>
+  if (isLoading) return <div>Loading...</div>
+  return <SidebarMenu className='gap-0'>
+      <Suspense fallback={<div>Loading...</div>}>
       {items.slice(0, 3).map((item) => {
         const isSender = item.notification.sender_id === sessionUserId
         const img_src = isSender ? item.receiver.image : item.sender.image
@@ -50,8 +52,8 @@ export const FriendNotificationList = ({
         const msg = isSender ? '请求添加对方为好友' : item.notification.content
         return (
           <SidebarMenuItem key={item.notification.id}>
-            <SidebarMenuButton  className='p-3 h-auto rounded-none justify-between'>
-              <div className='flex gap-3'>
+            <SidebarMenuButton className='flex cursor-pointer hover:bg-sidebar-accent p-3 h-auto rounded-none justify-between'>
+              <div className='flex  gap-3'>
                 <ShadcnAvatar src={img_src} size={12} className='' />
                 <div className=' flex flex-col justify-center gap-1'>
                   <div className='text-xs'>{nickname || name}</div>
@@ -68,7 +70,7 @@ export const FriendNotificationList = ({
                   // 阻止事件冒泡
                   e.stopPropagation()
                   try {
-                    const res = await fetch("/api/hono/user/add/friend/accept_req", {
+                    const res = await fetch("/api/hono/user/friend/request/accept", {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json'
@@ -107,6 +109,6 @@ export const FriendNotificationList = ({
           </SidebarMenuButton>
         </SidebarMenuItem>
       )}
+  </Suspense>
     </SidebarMenu>
-  </>
 }

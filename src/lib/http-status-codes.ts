@@ -27,6 +27,7 @@ export const BAD_REQUEST: ClientErrorStatusCode = 400;
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.8
  *
  * This response is sent when a request conflicts with the current state of the server.
+ * 翻译: 当请求与服务器的当前状态冲突时，将发送此响应。
  */
 export const CONFLICT: ClientErrorStatusCode = 409;
 /**
@@ -45,18 +46,21 @@ export const CREATED: SuccessStatusCode = 201;
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.14
  *
  * This response code means the expectation indicated by the Expect request header field can't be met by the server.
+ * 翻译: 此响应代码表示服务器无法满足Expect请求头字段指示的期望。
  */
 export const EXPECTATION_FAILED: ClientErrorStatusCode = 417;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.5
  *
  * The request failed due to failure of a previous request.
+ * 翻译: 由于先前请求的失败，请求失败。
  */
 export const FAILED_DEPENDENCY: ClientErrorStatusCode = 424;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.3
  *
  * The client does not have access rights to the content, i.e. they are unauthorized, so server is rejecting to give proper response. Unlike 401, the client's identity is known to the server.
+ * 翻译: 客户端没有访问内容的权限，即未经授权，因此服务器拒绝提供适当的响应。 与401不同，服务器知道客户端的身份。
  */
 export const FORBIDDEN: ClientErrorStatusCode = 403;
 /**
@@ -81,12 +85,14 @@ export const HTTP_VERSION_NOT_SUPPORTED = 505;
  * Official Documentation @ https://tools.ietf.org/html/rfc2324#section-2.3.2
  *
  * Any attempt to brew coffee with a teapot should result in the error code "418 I'm a teapot". The resulting entity body MAY be short and stout.
+ * 翻译: 使用茶壶煮咖啡的任何尝试都应该导致错误代码“418我是一个茶壶”。 生成的实体主体可能是短而结实的。
  */
 export const IM_A_TEAPOT: ClientErrorStatusCode = 418;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.6
  *
  * The 507 (Insufficient Storage) status code means the method could not be performed on the resource because the server is unable to store the representation needed to successfully complete the request. This condition is considered to be temporary. If the request which received this status code was the result of a user action, the request MUST NOT be repeated until it is requested by a separate user action.
+ * 翻译: 507（存储空间不足）状态代码表示无法在资源上执行方法，因为服务器无法存储成功完成请求所需的表示。 此条件被认为是临时的。 如果接收到此状态代码的请求是用户操作的结果，则在通过单独的用户操作请求之前，不得重复该请求。
  */
 export const INSUFFICIENT_SPACE_ON_RESOURCE: ClientErrorStatusCode = 419;
 /**
@@ -105,12 +111,14 @@ export const INTERNAL_SERVER_ERROR: ServerErrorStatusCode = 500;
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.10
  *
  * The server rejected the request because the Content-Length header field is not defined and the server requires it.
+ * 翻译: 服务器拒绝请求，因为未定义Content-Length标头字段，而服务器需要它。
  */
 export const LENGTH_REQUIRED: ClientErrorStatusCode = 411;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc2518#section-10.4
  *
  * The resource that is being accessed is locked.
+ * 翻译: 正在访问的资源已锁定。
  */
 export const LOCKED: ClientErrorStatusCode = 423;
 /**
@@ -118,12 +126,14 @@ export const LOCKED: ClientErrorStatusCode = 423;
  * Official Documentation @ https://tools.ietf.org/rfcdiff?difftype=--hwdiff&url2=draft-ietf-webdav-protocol-06.txt
  *
  * A deprecated response used by the Spring Framework when a method has failed.
+ * 翻译: Spring框架在方法失败时使用的已弃用响应。
  */
 export const METHOD_FAILURE: ClientErrorStatusCode = 420;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.5
  *
  * The request method is known by the server but has been disabled and cannot be used. For example, an API may forbid DELETE-ing a resource. The two mandatory methods, GET and HEAD, must never be disabled and should not return this error code.
+ * 翻译: 服务器知道请求方法，但已禁用并且无法使用。 例如，API可能禁止删除资源。 两种强制方法GET和HEAD绝不能被禁用，也不应返回此错误代码。
  */
 export const METHOD_NOT_ALLOWED: ClientErrorStatusCode = 405;
 /**
@@ -172,6 +182,7 @@ export const NON_AUTHORITATIVE_INFORMATION: SuccessStatusCode = 203;
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.6
  *
  * This response is sent when the web server, after performing server-driven content negotiation, doesn't find any content following the criteria given by the user agent.
+ * 翻译: 当Web服务器在执行服务器驱动的内容协商后，未找到用户代理给出的标准的任何内容时，将发送此响应。
  */
 export const NOT_ACCEPTABLE: ClientErrorStatusCode = 406;
 /**
@@ -212,6 +223,7 @@ export const PARTIAL_CONTENT: SuccessStatusCode = 206;
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.2
  *
  * This response code is reserved for future use. Initial aim for creating this code was using it for digital payment systems however this is not used currently.
+ * - 翻译: 此响应代码保留供将来使用。 创建此代码的初始目的是将其用于数字支付系统，但目前尚未使用。
  */
 export const PAYMENT_REQUIRED: ClientErrorStatusCode = 402;
 /**
@@ -224,12 +236,14 @@ export const PERMANENT_REDIRECT = 308;
  * Official Documentation @ https://tools.ietf.org/html/rfc7232#section-4.2
  *
  * The client has indicated preconditions in its headers which the server does not meet.
+ * - 翻译: 客户端在其标头中指示了服务器未满足的先决条件。
  */
 export const PRECONDITION_FAILED: ClientErrorStatusCode = 412;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc6585#section-3
  *
  * The origin server requires the request to be conditional. Intended to prevent the 'lost update' problem, where a client GETs a resource's state, modifies it, and PUTs it back to the server, when meanwhile a third party has modified the state on the server, leading to a conflict.
+ * - 翻译: 源服务器要求请求是有条件的。 旨在防止“丢失更新”问题，其中客户端获取资源的状态，对其进行修改，然后将其放回服务器，与此同时第三方已经修改了服务器上的状态，导致冲突。
  */
 export const PRECONDITION_REQUIRED: ClientErrorStatusCode = 428;
 /**
@@ -248,24 +262,28 @@ export const EARLY_HINTS: InfoStatusCode = 103;
  * Official Documentation @ https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.15
  *
  * The server refuses to perform the request using the current protocol but might be willing to do so after the client upgrades to a different protocol.
+ * - 翻译: 服务器拒绝使用当前协议执行请求，但在客户端升级到不同协议后可能愿意这样做。
  */
 export const UPGRADE_REQUIRED: ClientErrorStatusCode = 426;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7235#section-3.2
  *
  * This is similar to 401 but authentication is needed to be done by a proxy.
+ * - 翻译: 这类似于401，但需要代理进行身份验证。
  */
 export const PROXY_AUTHENTICATION_REQUIRED: ClientErrorStatusCode = 407;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc6585#section-5
  *
  * The server is unwilling to process the request because its header fields are too large. The request MAY be resubmitted after reducing the size of the request header fields.
+ * - 翻译: 服务器不愿意处理请求，因为其标头字段太大。 在减小请求标头字段的大小后，可以重新提交请求。
  */
 export const REQUEST_HEADER_FIELDS_TOO_LARGE: ClientErrorStatusCode = 431;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.7
  *
  * This response is sent on an idle connection by some servers, even without any previous request by the client. It means that the server would like to shut down this unused connection. This response is used much more since some browsers, like Chrome, Firefox 27+, or IE9, use HTTP pre-connection mechanisms to speed up surfing. Also note that some servers merely shut down the connection without sending this message.
+ * - 翻译: 一些服务器在空闲连接上发送此响应，即使客户端没有任何先前的请求。 这意味着服务器希望关闭此未使用的连接。 自从一些浏览器（如Chrome，Firefox 27+或IE9）使用HTTP预连接机制加快浏览速度以来，此响应的使用要多得多。 还要注意，一些服务器仅关闭连接而不发送此消息。
  */
 export const REQUEST_TIMEOUT: ClientErrorStatusCode = 408;
 /**
@@ -342,7 +360,7 @@ export const UNAVAILABLE_FOR_LEGAL_REASONS: ClientErrorStatusCode = 451;
  * - 请求头中的某些字段缺失或格式不正确。
  * - 请求参数的类型不符合预期（例如，期望一个整数，但实际传递的是字符串）
  */
-export const UNPROCESSABLE_ENTITY = 422;
+export const UNPROCESSABLE_ENTITY: 422 = 422;
 /**
  * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.5.13
  *
@@ -424,6 +442,7 @@ const httpStatusCodes = {
   MISDIRECTED_REQUEST,
 };
 
+export {httpStatusCodes};
 export default httpStatusCodes;
 
 // export type InfoStatusCode = 100 | 101 | 102 | 103;

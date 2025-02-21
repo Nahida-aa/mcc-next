@@ -3,14 +3,14 @@ import { headers as nextHeaders } from "next/headers"
 import { cookies } from 'next/headers'
 import { z } from 'zod';
 
-// import { createUser, getUser } from '@/server/db/queries';
+// import { createUser, getUser } from '~/server/db/queries';
 
 import { createActionURL } from './auth';
 import { sign_in_schema } from './_comp/signIn-modal';
 import { signUp_schema } from "./_comp/signUp-modal";
-import { SessionTokenWithName } from "@/lib/routes/auth/login";
-import { verifyJWT } from "@/lib/core/token";
-import { SessionTokenPayload } from "@/lib/middleware/auth";
+import { SessionTokenWithName } from "~/lib/routes/auth/login";
+import { verifyJWT } from "~/lib/core/token";
+import { SessionTokenPayload } from "~/lib/middleware/auth";
 
 const authFormSchema = z.object({
   name: z.string().min(1),

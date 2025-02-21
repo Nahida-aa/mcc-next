@@ -1,15 +1,15 @@
 'use client';
-import { ShadcnAvatar } from '@/components/common/avatar';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { User_whenAddFriend, UserLsWithCount_whenAddFriend } from '@/lib/db/q/user/friend';
+import { ShadcnAvatar } from '~/components/common/avatar';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { User_whenAddFriend, UserLsWithCount_whenAddFriend } from '~/lib/db/q/user/friend';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast as sonner_toast } from "sonner"
-import { SubmitButton } from '@/components/common/submit-button';
-import { NotificationUser } from '@/lib/routes/friend/notification';
+import { SubmitButton } from '~/components/common/submit-button';
+import { NotificationUser } from '~/lib/routes/friend/notification';
 import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
@@ -33,8 +33,6 @@ export const ClientMain =  ({
     // 如果没有修改过值，就不提交
     if (JSON.stringify(data) == JSON.stringify(defaultValues)) {
       sonner_toast.warning("没有修改过值")
-      router.push(`/${name}/chat`)
-      return
     }
     sonner_toast("You submitted the following values:", {
       description: (
@@ -43,6 +41,7 @@ export const ClientMain =  ({
         </pre>
       ),
     })
+    router.push(`/chat/${name}`)
   }
   const [userData, setUserData] = useState<NotificationUser | null>(null)
   useEffect(() => {
