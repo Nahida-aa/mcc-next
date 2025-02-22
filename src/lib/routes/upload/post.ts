@@ -102,7 +102,7 @@ const generateUploadOut = async (files: UploadInFile[], slug: string): Promise<U
 const postToOSS = async ({fileKeys, slug}:{
   fileKeys: string[], slug: string
 }) => {
-  const baseUrl = await getBaseUrl();
+  const baseUrl = await inferBaseUrl();
   const callbackUrl = `${baseUrl}/api/hono/upload`;
   const headers = {
     'Content-Type': 'application/json',
