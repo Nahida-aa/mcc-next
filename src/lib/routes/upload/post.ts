@@ -14,7 +14,7 @@ import { eq, and } from "drizzle-orm";
 import { NewPresignedUrl } from "uploadthing/types";
 import SQIds, { defaultOptions } from "sqids";
 import { generateSignatureURLAndKey } from "./util";
-import { getBaseUrl } from "~/lib/utils/url";
+import { getBaseUrl, inferBaseUrl } from "~/lib/utils/url";
 
 
 const router = createRouter()
