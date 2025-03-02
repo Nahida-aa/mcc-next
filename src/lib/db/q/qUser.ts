@@ -2,7 +2,7 @@
 import { eq, lt, gte, ne, like, or, ilike, and, notInArray } from 'drizzle-orm';
 import { db } from '..';
 // import { linkUserFollow } from '../schema/link';
-import { user as usersTable, idCardInfo as idCardInfoTable, user_table } from '../schema/user';
+import {  user_table,  idCardInfo_table } from '../schema/user';
 import type { User } from '../schema/user';
 import { hash_password } from '~/lib/core/auth';
 import { friend_table } from '../schema/follow';
@@ -22,7 +22,7 @@ type CreateUserInput = Omit<Partial<User>, 'name' | 'password'> & {
     backImageUrl?: string;
   };
 };
-type CreateUserOutput = User & { idCardInfo?: typeof idCardInfoTable.$inferInsert };
+type CreateUserOutput = User & { idCardInfo?: typeof idCardInfo_table.$inferInsert };
 // 创建user
 export async function create(new_user: CreateUserInput): Promise<CreateUserOutput> {
 // export async function create(new_user) {
@@ -34,8 +34,8 @@ export async function create(new_user: CreateUserInput): Promise<CreateUserOutpu
     new_user.image = `https://avatar.vercel.sh/${new_user
       .name}`;
   }
-  // const user: typeof usersTable.$inferInsert = new_user
-  const user: typeof usersTable.$inferInsert = {
+  // const user: typeof user_table.$inferInsert = new_user
+  const user: typeof user_table.$inferInsert = {
     name: new_user.name,
     image: new_user.image,
     nickname: new_user.nickname,
@@ -46,7 +46,7 @@ export async function create(new_user: CreateUserInput): Promise<CreateUserOutpu
     password: new_user.password,
     platform_info: new_user.platform_info,
   };
-  const [dbUser] = await db.insert(usersTable).values(user).returning()
+  const [dbUser] = await db.insert(user_table).values(user).returning()
 
   let dbIdCardInfo;
   if (new_user.idCardInfo) {
@@ -54,7 +54,7 @@ export async function create(new_user: CreateUserInput): Promise<CreateUserOutpu
       ...new_user.idCardInfo,
       userId: dbUser.id,
     };
-    [dbIdCardInfo] = await db.insert(idCardInfoTable).values(idCardInfo).returning();
+    [dbIdCardInfo] = await db.insert(idCardInfo_table).values(idCardInfo).returning();
   }
   return {
     ...dbUser,
@@ -65,12 +65,12 @@ export async function create(new_user: CreateUserInput): Promise<CreateUserOutpu
 export const userList_byWord = async (keyword: string, offset: number = 0, limit: number = 10): Promise<User[]> => {
   const users = await db
   .select()
-  .from(usersTable)
+  .from(user_table)
   .where(or(
-    ilike(usersTable.name, `%${keyword}%`),
-    ilike(usersTable.email, `%${keyword}%`),
-    ilike(usersTable.phone, `%${keyword}%`),
-    ilike(usersTable.nickname, `%${keyword}%`)
+    ilike(user_table.name, `%${keyword}%`),
+    ilike(user_table.email, `%${keyword}%`),
+    ilike(user_table.phone, `%${keyword}%`),
+    ilike(user_table.nickname, `%${keyword}%`)
   )).offset(offset).limit(limit)
 
   return users;
@@ -83,16 +83,16 @@ export const userList_onlyNotFriend_byWord_currentUserId = async (currentUserId:
   // 查询不在好友列表中的用户
   const users = await db
     .select()
-    .from(usersTable)
+    .from(user_table)
     .where(
       and(
         or(
-          ilike(usersTable.name, `%${keyword}%`),
-          ilike(usersTable.email, `%${keyword}%`),
-          ilike(usersTable.phone, `%${keyword}%`),
-          ilike(usersTable.nickname, `%${keyword}%`)
+          ilike(user_table.name, `%${keyword}%`),
+          ilike(user_table.email, `%${keyword}%`),
+          ilike(user_table.phone, `%${keyword}%`),
+          ilike(user_table.nickname, `%${keyword}%`)
         ),
-        notInArray(usersTable.id, friendIds)
+        notInArray(user_table.id, friendIds)
       )
     ).offset(offset).limit(limit)
   return users;
@@ -100,7 +100,7 @@ export const userList_onlyNotFriend_byWord_currentUserId = async (currentUserId:
 
 
 export const getByName = async (name: string) => {
-  const users = await db.select().from(usersTable).where(eq(usersTable.name, name));
+  const users = await db.select().from(user_table).where(eq(user_table.name, name));
   return users
 }
 
@@ -110,12 +110,12 @@ export const getMetaByName = async (name: string) => {
     email: user_table.email,
     image: user_table.image,
     nickname: user_table.nickname,
-    status: user_table.status,}).from(usersTable).where(eq(usersTable.name, name));
+    status: user_table.status,}).from(user_table).where(eq(user_table.name, name));
   return user
 }
 
 export const updatePassword = async (name: string, hashPassword: string) => {
-  const result = await db.update(usersTable).set({ password: hashPassword }).where(eq(usersTable.name, name));
+  const result = await db.update(user_table).set({ password: hashPassword }).where(eq(user_table.name, name));
   return result;
 }
 

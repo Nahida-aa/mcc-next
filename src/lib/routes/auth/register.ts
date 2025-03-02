@@ -10,7 +10,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { db } from "~/lib/db";
 import { createJWT, verifyJWT } from "~/lib/core/token";
 import { idCardInfo_insertSchema, platformInfo_schema, } from "~/lib/schema/userBy"
-import {user as userTable, idCardInfo as idCardInfoTable, User, idCardInfo, user_table, idCardInfo_table, } from "~/lib/db/schema/user"
+import { user_table, idCardInfo_table, User } from "~/lib/db/schema/user"
 import { eq } from "drizzle-orm";
 import { genSaltSync, hash, hashSync } from 'bcrypt-ts';
 import { compare } from 'bcrypt-ts';
@@ -63,7 +63,7 @@ const router = createRouter()
 
   if (existing_phone) return c.json({ message: `手机号: ${existing_phone.phone}已存在` }, httpStatusCodes.CONFLICT);
 
-  const [existing_id_card] = await db.select({id_card_number: idCardInfoTable.id_card_number}).from(idCardInfo_table).where(eq(idCardInfoTable.id_card_number, id_card_info_data.id_card_number));
+  const [existing_id_card] = await db.select({id_card_number: idCardInfo_table.id_card_number}).from(idCardInfo_table).where(eq(idCardInfo_table.id_card_number, id_card_info_data.id_card_number));
 
   if (existing_id_card)  return c.json({ message: `身份证号: ${existing_id_card.id_card_number}已存在` }, httpStatusCodes.CONFLICT);
 
@@ -79,12 +79,12 @@ const router = createRouter()
   user_data.password = hash_password;
 
   const db_user = await db.transaction(async (tx) => {
-    const [db_user] = await tx.insert(userTable).values({
+    const [db_user] = await tx.insert(user_table).values({
       ...user_data,
       image: avatar_url,
     }).returning();
     if (id_card_info_data) {
-      await tx.insert(idCardInfoTable).values({
+      await tx.insert(idCardInfo_table).values({
         ...id_card_info_data,
         user_id: db_user.id
       })
@@ -119,7 +119,7 @@ router.openapi(createRoute({
   const  body_json = c.req.valid("json")
   const {...user_data } = body_json;
   // 避免重复注册的检查
-  const existing_user = await db.query.user.findFirst({
+  const existing_user = await db.query.user_table.findFirst({
     where: (user, { eq }) => eq(user.name, user_data.name),
   });
   if (existing_user) {
@@ -132,7 +132,7 @@ router.openapi(createRoute({
   user_data.password = hash_password;
 
   const db_user = await db.transaction(async (tx) => {
-    const [db_user] = await tx.insert(userTable).values({
+    const [db_user] = await tx.insert(user_table).values({
       ...user_data,
       image: user_data_image,
     }).returning();

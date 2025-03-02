@@ -19,7 +19,7 @@ const platform_info_default = {
 }
 type PlatformInfo = typeof platform_info_default;
 
-export const user = pgTable("User", {
+export const user_table = pgTable("User", {
   ...uuidCommon,
   password: varchar("password", { length: 64 }),
   image: varchar(), // 插入时生成默认头像
@@ -46,11 +46,10 @@ export const user = pgTable("User", {
   uniqueIndex("ix_User_name").on(table.name),
   uniqueIndex("ix_User_phone").on(table.phone),
 ]);
-export const user_table = user;
 
-export type User = InferSelectModel<typeof user>;
+export type User = InferSelectModel<typeof user_table>;
 
-export const idCardInfo = pgTable("IDCardInfo", {
+export const idCardInfo_table = pgTable("IDCardInfo", {
 	id: uuid('id').primaryKey().notNull().defaultRandom(),
 	user_id: uuid("user_id"),
 	id_card_number: varchar("id_card_number"), // 身份证号 ? 逻辑必填
@@ -63,16 +62,15 @@ export const idCardInfo = pgTable("IDCardInfo", {
 	uniqueIndex("ix_IDCardInfo_id_card_number").on(table.id_card_number),
 	foreignKey({
 			columns: [table.user_id],
-			foreignColumns: [user.id],
+			foreignColumns: [user_table.id],
 			name: "IDCardInfo_user_id_fkey"
 		}),
 ]);
 
-export const idCardInfo_table = idCardInfo;
 
-export const userRelations = relations(user, ({one, many}) => ({
+export const userRelations = relations(user_table, ({one, many}) => ({
   home: one(home),
-  id_card_info: one(idCardInfo),
+  id_card_info: one(idCardInfo_table),
   identities: many(linkUserIdentity),
 
   followings: many(follow_table, { // 关注的 people(user, group)
@@ -100,10 +98,10 @@ export const userRelations = relations(user, ({one, many}) => ({
   resources: many(linkUserResource),
 }));
 
-export const idCardInfoRelations = relations(idCardInfo, ({one}) => ({
-  user: one(user, {
-    fields: [idCardInfo.user_id],
-    references: [user.id]
+export const idCardInfoRelations = relations(idCardInfo_table, ({one}) => ({
+  user: one(user_table, {
+    fields: [idCardInfo_table.user_id],
+    references: [user_table.id]
   }),
 }));
 
@@ -121,15 +119,15 @@ export const home = pgTable("Home", {
 }, (table) => [
 	foreignKey({
 			columns: [table.userId],
-			foreignColumns: [user.id],
+			foreignColumns: [user_table.id],
 			name: "Home_user_id_fkey"
 		}),
 ]);
 
 export const homeRelations = relations(home, ({one}) => ({
-	user: one(user, {
+	user: one(user_table, {
 		fields: [home.userId],
-		references: [user.id]
+		references: [user_table.id]
 	}),
 }));
 

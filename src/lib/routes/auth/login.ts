@@ -57,7 +57,7 @@ const router = createRouter()
   }
 }), async (c) => {
   const { name, password } = c.req.valid("json");
-  const db_user = await db.query.user.findFirst({
+  const db_user = await db.query.user_table.findFirst({
     where: (user, { eq }) => eq(user.name, name),
   });
   if (!db_user) {

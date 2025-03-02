@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Chip, Button as UIButton } from "@heroui/react";
 import { Button } from "~/components/ui/button"
 import {
@@ -28,18 +28,11 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({ selectedValues, se
   const [open, setOpen] = useState(false)
   // const [selectedValues, setSelectedValues] = useState<string[]>([])
   const handleSelect = (currentValue: string) => {
-    setSelectedValues((prevSelectedValues) => {
-      if (prevSelectedValues.includes(currentValue)) {
-        return prevSelectedValues.filter(value => value !== currentValue)
-      } else {
-        return [...prevSelectedValues, currentValue]
-      }
-    })
+    const result = [...selectedValues, currentValue]
+    setSelectedValues(result)
   }
   const handleRemove = (valueToRemove: string) => {
-    setSelectedValues((prevSelectedValues) =>
-      prevSelectedValues.filter((value) => value !== valueToRemove)
-    );
+    setSelectedValues(selectedValues.filter((value) => value !== valueToRemove));
   };
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -115,13 +108,15 @@ interface SelectDemoProps {
 export const SelectDemo = ({
   value, setValue, options, optionName
 }: SelectDemoProps) => {
-  const [open, setOpen] = useState(false)
+  console.log(`SelectDemo: value:`, value)
+  const [open, setOpen] = useState(false) // info: 
+
   return (
-    <Select open={open} onOpenChange={setOpen}>
-      <ASelectTrigger value={value} className="bg-secondary" defaultChecked>
-        <span>
-          {options.find((option) => option.value === value)?.label}
-        </span>
+    <Select open={open} onOpenChange={setOpen} onValueChange={setValue} defaultValue={value}>
+      <ASelectTrigger value={value}  className="bg-secondary" 
+        defaultChecked
+      >
+        <SelectValue />
         <SelectPrimitive.Icon asChild>
           <ChevronDown  className={`h-4 w-4  opacity-50 transition-transform duration-150 motion-reduce:transition-none ${open ? "rotate-180":""}`} />
         </SelectPrimitive.Icon>
@@ -131,8 +126,6 @@ export const SelectDemo = ({
           <SelectItem
             key={option.value}
             value={option.value}
-            onSelect={() => setValue(option.value)}
-            
           >
             {option.label}
           </SelectItem>

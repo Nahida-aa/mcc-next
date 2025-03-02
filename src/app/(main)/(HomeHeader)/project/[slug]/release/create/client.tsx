@@ -8,16 +8,21 @@ import { Chip, Button as UIButton } from "@heroui/react";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import JSZip from "jszip";
+import gameReleaseVersions from '~/constants/gameReleaseVersions.json'
+
 import { MultiCombobox, SelectDemo } from "~/components/aa/Select";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import gameReleaseVersions from '~/constants/gameReleaseVersions.json'
+
 import { LoaderIcon } from "~/components/icons";
 import { LoadingIcon } from "~/components/common/submit-button";
+import { useProject } from "../../_comp/project";
+import { inferReleaseInfo } from "./lib/infer";
+import { useFileUpload } from "~/app/(main)/(HomeHeader)/demo/upload/s3/hook";
+import { UploadOutFile } from "~/lib/routes/upload/s3";
 
 const getFileIcon = (fileName: string) => {
   const extension = fileName.split('.').pop()?.toLowerCase();
@@ -27,34 +32,7 @@ const getFileIcon = (fileName: string) => {
   return <FileIcon size={20} />;
 };
 
-const versionType = (version_number: string) => {
-  if (version_number.includes("alpha")) {
-    return "alpha";
-  } else if (
-    version_number.includes("beta") ||
-    version_number.match(/[^A-z](rc)[^A-z]/) || // includes `rc`
-    version_number.match(/[^A-z](pre)[^A-z]/) // includes `pre`
-  ) {
-    return "beta";
-  } else {
-    return "release";
-  }
-}
 
-const analyzeJarFile = async (file: File) => {
-  const zip = await JSZip.loadAsync(file);
-  const manifest = await zip.file("META-INF/MANIFEST.MF")?.async("string");
-  return {
-    manifest,
-  };
-};
-
-type InferReleaseInfoParams = {
-  file: File;
-  project: any;
-  gameVersions: string[];
-}
-const inferReleaseInfo = async ({file, project, gameVersions}:InferReleaseInfoParams) => {}
 
 const releaseTypeOptions = [
   { value: "release", label: "Release" },
@@ -79,26 +57,85 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "version title must be at least 2 characters."
   }),
-  type: z.enum(["release", "beta", "alpha"], {message: "only release, beta, alpha are allowed."}),
+  type: z.string().min(2, {message: "Your release must have a type."}),
   version_number: z.string().min(1, {
     message: "Your release must have a version number."
   }),
-  loaders: z.array(z.string().min(1), {
+  loaders: z.array(
+    z.string().min(1), 
+  {
     message: "Your release must have the supported mod loaders selected. "
   }),
-  game_versions: z.array(z.string().min(1), {
+  game_versions: z.array(
+    z.string().min(1), 
+    {
     message: "Your release must have the supported Minecraft versions selected. "
-  }),
+  }
+),
 })
+// 递归读取文件夹中的所有文件
+// const getAllFiles = async (files: File[]): Promise<File[]> => {
+//   console.log(`getAllFiles: `, files);
+//   const fileArray: File[] = [];
+//   for (const file of files) {
+//     if (file.type === "") {
+//       // 处理文件夹
+//       const directoryReader = (file as any).webkitGetAsEntry().createReader();
+//       const readEntries = (): Promise<File[]> => {
+//         return new Promise((resolve, reject) => {
+//           directoryReader.readEntries(async (entries: any[]) => {
+//             const entryFiles = await getAllFiles(entries.map(entry => entry.file()));
+//             resolve(entryFiles);
+//           }, reject);
+//         });
+//       };
+//       const entries = await readEntries();
+//       fileArray.push(...entries);
+//     } else {
+//       // 处理文件
+//       fileArray.push(file);
+//     }
+//   }
+//   return fileArray;
+// };
+
+const getPresignedUrls = async (files: File[], fileDir?: string): Promise<UploadOutFile[]> => {
+  const getPresignedIn = {
+    files: files.map((file) => ({
+      name: file.name,
+      pathname: fileDir ? `${fileDir}/${file.name}` : file.name,
+      type: file.type,
+      size: file.size,
+      lastModified: file.lastModified,
+    })),
+  };
+  const getPresignedRes = await fetch("/api/hono/upload/s3?actionType=upload", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(getPresignedIn),
+  });
+  console.log("Get presigned response", getPresignedRes);
+  return await getPresignedRes.json() as UploadOutFile[];
+};
 
 export const MainComp = ({
-  slug
+  clientReleaseId, releaseFileDir
 }: {
-  slug: string;
+  clientReleaseId: string, releaseFileDir: string
 }) => {
   const router = useRouter();
   const { selectedFile, setSelectedFile } = useSelectedFile();
   const [releaseFiles, setReleaseFiles] = useState<File[]>([]);
+  const { isUploading, uploadProgress, customUpload } = useFileUpload();
+  const {
+    state: project,
+    setState: setProject
+  } = useProject();
+  if (!project) {
+    return null; // TODO
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -110,26 +147,40 @@ export const MainComp = ({
       game_versions: [],
     },
   })
+
   const isLoading = form.formState.isSubmitting
+
+  const handleUpload = async () => {
+    const presignedUrls = await getPresignedUrls(releaseFiles, releaseFileDir);
+    await customUpload(releaseFiles, presignedUrls);
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // 模拟延时
     console.log(`onSubmit: `, values);
+    try {
+      await handleUpload();
+    } catch (error) {
+      console.error(`onSubmit: error: `, error);
+    }
+
     await new Promise((resolve) => setTimeout(resolve, 3000));
   }
 
-  const onInputSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(`onInputSelect`);
     const files = e.target.files;
     if (files) {
+      // const fileArray = await getAllFiles(Array.from(files));
       setReleaseFiles([...releaseFiles, ...Array.from(files)]);
     }
   }
-  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+  const handleDrop = async (e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
     console.log(`handleDrop`);
     const files = e.dataTransfer.files;
     if (files) {
+      // const fileArray = await getAllFiles(Array.from(files));
       setReleaseFiles([...releaseFiles, ...Array.from(files)]);
     }
   };
@@ -147,7 +198,29 @@ export const MainComp = ({
       console.log(`MainComp: selectedFile: `, selectedFile);
       setReleaseFiles([...releaseFiles, selectedFile]);
     }
-  }, []);
+    // 解析:
+    const inferReleaseInfoAsync = async () => {
+      if (releaseFiles[0]) {
+        const inferredReleaseInfo = await inferReleaseInfo({ file: releaseFiles[0], project });
+        console.log(`Inferred Release Info: `, inferredReleaseInfo);
+        if (inferredReleaseInfo) {
+          if (inferredReleaseInfo.name) form.setValue("name", inferredReleaseInfo.name);
+          if (inferredReleaseInfo.version_type) form.setValue("type", inferredReleaseInfo.version_type);
+          if (inferredReleaseInfo.version_number) form.setValue("version_number", inferredReleaseInfo.version_number);
+          if (inferredReleaseInfo.loaders) form.setValue("loaders", inferredReleaseInfo.loaders);
+          if (inferredReleaseInfo.game_versions) form.setValue("game_versions", inferredReleaseInfo.game_versions);
+        }
+      }
+    };
+  
+    inferReleaseInfoAsync();
+
+  }, [releaseFiles[0]]);
+
+  // dev only: 观察 form 的变化
+  useEffect(() => {
+    console.log(`MainComp: useEffect: form: `, form.getValues());
+  }, [form.getValues()]);
 
   return <Form {...form}><form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
     {/* ReleaseTitle and submit button */}
@@ -167,7 +240,7 @@ export const MainComp = ({
       )}/>
       <div className="space-x-4">
         <UIButton startContent={isLoading ? <LoadingIcon size={20} />:<Plus size={20} />} type="submit" className="bg-primary text-base font-semibold">Create</UIButton>
-        <UIButton startContent={<X size={20} />} className="text-base font-semibold" type="button" onPress={()=>router.push(`/project/${slug}/release`)}>Cancel</UIButton>
+        <UIButton startContent={<X size={20} />} className="text-base font-semibold" type="button" onPress={()=>router.push(`/project/${project.slug}/release`)}>Cancel</UIButton>
       </div>
     </Card>
     {/* ReleaseChangLog (description) */}
@@ -181,7 +254,7 @@ export const MainComp = ({
         <FormField control={form.control} name="type" render={({ field }) => (
         <FormItem>
           <FormLabel>Release type</FormLabel>
-          <FormControl><SelectDemo value={field.value} setValue={field.onChange} options={releaseTypeOptions} /></FormControl>
+          <FormControl><SelectDemo {...field} value={field.value} setValue={field.onChange} options={releaseTypeOptions} /></FormControl>
           <FormMessage />
         </FormItem>)}/>
         <FormField control={form.control} name="version_number" render={({ field }) => (
@@ -221,7 +294,10 @@ export const MainComp = ({
               {getFileIcon(file.name)}
               <span className="flex gap-2"><strong>{file.name}</strong><span>{`(${formatBytes(file.size)})`}</span>
               </span>
-                <span>{file.type}</span>
+              <span>{file.type}</span>
+              {uploadProgress[index] && isUploading && <>{uploadProgress[index].toFixed(2)}%
+              </>
+              }
               <UIButton color="danger" className="flex w-fit px-4 py-2 gap-2 rounded-md cursor-pointer leading-5 ml-auto " onPress={() => onRemoveFile(index)}>
                 <Trash2 size={20} />Remove
               </UIButton>
@@ -232,11 +308,11 @@ export const MainComp = ({
         <div>
           <h4 className="font-bold">Upload files</h4>
           <span>Used for files such as sources or Java docs.</span>
-          <label onDrop={handleDrop} onDragOver={(e)=>{
+          <label  onDrop={handleDrop} onDragOver={(e)=>{
             e.preventDefault();
           }} className="flex bg-secondary px-8 py-6 mt-2 gap-2 items-center justify-center rounded-3xl cursor-pointer border-4 border-dashed border-current" aria-label="Upload additional file" >
             <UploadIcon size={20} />Drag and drop to upload or click to select
-            <input type="file" multiple accept=".jar,.zip,.litemod,application/java-archive,application/x-java-archive,application/zip" className="hidden" onChange={onInputSelect}  />
+            <input type="file" multiple  accept=".jar,.zip,.litemod,application/java-archive,application/x-java-archive,application/zip" className="hidden" onChange={onInputSelect}  />
           </label>
         </div>
       </Card>

@@ -9,7 +9,7 @@ const config = {
   apiKey: process.env.UPLOADTHING_SECRET,
 }
 
-const OSS_upload_url = `https://${config.REGION_ALIAS}.ingest.uploadthing.com/`;
+export const OSS_upload_url = `https://${config.REGION_ALIAS}.ingest.uploadthing.com/`;
 
 export const generateFileKey = async (appId: string, fileSeed: string) => {
   // Hash and Encode the parts and apiKey as sqids
@@ -71,3 +71,20 @@ function hmacSha256(url: URL, apiKey: string | undefined) {
 function encodeBase64(fileSeed: string) {
   return Buffer.from(fileSeed).toString("base64");
 }
+
+
+// s3 or oss
+import {
+  S3Client,
+  ListBucketsCommand,
+  ListObjectsV2Command,
+  GetObjectCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+export const ACCOUNT_ID = process.env.CF_Account_ID
+export const ACCESS_KEY_ID = process.env.CF_Access_Key_ID
+export const SECRET_ACCESS_KEY = process.env.CF_Secret_Access_Key
+// console.log(`ACCOUNT_ID: ${ACCOUNT_ID} ACCESS_KEY_ID: ${ACCESS_KEY_ID} SECRET_ACCESS_KEY: ${SECRET_ACCESS_KEY}`)
+

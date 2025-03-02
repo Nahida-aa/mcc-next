@@ -2,7 +2,7 @@
 import { eq, lt, gte, ne, sql, and, or } from 'drizzle-orm';
 import { db } from '..';
 // import { linkUserFollow } from '../schema/link';
-import { user as userTable } from '../schema/user';
+import { user_table } from '../schema/user';
 
 // export async function getUserFollowers(user_id: string) {
 //   const followers = await db

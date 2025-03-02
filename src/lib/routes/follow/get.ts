@@ -7,7 +7,7 @@ import jsonContent from "~/lib/openapi/helpers/json-content";
 import { eq, is, sql } from "drizzle-orm";
 import { get_current_user_and_res, get_session_token_payload, get_session_token_payload_and_res } from "~/lib/middleware/auth";
 import { db } from "~/lib/db";
-import { user as user_table } from "~/lib/db/schema/user";
+import { user_table } from "~/lib/db/schema/user";
 // import { linkGroupFollow, linkUserFollow } from "~/server/db/schema/link";
 import { createSelectSchema } from "drizzle-zod";
 import { user_meta_schema } from "~/lib/schema/user";

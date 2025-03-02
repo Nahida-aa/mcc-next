@@ -1,7 +1,7 @@
 import { foreignKey, pgTable, primaryKey, uuid, varchar } from "drizzle-orm/pg-core";
 import { timestamps } from "./columnsHelpers";
 import { group_table } from "./group";
-import { user as user_table } from "./user";
+import { user_table } from "./user";
 import { relations } from "drizzle-orm/relations";
 
 export const linkUserGroup = pgTable("LinkUserGroup", {

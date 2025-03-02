@@ -1,7 +1,7 @@
 import { pgTable, varchar, index, timestamp, serial, integer, uniqueIndex, boolean, foreignKey, primaryKey, uuid } from "drizzle-orm/pg-core"
 import { relations } from "drizzle-orm/relations"
 import { group_table } from "./group";
-import { identity, user } from "./user";
+import { identity, user_table } from "./user";
 import { tag } from "./tag";
 import { proj_table } from "./proj";
 import { resource } from "./resource";
@@ -59,7 +59,7 @@ export const linkUserProj = pgTable("LinkUserProj", {
 		}),
 	foreignKey({
 			columns: [table.user_id],
-			foreignColumns: [user.id],
+			foreignColumns: [user_table.id],
 			name: "LinkUserProj_user_id_fkey"
 		}),
 	primaryKey({ columns: [table.user_id, table.proj_id], name: "LinkUserProj_pkey"}),
@@ -78,7 +78,7 @@ export const linkUserResource = pgTable("LinkUserResource", {
 		}),
 	foreignKey({
 			columns: [table.user_id],
-			foreignColumns: [user.id],
+			foreignColumns: [user_table.id],
 			name: "LinkUserResource_user_id_fkey"
 		}),
 	primaryKey({ columns: [table.user_id, table.resource_id], name: "LinkUserResource_pkey"}),
@@ -122,7 +122,7 @@ export const linkUserIdentity = pgTable("LinkUserIdentity", {
 		}),
 	foreignKey({
 			columns: [table.user_id],
-			foreignColumns: [user.id],
+			foreignColumns: [user_table.id],
 			name: "LinkUserIdentity_user_id_fkey"
 		}),
 	primaryKey({ columns: [table.user_id, table.identity_id], name: "LinkUserIdentity_pkey"}),

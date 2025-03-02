@@ -5,7 +5,7 @@ import jsonContent from "~/lib/openapi/helpers/json-content";
 import { createRoute } from "@hono/zod-openapi";
 import { hash } from "bcrypt-ts";
 import { eq } from "drizzle-orm";
-import { user as userTable, idCardInfo as idCardInfoTable, User} from "~/lib/db/schema/user"
+import { user_table,  idCardInfo_table, User} from "~/lib/db/schema/user"
 
 const router = createRouter()
 .openapi(createRoute({
@@ -29,7 +29,7 @@ const router = createRouter()
 
   const { id_card_info: inIdCardInfo, ...userData  } = inUser;
 
-  let hashPassword = null // 密码加密
+  let hashPassword:string // 密码加密
   if (inUser.password){
     hashPassword = await hash(inUser.password, 10)
     userData.password = hashPassword
@@ -37,12 +37,12 @@ const router = createRouter()
 
   return await db.transaction(async (tx) => {
     // Insert user
-    const [dbUser] = await tx.insert(userTable).values(userData).returning();
+    const [dbUser] = await tx.insert(user_table).values(userData).returning();
 
-    let dbIdCardInfo = null;
+    let dbIdCardInfo;
     if (inIdCardInfo) {
       // Insert ID card info if provided
-      [dbIdCardInfo] = await tx.insert(idCardInfoTable).values({
+      [dbIdCardInfo] = await tx.insert(idCardInfo_table).values({
         ...inIdCardInfo,
         user_id: dbUser.id
       }).returning();
@@ -50,9 +50,9 @@ const router = createRouter()
 
     // Fetch the complete user data including ID card info
     const [completeUser] = await tx.select()
-      .from(userTable)
-      .leftJoin(idCardInfoTable, eq(userTable.id, idCardInfoTable.user_id))
-      .where(eq(userTable.id, dbUser.id));
+      .from(user_table)
+      .leftJoin(idCardInfo_table, eq(user_table.id, idCardInfo_table.user_id))
+      .where(eq(user_table.id, dbUser.id));
 
     return c.json({
       ...completeUser.User,

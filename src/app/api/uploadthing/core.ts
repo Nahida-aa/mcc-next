@@ -64,7 +64,8 @@ export const ourFileRouter = {
       maxFileCount: 2,
     },
   })
-    .middleware(({ req, files }) => {
+    // .input(z.object({ foo: z.string() }))
+    .middleware(async({ req, files, input, res }) => {
       // Check some condition based on the incoming requrest
       // if (!req.headers.get("x-some-header")) {
       //   throw new Error("x-some-header is required");
@@ -74,15 +75,27 @@ export const ourFileRouter = {
       // (Optional) Label your files with a custom identifier
       const filesWithMyIds = files.map((file, idx) => ({
         ...file,
-        key: `${file.name}`, // 貌似无效
+        // key: `${file}`, // 貌似无效, 因为这里的文件根本就没有 key
         // customId: `${idx}-${randomUUID()}`,
       }));
 
+      // const fileOverrides = files.map((file) => {
+      //   const newName = sluggify(file.name);
+      //   const myIdentifier = generateId();
+      //   return { ...file, name: newName, customId: myIdentifier };
+      // });
+
+      // This code runs on your server before upload
+      const auth_session = await server_auth();
+
+      // If you throw, the user will not be able to upload
+      if (!auth_session?.user) throw new UploadThingError("Unauthorized"); //注意：默认情况下，抛出的 UploadThingError '的消息将发送到客户端的 onError
+      const user = auth_session.user;
+      
       // Return some metadata to be stored with the file
-      return { foo: "bar" as const, [UTFiles]: filesWithMyIds };
+      return { foo: "bar" as const, userId: user.id, files,  [UTFiles]: filesWithMyIds };
     })
-    .onUploadComplete(({ file, metadata }) => {
-  
+    .onUploadComplete(async({ file, metadata }) => {
       console.log("ourFileRouter: 2: upload completed, file:", file, "metadata:", metadata);
     }),
 } satisfies FileRouter;
@@ -92,6 +105,7 @@ export type OurFileRouter = typeof ourFileRouter;
 
 import { UTApi } from "uploadthing/server";
 import { randomUUID } from "crypto";
+import { z } from "zod";
 
 export const utapi = new UTApi({
   // ...options,

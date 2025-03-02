@@ -1,6 +1,6 @@
 import { db } from "~/lib/db";
 import { follow_table } from "~/lib/db/schema/follow";
-import { user as user_table } from "~/lib/db/schema/user";
+import { user_table } from "~/lib/db/schema/user";
 import { group_table } from "~/lib/db/schema/group";
 import { createRouter } from "~/lib/create-app";
 import { offset_limit_query_schema } from "~/lib/schema/query";

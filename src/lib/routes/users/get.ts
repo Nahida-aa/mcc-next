@@ -8,8 +8,8 @@ import { notFoundSchema } from "~/lib/constans";
 import IdUUIDParamsSchema from "~/lib/openapi/schemas/id-uuid-params";
 import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
 import NameParamsSchema from "~/lib/openapi/schemas/name-params";
-import { user_table } from "~/lib/db/schema/user";
-import { eq } from "drizzle-orm";
+import { idCardInfo_table, user_table } from "~/lib/db/schema/user";
+import { eq, getTableColumns } from "drizzle-orm";
 
 const router = createRouter()
 
@@ -26,11 +26,17 @@ router.openapi(createRoute({
     )
   }
 }), async (c) => {
-  const dbUsers = await db.query.user.findMany({
-    with: {
-      id_card_info: true, // 关联查询身份证信息
-    }
-  })
+  // 关联查询身份证信息
+  const dbUsers = await db.select({
+    ...getTableColumns(user_table),
+    // {...user_table},
+    id_card_info: idCardInfo_table
+  }).from(user_table).leftJoin(idCardInfo_table, eq(user_table.id, idCardInfo_table.user_id))
+  // const dbUsers = await db.query.user.findMany({
+  //   with: {
+  //     id_card_info: true, // 
+  //   }
+  // })
   return c.json(dbUsers, httpStatus.OK)
 })
 
@@ -57,7 +63,7 @@ router.openapi(createRoute({
   }
 }), async (c) => {
   const { id } = c.req.valid("param")
-  const dbUser = await db.query.user.findFirst({
+  const dbUser = await db.query.user_table.findFirst({
     where: (user, { eq }) => eq(user.id, id),
     with: {
       id_card_info: true, // 关联查询身份证信息
@@ -92,7 +98,7 @@ router.openapi(createRoute({
   }
 }), async (c) => {
   const { name } = c.req.valid("param")
-  const dbUser = await db.query.user.findFirst({
+  const dbUser = await db.query.user_table.findFirst({
     where: (user, { eq }) => eq(user.name, name),
     with: {
       id_card_info: true, // 关联查询身份证信息

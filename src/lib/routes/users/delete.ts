@@ -6,7 +6,7 @@ import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
 import IdUUIDParamsSchema from "~/lib/openapi/schemas/id-uuid-params";
 import { createRoute } from "@hono/zod-openapi";
 import { notFoundSchema } from "~/lib/constans";
-import { user as userTable, idCardInfo as idCardInfoTable, User} from "~/lib/db/schema/user"
+import { user_table, idCardInfo_table, User} from "~/lib/db/schema/user"
 import { eq } from "drizzle-orm";
 
 const router = createRouter()
@@ -39,12 +39,12 @@ const router = createRouter()
   const { id } = c.req.valid("param")
   return await db.transaction(async (tx) => {
     // First, delete the user's ID card info
-    await tx.delete(idCardInfoTable)
-      .where(eq(idCardInfoTable.user_id, id))
+    await tx.delete(idCardInfo_table)
+      .where(eq(idCardInfo_table.user_id, id))
 
     // Then, delete the user
-    const result = await tx.delete(userTable)
-      .where(eq(userTable.id, id))
+    const result = await tx.delete(user_table)
+      .where(eq(user_table.id, id))
 
     if (result.length === 0) {
       return c.json({ message: 'User not found' }, httpStatus.NOT_FOUND);

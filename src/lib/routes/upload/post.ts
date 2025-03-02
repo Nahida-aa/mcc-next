@@ -1,21 +1,13 @@
 import { createRouter } from "~/lib/create-app";
 import { createRoute, z } from "@hono/zod-openapi";
-import { group_table } from "~/lib/db/schema/group";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import jsonContent from "~/lib/openapi/helpers/json-content";
 import httpStatus from "~/lib/http-status-codes"
-import { db } from "~/lib/db";
 import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
-import { get_current_user_and_res, get_session_token_payload, SessionTokenPayload } from "~/lib/middleware/auth";
+import { get_current_user_and_res } from "~/lib/middleware/auth";
 import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
-import { createDBProject } from "~/lib/db/q/project/create";
-import { linkUserGroup } from "~/lib/db/schema/linkUserGroup";
-import { eq, and } from "drizzle-orm";
-import { NewPresignedUrl } from "uploadthing/types";
-import SQIds, { defaultOptions } from "sqids";
-import { generateSignatureURLAndKey } from "./util";
-import { getBaseUrl, inferBaseUrl } from "~/lib/utils/url";
-
+import { generateSignatureURLAndKey, OSS_upload_url } from "./util";
+import { createUploadthing, type FileRouter } from "uploadthing/server";
+import { inferBaseUrl } from "~/server/utils/url";
 
 const router = createRouter()
 
@@ -66,9 +58,9 @@ router.openapi(createRoute({
     [httpStatus.UNPROCESSABLE_ENTITY]: jsonContent(createErrorSchema(upload_in_schema),'The validation error(s); 结构验证错误'),
   },
 }), async (c) => {
-
   // const auth_user = CU_ret.user
   const { slug, actionType } = c.req.valid("query")
+  console.log(`/api/hono/upload: slug: ${slug} actionType: ${actionType}`)
   const upload_in = c.req.valid("json")
   console.log(`/api/hono/upload ${slug} ${actionType} upload_in: ${JSON.stringify(upload_in)}`)
 
@@ -79,9 +71,12 @@ router.openapi(createRoute({
 
       const CU_ret = await get_current_user_and_res(c)
       if (!CU_ret.success) return c.json(CU_ret.json_body, CU_ret.status)
-
-      const out = await generateUploadOut(files, slug)
-      return c.json(out, httpStatus.OK)
+      try {
+        const out = await generateUploadOut(files, slug)
+        return c.json(out, httpStatus.OK)
+      } catch (error: any) {
+        return c.json({ message: error.message }, httpStatus.INTERNAL_SERVER_ERROR);
+      }
     default:
       return c.json((upload_in as any), httpStatus.OK);
   }
@@ -103,23 +98,28 @@ const postToOSS = async ({fileKeys, slug}:{
   fileKeys: string[], slug: string
 }) => {
   const baseUrl = await inferBaseUrl();
-  const callbackUrl = `${baseUrl}/api/hono/upload`;
+
   const headers = {
     'Content-Type': 'application/json',
     "x-uploadthing-api-key": process.env.UPLOADTHING_SECRET!,
   }
   const data = {
     fileKeys,
-    callbackUrl, callbackSlug: slug,
+    metadata: { testMetadata: "aa"},
+    callbackUrl: `${baseUrl}/api/hono/upload`, 
+    callbackSlug: slug,
     awaitServerData: false, // If set to true, the upload request will not respond immediately after file upload, but instead wait for your server to call the /callback-result endpoint with the result of running the onUploadComplete callback. Enable this only if your client needs to get data from the server callback as it will increase the duration of the upload.
     isDev: process.env.NODE_ENV === 'development',
   }
-  const res = await fetch(callbackUrl, {
+  const url = `${OSS_upload_url}route-metadata`
+  const res = await fetch(url, {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
   });
-  console.log(res)
+  console.log(`postToOSS: `, res)
+  const resJson = await res.json();
+  console.log(`postToOSS: resJson`, resJson)
 };
 
 export default router

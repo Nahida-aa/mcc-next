@@ -38,13 +38,13 @@ import { useState } from 'react';
 export function AppSidebar({ user }: { user: UserMeta | undefined }) {
   const router = useRouter();
   const { setOpen, setOpenMobile, isMobile, toggleSidebar } = useSidebar();
-  const displayUser = user || { email: 'guest@example.com', name: 'Guest' }
-  let user_status
-  if (user) {
-    user_status = "online"
-  } else {
-    user_status = "not logged in"
-  }
+  // const displayUser = user || { email: 'guest@example.com', name: 'Guest' }
+  // let user_status
+  // if (user) {
+  //   user_status = "online"
+  // } else {
+  //   user_status = "not logged in"
+  // }
   const img_src = user?.image ?? `https://avatar.vercel.sh/Guest`
 
   const sideHeadSelects = [
@@ -59,7 +59,10 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className='flex'>
-            <UIButton onPressStart={() => {router.push('/')}} isIconOnly className='w-9 h-9 min-w-9' variant="light" ><ShipWheel size={20} /> </UIButton>
+          
+            <UIButton as={Link} href="/"  isIconOnly className='w-9 h-9 min-w-9' variant="light">        
+              <ShipWheel size={20} /> 
+            </UIButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className='[&_svg]:size-5 h-9'>

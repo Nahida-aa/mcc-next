@@ -4,7 +4,7 @@ import { follow_table } from "~/lib/db/schema/follow";
 import { createRouter } from "~/lib/create-app";
 import NameParamsSchema from "~/lib/openapi/schemas/name-params";
 import { createRoute, z } from "@hono/zod-openapi";
-import { user as user_table } from "~/lib/db/schema/user";
+import { user_table } from "~/lib/db/schema/user";
 import { group_table } from "~/lib/db/schema/group";
 import { offset_limit_query_schema } from "~/lib/schema/query";
 import { get_current_user_and_res } from "~/lib/middleware/auth";
@@ -54,7 +54,7 @@ router.openapi(createRoute({
 }), async (c) => {
   const [{name}, {offset, limit}] = [c.req.valid("param"), c.req.valid("query")]
   // 查询 user
-  const user = await db.query.user.findFirst({ where: eq(user_table.name, name) })
+  const user = await db.query.user_table.findFirst({ where: eq(user_table.name, name) })
   if (!user) return c.json({ message: `用户 ${name} 不存在` }, 404)
   // 查询 user 的关注者(粉丝)
   const followers = await db.select().from(follow_table)
@@ -88,7 +88,7 @@ router.openapi(
 
     const [{name}, {offset, limit}] = [c.req.valid("param"), c.req.valid("query")]
     // 查询 user
-    const q_user = await db.query.user.findFirst({ where: eq(user_table.name, name) })
+    const q_user = await db.query.user_table.findFirst({ where: eq(user_table.name, name) })
     if (!q_user) return c.json({ message: `用户 ${name} 不存在` }, 404)
     // 查询 user 关注的 people(user, group)
     const followers = await db.select({
@@ -140,7 +140,7 @@ createRoute({
 }), async (c) => {
   const [{name}, {offset, limit}] = [c.req.valid("param"), c.req.valid("query")]
   // 查询 user
-  const q_user = await db.query.user.findFirst({ where: eq(user_table.name, name) })
+  const q_user = await db.query.user_table.findFirst({ where: eq(user_table.name, name) })
   if (!q_user) return c.json({ message: `用户 ${name} 不存在` }, 404)
   // 查询 user 关注的 people
   const followings = await db.select().from(follow_table)
@@ -175,7 +175,7 @@ router.openapi(
 
     const [{name}, {offset, limit}] = [c.req.valid("param"), c.req.valid("query")]
     // 查询 user
-    const q_user = await db.query.user.findFirst({ where: eq(user_table.name, name) })
+    const q_user = await db.query.user_table.findFirst({ where: eq(user_table.name, name) })
     if (!q_user) return c.json({ message: `用户 ${name} 不存在` }, 404)
     // 查询 user 关注的 people(user, group)
     const followings = await db.select({

@@ -48,7 +48,7 @@ async function testToken() {
   const parts = fakeAccToken.split('.');
   const tamperedToken = `${parts[0]}.${tamperedPayload}.${parts[2]}`;
   console.log("tamperedToken: ", tamperedToken)
-  let tamperedJWTPayload = null
+  let tamperedJWTPayload
   try {
     tamperedJWTPayload = await verifyJWT(tamperedToken) // 对于验证不同过: 都报 401, 例如: 过期, 篡改, 等都是属于验证不通过, 以及 权限不足
     console.log("tamperedJWTPayload: ", tamperedJWTPayload)

@@ -5,7 +5,7 @@ import {
   // linkGroupFollow, 
   linkGroupIdentity, linkGroupProj, linkGroupResource } from "./link";
 import { follow_table } from "./follow";
-import { user as user_table } from "./user";
+import { user_table } from "./user";
 import { linkUserGroup } from "./linkUserGroup";
 import { chat_table } from "./message";
 

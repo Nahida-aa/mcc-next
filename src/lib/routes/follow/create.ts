@@ -5,7 +5,7 @@ import { createRoute } from "@hono/zod-openapi";
 import httpStatus from "~/lib/http-status-codes"
 import { db } from "~/lib/db";
 import { eq, sql } from "drizzle-orm";
-import { user as user_table } from "~/lib/db/schema/user";
+import { user_table } from "~/lib/db/schema/user";
 import { group_table } from "~/lib/db/schema/group";
 import { follow_table } from "~/lib/db/schema/follow";
 import { StatusCode } from "hono/utils/http-status";
@@ -43,7 +43,7 @@ async function follow_a_user(user_name: string, follower_user: { id: string, nam
   if (user_name === follower_user.name) return { message: `不能关注自己`, success: false, status: httpStatus.BAD_REQUEST }
 
   // 查询用户是否存在
-  const target_user = await db.query.user.findFirst({ where: eq(user_table.name, user_name) })
+  const target_user = await db.query.user_table.findFirst({ where: eq(user_table.name, user_name) })
   if (!target_user) return { message: `用户 ${user_name} 不存在`, success: false, status: httpStatus.NOT_FOUND }
 
   // 查询是否已经关注

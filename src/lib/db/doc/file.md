@@ -100,7 +100,7 @@ for (let i of items) {
 // signature
 // 	hmac-sha256=791fde5908e89cda6f1935c11c5aa1a6a3a4d36194496a66310c31ed0e436773
   // [{"url":"https://sea1.ingest.uploadthing.com/8K7d46uF3ucgWu3bhbgsmQlRAwfS4vt0WiHaok52bdUG8yOD?expires=1740124923316&x-ut-identifier=e45m00pl34&x-ut-file-name=star-72.svg&x-ut-file-size=309&x-ut-file-type=image%252Fsvg%252Bxml&x-ut-slug=videoAndImage&x-ut-content-disposition=inline&x-ut-acl=public-read&signature=hmac-sha256%3D861af3c0d5ef9c1b6722f886cd4f12c995272c957ddb784ec9580d958969eece","key":"8K7d46uF3ucgWu3bhbgsmQlRAwfS4vt0WiHaok52bdUG8yOD","name":"star-72.svg","customId":null}]
-  // 1.HEAD upload_url 检查文件是否存在
+  // 1.HEAD upload_url 用于实现可续上传
 //   scheme
 // 	https
 // host

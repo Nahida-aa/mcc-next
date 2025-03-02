@@ -6,8 +6,8 @@ import { Toaster } from "~/components/ui/sonner"
 import { SocketProvider } from "~/components/providers/socket-provider";
 import { AuthSessionProvider } from "~/components/providers/auth-provider";
 import { server_auth } from "./(auth)/auth";
-import { HeroUIProvider } from "@heroui/react";
 import { ProgressBar } from "~/components/layout/header/ProgressBar";
+import { UIProviders } from "~/components/providers/HeroUIProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,14 +46,14 @@ export default async function RootLayout({
           // enableSystem
           disableTransitionOnChange
         >
-          <HeroUIProvider>
+          <UIProviders>
           <AuthSessionProvider session={session}>
             <SocketProvider>
               <ProgressBar />
               {children}
             </SocketProvider>
           </AuthSessionProvider>
-          </HeroUIProvider>
+          </UIProviders>
           <Toaster position="top-right" richColors   />
         </ThemeProvider>
       </body>

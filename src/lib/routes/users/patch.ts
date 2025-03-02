@@ -6,7 +6,7 @@ import jsonContent from "~/lib/openapi/helpers/json-content";
 import { createRoute, z } from "@hono/zod-openapi";
 import { hash } from "bcrypt-ts";
 import { eq } from "drizzle-orm";
-import { user as userTable, idCardInfo as idCardInfoTable, User} from "~/lib/db/schema/user"
+import { user_table, idCardInfo_table, User} from "~/lib/db/schema/user"
 import IdUUIDParamsSchema from "~/lib/openapi/schemas/id-uuid-params";
 import { notFoundSchema } from "~/lib/constans";
 import jsonContentOneOf from "~/lib/openapi/helpers/json-content-one-of";
@@ -63,38 +63,38 @@ const router = createRouter()
   const { id } = c.req.valid("param")
   const {inUser, csrfToken} = c.req.valid("json")
   const { id_card_info: inIdCardInfo, ...userData } = inUser;
-  let hashPassword = null // 密码加密
+  let hashPassword // 密码加密
   if (inUser.password){
     hashPassword = await hash(inUser.password, 10)
     userData.password = hashPassword
   }
   return await db.transaction(async (tx) => {
     // Update user
-    const [updatedUser] = await tx.update(userTable)
+    const [updatedUser] = await tx.update(user_table)
       .set(userData)
-      .where(eq(userTable.id, id))
+      .where(eq(user_table.id, id))
       .returning();
 
     if (!updatedUser) {
       return c.json({ message: 'User not found' }, httpStatus.NOT_FOUND);
     }
 
-    let updatedIdCardInfo = null;
+    let updatedIdCardInfo
     if (inIdCardInfo) {
       // Check if idCardInfo exists
-      const existingIdCardInfo = await tx.query.idCardInfo.findFirst({
-        where: eq(idCardInfoTable.user_id, id)
+      const existingIdCardInfo = await tx.query.idCardInfo_table.findFirst({
+        where: eq(idCardInfo_table.user_id, id)
       });
 
       if (existingIdCardInfo) {
         // Update existing idCardInfo
-        [updatedIdCardInfo] = await tx.update(idCardInfoTable)
+        [updatedIdCardInfo] = await tx.update(idCardInfo_table)
           .set(inIdCardInfo)
-          .where(eq(idCardInfoTable.user_id, id))
+          .where(eq(idCardInfo_table.user_id, id))
           .returning();
       } else {
         // Insert new idCardInfo
-        [updatedIdCardInfo] = await tx.insert(idCardInfoTable)
+        [updatedIdCardInfo] = await tx.insert(idCardInfo_table)
           .values({ ...inIdCardInfo, user_id: id })
           .returning();
       }
@@ -143,38 +143,38 @@ const router = createRouter()
   const { name } = c.req.valid("param")
   const inUser = c.req.valid("json")
   const { id_card_info: inIdCardInfo, ...userData } = inUser;
-  let hashPassword = null // 密码加密
+  let hashPassword // 密码加密
   if (inUser.password){
     hashPassword = await hash(inUser.password, 10)
     userData.password = hashPassword
   }
   return await db.transaction(async (tx) => {
     // Update user
-    const [updatedUser] = await tx.update(userTable)
+    const [updatedUser] = await tx.update(user_table)
       .set(userData)
-      .where(eq(userTable.name, name))
+      .where(eq(user_table.name, name))
       .returning();
 
     if (!updatedUser) {
       return c.json({ message: 'User not found' }, httpStatus.NOT_FOUND);
     }
 
-    let updatedIdCardInfo = null;
+    let updatedIdCardInfo;
     if (inIdCardInfo) {
       // Check if idCardInfo exists
-      const existingIdCardInfo = await tx.query.idCardInfo.findFirst({
-        where: eq(idCardInfoTable.user_id, updatedUser.id)
+      const existingIdCardInfo = await tx.query.idCardInfo_table.findFirst({
+        where: eq(idCardInfo_table.user_id, updatedUser.id)
       });
 
       if (existingIdCardInfo) {
         // Update existing idCardInfo
-        [updatedIdCardInfo] = await tx.update(idCardInfoTable)
+        [updatedIdCardInfo] = await tx.update(idCardInfo_table)
           .set(inIdCardInfo)
-          .where(eq(idCardInfoTable.user_id, updatedUser.id))
+          .where(eq(idCardInfo_table.user_id, updatedUser.id))
           .returning();
       } else {
         // Insert new idCardInfo
-        [updatedIdCardInfo] = await tx.insert(idCardInfoTable)
+        [updatedIdCardInfo] = await tx.insert(idCardInfo_table)
           .values({ ...inIdCardInfo, user_id: updatedUser.id })
           .returning();
       }

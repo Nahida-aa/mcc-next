@@ -1,4 +1,4 @@
-import { idCardInfo, user } from "~/lib/db/schema/user";
+import { idCardInfo_table, user_table } from "~/lib/db/schema/user";
 import { z } from "@hono/zod-openapi";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -9,14 +9,14 @@ export const platformInfo_schema = z.object({
   favorite_content: z.array(z.string()).optional().default([]),
   desired_partners: z.array(z.string()).optional().default([]),
 });
-export const idCardInfo_selectSchema = createSelectSchema(idCardInfo)
+export const idCardInfo_selectSchema = createSelectSchema(idCardInfo_table)
   // .extend({
   //   idCardNumber: z.string(),
   //   idCardHolder: z.string().nullable(),
   //   frontImageUrl: z.string().nullable(),
   //   backImageUrl: z.string().nullable(),
   // });
-export const user_selectSchema = createSelectSchema(user)
+export const user_selectSchema = createSelectSchema(user_table)
   .extend({
     // createdAt: z.string(), // 将 createdAt 定义为字符串类型
     platform_info: platformInfo_schema.nullable(),
@@ -24,7 +24,7 @@ export const user_selectSchema = createSelectSchema(user)
   });
 
 
-export const idCardInfo_insertSchema = createInsertSchema(idCardInfo)
+export const idCardInfo_insertSchema = createInsertSchema(idCardInfo_table)
   .omit({id: true, user_id: true, is_real_name: true})
   .required({
     id_card_number: true,
@@ -35,7 +35,7 @@ export const idCardInfo_insertSchema = createInsertSchema(idCardInfo)
     front_image_url: z.string().optional(),
     back_image_url: z.string().optional(),
   });
-export const user_insertSchema = createInsertSchema(user,
+export const user_insertSchema = createInsertSchema(user_table,
   {
     name: schema => schema.min(1),
     password: schema => schema.min(6),

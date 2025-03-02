@@ -1,6 +1,6 @@
 import { pgTable, varchar, index, timestamp, serial, integer, uniqueIndex, boolean, foreignKey, primaryKey, uuid } from "drizzle-orm/pg-core"
 import { relations } from "drizzle-orm/relations"
-import { user as user_table } from "./user";
+import { user_table } from "./user";
 import { group_table } from "./group";
 
 export const follow_table = pgTable('Follow', {

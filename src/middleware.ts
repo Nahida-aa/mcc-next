@@ -14,6 +14,7 @@ async function middleware(
 ) {
   console.log(`app/(auth)/middleware.ts: middleware: req: ${JSON.stringify(req)}`);
   const rUrl =req.url
+  console.log(`app/(auth)/middleware.ts: middleware: rUrl: ${rUrl}`);
   const session = await server_auth();
   if (session) {
     console.log(`app/(auth)/middleware.ts: middleware: session: ${JSON.stringify(session)}`);
