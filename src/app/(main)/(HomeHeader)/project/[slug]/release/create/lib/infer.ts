@@ -5,7 +5,7 @@ import yaml from "js-yaml";
 import toml from "toml"; 
 import { satisfies } from "semver"; // 使用 semver.satisfies 函数检查版本号
 import { GameVersion } from '~/constants/types';
-import { DBProj } from '~/lib/db/schema/proj';
+import { DBProj } from '~/lib/routes/project/list';
 
 const versionType = (version_number: string) => {
   if (version_number.includes("alpha")) {
@@ -124,11 +124,11 @@ type Metadata = {
 };
 
 type ReleaseInfo = {
-  name?: string;
+  name: string;
   version_number?: string;
-  loaders?: string[];
+  loaders: string[];
   version_type?: string;
-  game_versions?: string[];
+  game_versions: string[];
 };
 
 // const getVersionsRange = (versionA:string, versionB:string, versions:string[]) => {
@@ -549,6 +549,10 @@ export const inferReleaseInfo = async ({file, project}: InferReleaseInfoParams):
     }
   }
   console.log("No file matched");
-  return {};
+  return {
+    name: file.name,
+    loaders: [],
+    game_versions: [],
+  };
 };
 

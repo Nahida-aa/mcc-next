@@ -36,7 +36,7 @@ const ProjectReleaseCreatePage = async ({
   return (
     <Suspense fallback={<Loading />}>
       <div className='h-12'></div>
-      <MainComp clientReleaseId={clientReleaseId} releaseFileDir={releaseFileDir} />
+      <MainComp clientReleaseId={clientReleaseId} releaseId={releaseId} releaseFileDir={releaseFileDir} />
     </Suspense>
   );
 }

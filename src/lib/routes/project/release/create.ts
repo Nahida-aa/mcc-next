@@ -28,7 +28,7 @@ const createReleaseSchema = z.object({
   loaders: z.array(z.string()),
   game_versions: z.array(z.string()),
   files: z.array(z.object({
-    filename: z.string(),
+    name: z.string(),
     pathname: z.string(),
     size: z.number(),
     type: z.string(),

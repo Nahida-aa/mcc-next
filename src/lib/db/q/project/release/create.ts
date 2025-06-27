@@ -1,6 +1,6 @@
 import { db } from "~/lib/db";
 import { proj_table, projectRelease_table, releaseFile_table } from "~/lib/db/schema/proj";
-import { eq, and, ilike, inArray, exists, sql } from "drizzle-orm";
+import { eq, and, ilike, inArray, exists, sql, SQLWrapper } from "drizzle-orm";
 
 type CreateDBProjectReleaseInput = {
   id: string;
@@ -13,13 +13,25 @@ type CreateDBProjectReleaseInput = {
   loaders: string[]; // files 的 聚合
   game_versions: string[]; // 聚合
   files: {
-    filename: string
+    name: string
     pathname: string
     size: number
     type: string
     loaders: string[]
     game_versions: string[]
   }[]
+}
+
+const mergeJsonbArray = (column: SQLWrapper, newArray: any[]) => {
+  return sql`(
+    SELECT COALESCE(
+      jsonb_agg(DISTINCT v),
+      '[]'::jsonb
+    )
+    FROM jsonb_array_elements_text(
+      ${column} || ${sql.raw(`'${JSON.stringify(newArray)}'::jsonb`)}
+    ) AS t(v)
+  )`
 }
 
 export const createDBProjectRelease = async (input: CreateDBProjectReleaseInput) => {
@@ -41,7 +53,7 @@ export const createDBProjectRelease = async (input: CreateDBProjectReleaseInput)
     await tx.insert(releaseFile_table).values(
       input.files.map((file) => ({
         release_id: input.id,
-        filename: file.filename,
+        name: file.name,
         pathname: file.pathname,
         size: file.size,
         type: file.type,
@@ -50,12 +62,12 @@ export const createDBProjectRelease = async (input: CreateDBProjectReleaseInput)
       })),
     )
 
-    // 3. Update the project table
+    console.log(`3. Update the project table, input: ${JSON.stringify(input)}`)
     await tx
     .update(proj_table)
     .set({
-      game_versions: sql`array_distinct(${proj_table.game_versions} || ${input.game_versions})`,
-      loaders: sql`array_distinct(${proj_table.loaders} || ${input.loaders})`,
+      game_versions: mergeJsonbArray(proj_table.game_versions, input.game_versions),
+      loaders: mergeJsonbArray(proj_table.loaders, input.loaders)
     })
     .where(eq(proj_table.id, input.project_id))
 

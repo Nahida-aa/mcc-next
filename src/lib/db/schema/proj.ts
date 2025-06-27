@@ -44,9 +44,9 @@ export const proj_table = pgTable("Proj", {
   owner_type: varchar({ length: 128 }).notNull(), // 'user' 或 'group'
   owner_id: uuid().notNull(), // user 或 group 的 ID
   creator_id: uuid().notNull().references(() => user_table.id), // 创建者的用户 ID
-  game_versions: jsonb("game_versions").$type<string[]>().default([]),
-  loaders: jsonb("loaders").$type<string[]>().default([]),
-  tags: jsonb("tags").$type<string[]>().default([]),
+  game_versions: jsonb("game_versions").$type<string[]>().default([]).notNull(),
+  loaders: jsonb("loaders").$type<string[]>().default([]).notNull(),
+  tags: jsonb("tags").$type<string[]>().default([]).notNull(),
   // detail 字段
   description: varchar({ length: 65536 }), // 详细描述 .md
   license_url: varchar({ length: 2048 }), // 项目许可证
@@ -61,8 +61,7 @@ export const proj_table = pgTable("Proj", {
   index("ix_Proj_summary").on(table.summary),
 ]);
 
-export type DBProj = InferSelectModel<typeof proj_table>;
-export const DBProjSchema = createSelectSchema(proj_table);
+
 
 export const proj_relations = relations(proj_table, ({ many, one }) => ({
   // // meta 字段
@@ -100,12 +99,15 @@ export const projectRelease_table = pgTable("ProjectRelease", {
 			name: "ProjectRelease_creator_id_fkey"
 		}),
 ]);
+export const projectRelease_relations = relations(projectRelease_table, ({ many }) => ({
+  files: many(releaseFile_table),
+}));
 
 export const releaseFile_table = pgTable("ReleaseFile", {
 	id: uuid().primaryKey().notNull().defaultRandom(),
 	release_id: uuid().notNull(),
 	pathname: varchar({ length: 2048 }).notNull(), // /project/${proj_cid}/release/${release_cid}/${filename}
-	filename: varchar({ length: 2048 }).notNull(),
+	name: varchar({ length: 2048 }).notNull(),
 	size: integer().default(0).notNull(),
 
 	metadata: jsonb(),
@@ -121,6 +123,9 @@ export const releaseFile_table = pgTable("ReleaseFile", {
 			name: "ReleaseFile_release_id_fkey"
 		}),
 ]);
+export const releaseFile_relations = relations(releaseFile_table, ({ one }) => ({
+  release: one(projectRelease_table, { fields: [releaseFile_table.release_id], references: [projectRelease_table.id] }),
+}));
 
 export const projectMember_table = pgTable("ProjectMember", {
   id: uuid().primaryKey().defaultRandom(),

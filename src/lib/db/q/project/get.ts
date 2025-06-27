@@ -91,10 +91,15 @@ export const listProject = async (params: ListProjectParams) => {
     count: results[0].count }
 }
 
-export const listProjectByUser = async (userId: string) => {
-  const projects = await db.select().from(proj_table).where(eq(proj_table.creator_id, userId));
-  return projects;
+export const listProjectByUser = async ({userId, limit=20, offset=0}: {userId: string, limit?: number, offset?: number}) => {
+
+  const results = await db.select({
+    record: proj_table,
+    count: sql<number>`count(*) over()`
+  }).from(proj_table).where(eq(proj_table.creator_id, userId));
+  return { records: results.map(result => result.record), count: results[0].count }
 }
+export type ListProjectByUserResult = Awaited<ReturnType<typeof listProjectByUser>>
 
 export const projectById = async (id: string) => {
   const [project] = await db.select().from(proj_table).where(eq(proj_table.id, id)).limit(1);

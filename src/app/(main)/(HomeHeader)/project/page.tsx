@@ -13,11 +13,13 @@ const  ProjectListPage = async () => {
   if (!session?.user) {
     return null; // TODO: redirect to login
   }
-  const projects = await listProjectByUser(session.user.id);
+  const projects = await listProjectByUser({userId: session.user.id});
+  console.log(`ProjectListPage: projects`, projects)
   return (
     <Suspense fallback={<Loading />}>
-      <section className='mt-12'>
-      <ScrollShadow hideScrollBar className="h-screen">
+      <div className='min-h-12'></div>
+      {/* <ScrollShadow hideScrollBar className="h-screen"> */}
+      <section >
         <Card>
           <CardHeader>
             <CardTitle>Projects</CardTitle>
@@ -27,7 +29,7 @@ const  ProjectListPage = async () => {
             <DemoList />
             <ProjectList />
             <ul>
-              {projects.map((project) => (
+              {projects.records.map((project) => (
                 <li key={project.id}>
                   <Link href={`/project/${project.slug}`}>
                     {project.name}
@@ -37,8 +39,8 @@ const  ProjectListPage = async () => {
             </ul>
           </CardContent>
         </Card>
-        </ScrollShadow>
       </section>
+        {/* </ScrollShadow> */}
     </Suspense>
   );
 }

@@ -5,7 +5,7 @@ import create_route from './create'
 // import update_route from './update'
 // import delete_route from './delete'
 
-import members_route from '../members/route'
+// import members_route from '../members/route'
 
 const router = createRouter()
 

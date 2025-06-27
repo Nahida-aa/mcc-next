@@ -23,6 +23,8 @@ import { useProject } from "../../_comp/project";
 import { inferReleaseInfo } from "./lib/infer";
 import { useFileUpload } from "~/app/(main)/(HomeHeader)/demo/upload/s3/hook";
 import { UploadOutFile } from "~/lib/routes/upload/s3";
+import { Loading } from "~/components/ui/loading/Loading";
+import { files } from "jszip";
 
 const getFileIcon = (fileName: string) => {
   const extension = fileName.split('.').pop()?.toLowerCase();
@@ -67,11 +69,9 @@ const formSchema = z.object({
     message: "Your release must have the supported mod loaders selected. "
   }),
   game_versions: z.array(
-    z.string().min(1), 
-    {
+    z.string().min(1), {
     message: "Your release must have the supported Minecraft versions selected. "
-  }
-),
+  }),
 })
 // 递归读取文件夹中的所有文件
 // const getAllFiles = async (files: File[]): Promise<File[]> => {
@@ -120,24 +120,31 @@ const getPresignedUrls = async (files: File[], fileDir?: string): Promise<Upload
   return await getPresignedRes.json() as UploadOutFile[];
 };
 
+type FileMeta = {
+  name: string,
+  pathname: string,
+  size: number,
+  type: string,
+  loaders: string[],
+  game_versions: string[],
+}
+
 export const MainComp = ({
-  clientReleaseId, releaseFileDir
+  clientReleaseId, releaseFileDir, releaseId
 }: {
-  clientReleaseId: string, releaseFileDir: string
+  clientReleaseId: string, releaseFileDir: string, releaseId: string
 }) => {
   const router = useRouter();
   const { selectedFile, setSelectedFile } = useSelectedFile();
   const [releaseFiles, setReleaseFiles] = useState<File[]>([]);
+  const [releaseFileMetaLs, setReleaseFileMetaLs] = useState<FileMeta[]>([]);
   const { isUploading, uploadProgress, customUpload } = useFileUpload();
   const {
     state: project,
     setState: setProject
   } = useProject();
-  if (!project) {
-    return null; // TODO
-  }
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof formSchema>>({ // Error: React Hook "useForm" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -160,6 +167,22 @@ export const MainComp = ({
     console.log(`onSubmit: `, values);
     try {
       await handleUpload();
+      const res = await fetch(`/api/hono/project/release`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: releaseId,
+          project_id: project.id,
+          ...values,
+          files: releaseFileMetaLs,
+        }),
+      });
+      console.log(`onSubmit: res: `, res);
+      if (res.ok) {
+        router.push(`/project/${project.slug}/release/${clientReleaseId}`);
+      }
     } catch (error) {
       console.error(`onSubmit: error: `, error);
     }
@@ -192,6 +215,10 @@ export const MainComp = ({
     setReleaseFiles(newFiles);
   }
 
+  // if (!project) {
+  //   router.push(`/project`);
+  //   return <Loading />
+  // }
   useEffect(() => {
     console.log(`MainComp: useEffect: 0`);
     if (selectedFile) {
@@ -200,22 +227,33 @@ export const MainComp = ({
     }
     // 解析:
     const inferReleaseInfoAsync = async () => {
-      if (releaseFiles[0]) {
-        const inferredReleaseInfo = await inferReleaseInfo({ file: releaseFiles[0], project });
+      // 设置releaseFileMetaLs,并将第一个文件的信息填充到表单中,
+      for (const [index, file] of releaseFiles.entries()) {
+        const inferredReleaseInfo = await inferReleaseInfo({ file, project });
         console.log(`Inferred Release Info: `, inferredReleaseInfo);
-        if (inferredReleaseInfo) {
-          if (inferredReleaseInfo.name) form.setValue("name", inferredReleaseInfo.name);
+        const fileMeta: FileMeta = {
+          ...inferredReleaseInfo,
+          pathname: `${releaseFileDir}/${file.name}`,
+          size: file.size,
+          type: file.type,
+        };
+        setReleaseFileMetaLs([...releaseFileMetaLs, fileMeta]);
+
+        if (index === 0) { // 如果是第一个文件,则填充表单
+          form.setValue("name", inferredReleaseInfo.name);
           if (inferredReleaseInfo.version_type) form.setValue("type", inferredReleaseInfo.version_type);
           if (inferredReleaseInfo.version_number) form.setValue("version_number", inferredReleaseInfo.version_number);
-          if (inferredReleaseInfo.loaders) form.setValue("loaders", inferredReleaseInfo.loaders);
-          if (inferredReleaseInfo.game_versions) form.setValue("game_versions", inferredReleaseInfo.game_versions);
+          form.setValue("loaders", inferredReleaseInfo.loaders);
+          form.setValue("game_versions", inferredReleaseInfo.game_versions);
         }
+        // console.log(`MainComp: useEffect: inferReleaseInfoAsync: fileMeta: `, fileMeta);
       }
+      console.log(`MainComp: useEffect: inferReleaseInfoAsync: releaseFileMetaLs: `, releaseFileMetaLs);
     };
   
     inferReleaseInfoAsync();
 
-  }, [releaseFiles[0]]);
+  }, [releaseFiles]);
 
   // dev only: 观察 form 的变化
   useEffect(() => {

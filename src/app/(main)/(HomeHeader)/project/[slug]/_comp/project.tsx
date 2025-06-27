@@ -1,18 +1,18 @@
 "use client";
 import { createContext, useContext, useState, ReactNode } from "react";
-import { DBProj } from "~/lib/db/schema/proj";
+import { DBProj } from "~/lib/routes/project/list";
 
-interface ContextType extends DBProj {}
+type ContextType = DBProj
 
 const Context = createContext<{
-  state: ContextType | null;
-  setState: (state: ContextType | null) => void;
+  state: ContextType;
+  setState: (state: ContextType) => void;
 } | undefined>(undefined);
 
 export const ProjectProvider = ({ children,
   defaultState
 }: { children: ReactNode, defaultState: ContextType }) => {
-  const [state, setState] = useState<ContextType | null>(defaultState);
+  const [state, setState] = useState<ContextType>(defaultState);
 
   return (
     <Context.Provider value={{ state, setState }}>

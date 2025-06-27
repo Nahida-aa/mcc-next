@@ -62,7 +62,7 @@ export const uuidToBase64 = async (uuid: string): Promise<string> => {
 };
 
 // 将 URL 安全的 Base64 编码转换为 UUID
-export const base64ToUuid = (base64: string): string => {
+export const base64ToUuid = async (base64: string): Promise<string> => {
   // 将 Base64 编码转换为字节数组
   const bytes = Buffer.from(base64, "base64url");
   // 将字节数组转换为无连字符的 UUID 字符串

@@ -5,7 +5,7 @@ import create_route from './create'
 import list_route from './list'
 // import update_route from './update'
 // import delete_route from './delete'
-// import release_route from '../release/route'
+import release_route from './release/route'
 
 const router = createRouter()
 
@@ -15,6 +15,6 @@ router.route('', create_route)
 router.route('', list_route)
 // router.route('', update_route)
 // router.route('', delete_route)
-// router.route('', release_route)
+router.route('', release_route)
 
 export default router

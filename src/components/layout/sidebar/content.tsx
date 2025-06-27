@@ -14,10 +14,15 @@ import {
   useSidebar,
 } from '~/components/ui/sidebar';
 
-export const SidebarContentMenuComponent = () => {
+export const SidebarContentMenuComponent = ({
+  username,
+}: {
+  username?: string;
+}) => {
   const router = useRouter();
   const menuItems = [
     { label: 'My home', icon: House, path: '/user/home',},
+    { label: 'My projects', icon: House, path: `/${username}/projects`,},
     {label: 'My friends',icon: UserRound,path: '/user/friend',},
     {label: 'My stars',icon: Star,path: '/',},
     {
