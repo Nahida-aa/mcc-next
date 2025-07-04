@@ -1,7 +1,7 @@
-import { createRouter } from "~/lib/create-app";
+import { createRouter } from "@/lib/create-app";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
-import settings from "~/lib/settings";
-import {  createJWT, verifyJWT } from "~/lib/core/token";
+import settings from "@/lib/settings";
+import {  createJWT, verifyJWT } from "@/lib/core/token";
 import { decode } from 'hono/jwt'
 
 const router = createRouter()

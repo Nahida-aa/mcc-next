@@ -1,11 +1,11 @@
-import { db } from "~/lib/db";
-import { user_insertSchema, user_selectSchema } from "~/lib/schema/userBy";
-import { createRouter } from "~/lib/create-app";
-import jsonContent from "~/lib/openapi/helpers/json-content";
+import { db } from "@/lib/db";
+import { user_insertSchema, user_selectSchema } from "@/lib/schema/userBy";
+import { createRouter } from "@/lib/create-app";
+import jsonContent from "@/lib/openapi/helpers/json-content";
 import { createRoute } from "@hono/zod-openapi";
 import { hash } from "bcrypt-ts";
 import { eq } from "drizzle-orm";
-import { user_table,  idCardInfo_table, User} from "~/lib/db/schema/user"
+import { user_table,  idCardInfo_table, User} from "@/lib/db/schema/user"
 
 const router = createRouter()
 .openapi(createRoute({

@@ -1,29 +1,29 @@
 "use client";
 import { ArrowLeftRight, ChevronDown, FileBox, FileIcon, Plus, Trash2, UploadIcon, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Card, CardHeader, CardTitle } from "~/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSelectedFile } from "../_comp/selectedFile-context";
-import { formatBytes } from "~/lib/utils/file";
+import { formatBytes } from "@/lib/utils/file";
 import { Chip, Button as UIButton } from "@heroui/react";
-import { Label } from "~/components/ui/label";
-import { Input } from "~/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import gameReleaseVersions from '~/constants/gameReleaseVersions.json'
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import gameReleaseVersions from '@/constants/gameReleaseVersions.json'
 
-import { MultiCombobox, SelectDemo } from "~/components/aa/Select";
+import { MultiCombobox, SelectDemo } from "@/components/aa/Select";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { LoaderIcon } from "~/components/icons";
-import { LoadingIcon } from "~/components/common/submit-button";
+import { LoaderIcon } from "@/components/icons";
+import { LoadingIcon } from "@/components/common/submit-button";
 import { useProject } from "../../_comp/project";
 import { inferReleaseInfo } from "./lib/infer";
-import { useFileUpload } from "~/app/(main)/(HomeHeader)/demo/upload/s3/hook";
-import { UploadOutFile } from "~/lib/routes/upload/s3";
-import { Loading } from "~/components/ui/loading/Loading";
+import { useFileUpload } from "@/app/(main)/(HomeHeader)/demo/upload/s3/hook";
+import { UploadOutFile } from "@/lib/routes/upload/s3";
+import { Loading } from "@/components/ui/loading/Loading";
 import { files } from "jszip";
 
 const getFileIcon = (fileName: string) => {

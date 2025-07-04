@@ -4,21 +4,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useWindowSize } from 'usehooks-ts';
 
-// import { ModelSelector } from '~/components/model-selector';
-import { SidebarToggle } from '~/components/layout/sidebar/sidebar-toggle';
-import { Button } from '~/components/ui/button';
-import { BetterTooltip } from '~/components/common/BetterTooltip';
-import { PlusIcon, VercelIcon } from '~/components/icons';
-import { useSidebar } from '~/components/ui/sidebar';
+// import { ModelSelector } from '@/components/model-selector';
+import { SidebarToggle } from '@/components/layout/sidebar/sidebar-toggle';
+import { Button } from '@/components/ui/button';
+import { BetterTooltip } from '@/components/common/BetterTooltip';
+import { PlusIcon, VercelIcon } from '@/components/icons';
+// import { useSidebar } from '@/components/ui/sidebar';
 import { UserMeta, UserSidebarToggle } from '../sidebar/user-side-toggle';
-import { ModeToggle } from '~/components/common/ModeToggle';
+import { ModeToggle } from '@/components/common/theme-toggle';
 import { Search, AlignRight, X, Sparkles, UserRound, House } from 'lucide-react';
 // import { useState } from 'react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "~/components/ui/popover"
+} from "@/components/ui/popover"
 import { MoreMenu } from './home-header';
 
 export function CommonHeader(

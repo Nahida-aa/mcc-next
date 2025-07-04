@@ -1,4 +1,4 @@
-import { server_auth } from "~/app/(auth)/auth";
+import { server_auth } from "@/app/(auth)/auth";
 import { createUploadthing, UTFiles, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 

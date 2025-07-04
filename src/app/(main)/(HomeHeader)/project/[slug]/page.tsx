@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import { server_auth } from '~/app/(auth)/auth';
-import { Loading } from '~/components/ui/loading/Loading';
+import { server_auth } from '@/app/(auth)/auth';
+import { Loading } from '@/components/ui/loading/Loading';
 
 export default async function ProjectPage ({
   params,

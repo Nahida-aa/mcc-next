@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from 'next/headers'
 import { cookies } from 'next/headers'
-import { verifyJWT } from "~/lib/core/token";
+import { verifyJWT } from "@/lib/core/token";
 
 export async function GET(req: NextRequest) {
   const headersObj = await headers()

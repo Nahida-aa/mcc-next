@@ -1,16 +1,16 @@
-import { createRouter } from "~/lib/create-app";
-import NameParamsSchema from "~/lib/openapi/schemas/name-params";
+import { createRouter } from "@/lib/create-app";
+import NameParamsSchema from "@/lib/openapi/schemas/name-params";
 import { StatusCode } from "hono/utils/http-status";
-import httpStatus from "~/lib/http-status-codes"
-import { get_current_user_and_res } from "~/lib/middleware/auth";
-import { follow_table } from "~/lib/db/schema/follow";
-import { db } from "~/lib/db";
+import httpStatus from "@/lib/http-status-codes"
+import { get_current_user_and_res } from "@/lib/middleware/auth";
+import { follow_table } from "@/lib/db/schema/follow";
+import { db } from "@/lib/db";
 import { sql } from "drizzle-orm";
 import { createRoute } from "@hono/zod-openapi";
-import jsonContent from "~/lib/openapi/helpers/json-content";
-import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
-import { user_table } from "~/lib/db/schema/user";
-import { group_table } from "~/lib/db/schema/group";
+import jsonContent from "@/lib/openapi/helpers/json-content";
+import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
+import { user_table } from "@/lib/db/schema/user";
+import { group_table } from "@/lib/db/schema/group";
 
 const router = createRouter()
 // 检测 auth_user 是否关注 user

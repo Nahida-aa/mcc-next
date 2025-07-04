@@ -1,8 +1,8 @@
 'use client'
-import { ShadcnAvatar } from '~/components/common/avatar';
-import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar';
-import { UserLsWithCount } from '~/lib/db/q/user/friend';
-import { UserListIsFriend_ApiResBody } from '~/lib/routes/friend/list';
+import { ShadcnAvatar } from '@/components/common/avatar';
+import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { UserLsWithCount } from '@/lib/db/q/user/friend';
+import { UserListIsFriend_ApiResBody } from '@/lib/routes/friend/list';
 import { useEffect, useState } from 'react';
 import { toast as sonner_toast } from "sonner"
 

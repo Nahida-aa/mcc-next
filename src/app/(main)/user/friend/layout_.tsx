@@ -1,15 +1,15 @@
 import { cookies } from 'next/headers';
 
-import { AppSidebar } from '~/components/layout/sidebar/app-sidebar';
-import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar';
+import { AppSidebar } from '@/components/layout/sidebar/app-sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 // import { server_auth } from '../(auth)/auth';
-import { HomeHeader } from '~/components/layout/header/home-header';
+import { HomeHeader } from '@/components/layout/header/home-header';
 // import { NavigationSidebar } from './_comp/side';
-import { Separator } from '~/components/ui/separator';
-import { ScrollArea } from '~/components/ui/scroll-area';
-import { server_auth } from '~/app/(auth)/auth';
-import { CommonHeader } from '~/components/layout/header/common-header';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { server_auth } from '@/app/(auth)/auth';
+import { CommonHeader } from '@/components/layout/header/common-header';
 
 // export const experimental_ppr = true; // next
 

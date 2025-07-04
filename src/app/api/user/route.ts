@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from 'next/headers'
 import { cookies } from 'next/headers'
-import { verifyJWT } from "~/lib/core/token";
-// import { user } from "~/server/db/schema/user";
+import { verifyJWT } from "@/lib/core/token";
+// import { user } from "@/server/db/schema/user";
 
 /**
  *@swagger

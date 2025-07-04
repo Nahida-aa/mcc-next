@@ -1,17 +1,17 @@
 "use client";
-import { HomeHeader } from '~/components/layout/header/home-header'
+import { HomeHeader } from '@/components/layout/header/home-header'
 import React, { use, useEffect, useState } from 'react'
 import { cookies } from 'next/headers';
 import Link from 'next/link'; // 对 next 内的 router 的跳转
-import { Button } from '~/components/ui/button';
-import { ScrollArea } from '~/components/ui/scroll-area';
-import { SubHeader } from '~/components/layout/header/sub-header';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { SubHeader } from '@/components/layout/header/sub-header';
 import { ChevronRight, CircleX, Search, X } from 'lucide-react';
-import { Input } from "~/components/ui/input"
+import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-// import { toast as toast_toast } from "~/components/hooks/use-toast"
+// import { toast as toast_toast } from "@/components/hooks/use-toast"
 import { toast as sonner_toast } from "sonner"
 import {
   Form,
@@ -21,14 +21,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "~/components/ui/form"
-import { userLsWithCount_notFriend_by_currentUserId_word, UserLsWithCount_whenAddFriend } from '~/lib/db/q/user/friend';
-import { SubmitButton } from '~/components/common/submit-button';
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
-import { Skeleton } from '~/components/ui/skeleton';
-import { ShadcnAvatar } from '~/components/common/avatar';
-import { Separator } from '~/components/ui/separator';
-import { Badge } from '~/components/ui/badge';
+} from "@/components/ui/form"
+import { userLsWithCount_notFriend_by_currentUserId_word, UserLsWithCount_whenAddFriend } from '@/lib/db/q/user/friend';
+import { SubmitButton } from '@/components/common/submit-button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ShadcnAvatar } from '@/components/common/avatar';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const FormSchema = z.object({
@@ -118,7 +118,7 @@ export default function SearchFriendPage() {
                   placeholder='name\email\phone'
                   className='pl-8 pr-8 
                   focus-visible:ring-0 
-                  focus-visible:ring-offset-0 bg-muted h-[2.375rem]'
+                  focus-visible:ring-offset-0 bg-muted h-9.5'
                   {...field} // 后续可以补上 点击搜索框 将取消(暂停)请求(也可以不管)
                 />
                 {/* focus-visible:ring-1 */}

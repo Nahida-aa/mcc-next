@@ -1,4 +1,4 @@
-import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Highlight
   , themes // themes.vsDark, nightOwl, github, , duotoneDark, synthwave84, dracula, shadesOfPurple
 } from 'prism-react-renderer'

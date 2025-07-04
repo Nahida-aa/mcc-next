@@ -1,19 +1,19 @@
-import { createRouter } from "~/lib/create-app";
+import { createRouter } from "@/lib/create-app";
 import { createRoute, z } from "@hono/zod-openapi";
-import { group_table } from "~/lib/db/schema/group";
+import { group_table } from "@/lib/db/schema/group";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import jsonContent from "~/lib/openapi/helpers/json-content";
-import httpStatus from "~/lib/http-status-codes"
-import { db } from "~/lib/db";
-import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
-import { get_current_user_and_res, get_session_token_payload, SessionTokenPayload } from "~/lib/middleware/auth";
-import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
-import { linkUserGroup } from "~/lib/db/schema/linkUserGroup";
-import { user_meta_schema } from "~/lib/schema/user";
-import { UserMeta } from "~/components/layout/sidebar/user-side-toggle";
-import { chat_table } from "~/lib/db/schema/message";
+import jsonContent from "@/lib/openapi/helpers/json-content";
+import httpStatus from "@/lib/http-status-codes"
+import { db } from "@/lib/db";
+import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
+import { get_current_user_and_res, get_session_token_payload, SessionTokenPayload } from "@/lib/middleware/auth";
+import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
+import { linkUserGroup } from "@/lib/db/schema/linkUserGroup";
+import { user_meta_schema } from "@/lib/schema/user";
+import { UserMeta } from "@/components/layout/sidebar/user-side-toggle";
+import { chat_table } from "@/lib/db/schema/message";
 import exp from "constants";
-import { createChat } from "~/lib/db/q/user/chat";
+import { createChat } from "@/lib/db/q/user/chat";
 
 const router = createRouter()
 

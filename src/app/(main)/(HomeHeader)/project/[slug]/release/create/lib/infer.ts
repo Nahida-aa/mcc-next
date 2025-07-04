@@ -1,11 +1,11 @@
-import gameReleaseVersions from '~/constants/gameReleaseVersions.json'
-import gameReleaseVersionsStrList from '~/constants/gameReleaseVersionsStrList.json'
+import gameReleaseVersions from '@/constants/gameReleaseVersions.json'
+import gameReleaseVersionsStrList from '@/constants/gameReleaseVersionsStrList.json'
 import JSZip from "jszip";
 import yaml from "js-yaml";
 import toml from "toml"; 
 import { satisfies } from "semver"; // 使用 semver.satisfies 函数检查版本号
-import { GameVersion } from '~/constants/types';
-import { DBProj } from '~/lib/routes/project/list';
+import { GameVersion } from '@/constants/types';
+import { DBProj } from '@/lib/routes/project/list';
 
 const versionType = (version_number: string) => {
   if (version_number.includes("alpha")) {

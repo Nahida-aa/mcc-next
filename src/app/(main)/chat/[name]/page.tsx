@@ -1,24 +1,24 @@
-import { SubHeader } from "~/components/layout/header/sub-header"
-import { Badge } from "~/components/ui/badge"
-import { Button } from "~/components/ui/button"
-import { Input } from "~/components/ui/input"
-import { ScrollArea } from "~/components/ui/scroll-area"
+import { SubHeader } from "@/components/layout/header/sub-header"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { AlignJustify } from "lucide-react"
 import { useState } from "react"
 import { MessageInput } from "./_comp/MessageInput"
 import { ChatMain } from "./_comp/Client"
-import * as qUser from '~/lib/db/q/qUser'
-import * as qChat from '~/lib/db/q/user/chat'
+import * as qUser from '@/lib/db/q/qUser'
+import * as qChat from '@/lib/db/q/user/chat'
 
-import { Loading } from "~/components/ui/loading/Loading"
+import { Loading } from "@/components/ui/loading/Loading"
 import { redirect } from 'next/navigation'
-import { db } from "~/lib/db"
-import { user_table } from "~/lib/db/schema/user"
+import { db } from "@/lib/db"
+import { user_table } from "@/lib/db/schema/user"
 import { eq } from "drizzle-orm";
-import { listMessageWithSender_by_chatId_cursor, listUserChatMessages } from "~/lib/db/q/user/msg"
-import { SWRProvider } from "~/components/providers/swr-provider"
-import { server_auth } from "~/app/(auth)/auth"
-import { MsgLsCursor } from "~/lib/routes/chats/messages"
+import { listMessageWithSender_by_chatId_cursor, listUserChatMessages } from "@/lib/db/q/user/msg"
+import { SWRProvider } from "@/components/providers/swr-provider"
+import { server_auth } from "@/app/(auth)/auth"
+import { MsgLsCursor } from "@/lib/routes/chats/messages"
 
 export default async function AddFriendByNamePage({
   params,

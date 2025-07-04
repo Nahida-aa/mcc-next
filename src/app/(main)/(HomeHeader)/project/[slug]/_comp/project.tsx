@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useState, ReactNode } from "react";
-import { DBProj } from "~/lib/routes/project/list";
+import { DBProj } from "@/lib/routes/project/list";
 
 type ContextType = DBProj
 

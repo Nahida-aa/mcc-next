@@ -1,6 +1,6 @@
-import { base64ToUuid } from "~/lib/utils/encode";
+import { base64ToUuid } from "@/lib/utils/encode";
 import { ProjectProvider } from "./_comp/project";
-import { projectById, projectBySlug } from "~/lib/db/q/project/get";
+import { projectById, projectBySlug } from "@/lib/db/q/project/get";
 
 export default async function Layout({ 
   children,

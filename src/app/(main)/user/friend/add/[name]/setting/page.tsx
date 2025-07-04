@@ -1,4 +1,4 @@
-import { SubHeader } from "~/components/layout/header/sub-header"
+import { SubHeader } from "@/components/layout/header/sub-header"
 import { ClientMain } from "./_comp/main"
 
 export default async function AddFriendByNamePage({

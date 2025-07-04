@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { FileUpload } from "~/components/common/file-upload";
-import { UploadButton } from "~/lib/utils/uploadthing";
+import { FileUpload } from "@/components/common/file-upload";
+import { UploadButton } from "@/lib/utils/uploadthing";
 import {
   Form,
   FormControl,
@@ -11,14 +11,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "~/components/ui/form"
+} from "@/components/ui/form"
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "~/components/ui/button";
-import { DialogFooter } from "~/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { DialogFooter } from "@/components/ui/dialog";
 import { toast as sonner_toast } from "sonner"
-import { SubmitButton } from "~/components/common/submit-button";
+import { SubmitButton } from "@/components/common/submit-button";
 
 const formSchema = z.object({
   // name: z.string().min(1, {

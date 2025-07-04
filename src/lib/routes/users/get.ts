@@ -1,14 +1,14 @@
-import { db } from "~/lib/db";
-import httpStatus from "~/lib/http-status-codes"
-import { user_selectSchema } from "~/lib/schema/userBy";
-import { createRouter } from "~/lib/create-app";
-import jsonContent from "~/lib/openapi/helpers/json-content";
+import { db } from "@/lib/db";
+import httpStatus from "@/lib/http-status-codes"
+import { user_selectSchema } from "@/lib/schema/userBy";
+import { createRouter } from "@/lib/create-app";
+import jsonContent from "@/lib/openapi/helpers/json-content";
 import { createRoute, z } from "@hono/zod-openapi";
-import { notFoundSchema } from "~/lib/constans";
-import IdUUIDParamsSchema from "~/lib/openapi/schemas/id-uuid-params";
-import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
-import NameParamsSchema from "~/lib/openapi/schemas/name-params";
-import { idCardInfo_table, user_table } from "~/lib/db/schema/user";
+import { notFoundSchema } from "@/lib/constans";
+import IdUUIDParamsSchema from "@/lib/openapi/schemas/id-uuid-params";
+import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
+import NameParamsSchema from "@/lib/openapi/schemas/name-params";
+import { idCardInfo_table, user_table } from "@/lib/db/schema/user";
 import { eq, getTableColumns } from "drizzle-orm";
 
 const router = createRouter()

@@ -1,13 +1,13 @@
-import { createRouter } from "~/lib/create-app";
-import { get_current_user_and_res, get_session_token_payload, get_session_token_payload_and_res, SessionTokenPayload } from "~/lib/middleware/auth";
-import NameParamsSchema, { UsernameParamsSchema } from "~/lib/openapi/schemas/name-params";
+import { createRouter } from "@/lib/create-app";
+import { get_current_user_and_res, get_session_token_payload, get_session_token_payload_and_res, SessionTokenPayload } from "@/lib/middleware/auth";
+import NameParamsSchema, { UsernameParamsSchema } from "@/lib/openapi/schemas/name-params";
 import { createRoute } from "@hono/zod-openapi";
-import httpStatus from "~/lib/http-status-codes"
-import { db } from "~/lib/db";
+import httpStatus from "@/lib/http-status-codes"
+import { db } from "@/lib/db";
 import { eq, sql } from "drizzle-orm";
-import { user_table } from "~/lib/db/schema/user";
-import { group_table } from "~/lib/db/schema/group";
-import { follow_table } from "~/lib/db/schema/follow";
+import { user_table } from "@/lib/db/schema/user";
+import { group_table } from "@/lib/db/schema/group";
+import { follow_table } from "@/lib/db/schema/follow";
 import { StatusCode } from "hono/utils/http-status";
 
 const router = createRouter()

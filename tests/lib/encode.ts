@@ -1,4 +1,4 @@
-import { base64ToUuid, slugToUuid, uuidToBase64, uuidToSlug } from "~/lib/utils/encode";
+import { base64ToUuid, slugToUuid, uuidToBase64, uuidToSlug } from "@/lib/utils/encode";
 
 
 

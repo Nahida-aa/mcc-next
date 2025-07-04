@@ -1,13 +1,13 @@
-import type { ChatsWithCount } from '~/lib/db/q/user/chat';
+import type { ChatsWithCount } from '@/lib/db/q/user/chat';
 import {Listbox, ListboxItem} from "@heroui/react";
 import NextImage from 'next/image'
 import {Button} from "@heroui/react";
 import { toast as sonner_toast } from "sonner"
 import { useRouter } from 'next/navigation';
-import { formatTimestamp } from '~/lib/utils';
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '~/components/ui/context-menu';
+import { formatTimestamp } from '@/lib/utils';
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { useEffect, useRef, useState } from 'react';
-import { GroupAvatar } from '~/components/common/avatar';
+import { GroupAvatar } from '@/components/common/avatar';
 
 interface ChatListProps {
   chatsWithCount?: ChatsWithCount

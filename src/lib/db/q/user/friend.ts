@@ -1,6 +1,6 @@
-import { db } from "~/lib/db";
-import { friend_table } from "~/lib/db/schema/follow";
-import { friendNotification_table } from "~/lib/db/schema/notification";
+import { db } from "@/lib/db";
+import { friend_table } from "@/lib/db/schema/follow";
+import { friendNotification_table } from "@/lib/db/schema/notification";
 import { eq, and, or, inArray, ilike, notInArray, not } from "drizzle-orm";
 import { chat_table, link_chat_user_table } from "../../schema/message";
 import { user, User, user_table } from "../../schema/user";

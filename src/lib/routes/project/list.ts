@@ -1,19 +1,19 @@
-import { createRouter } from "~/lib/create-app";
+import { createRouter } from "@/lib/create-app";
 import { createRoute, z } from "@hono/zod-openapi";
-import { group_table } from "~/lib/db/schema/group";
-import jsonContent from "~/lib/openapi/helpers/json-content";
-import httpStatus from "~/lib/http-status-codes"
-import { db } from "~/lib/db";
-import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
-import { get_current_user_and_res, get_session_token_payload, SessionTokenPayload } from "~/lib/middleware/auth";
-import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
-import { createDBProject } from "~/lib/db/q/project/create";
-import { linkUserGroup } from "~/lib/db/schema/linkUserGroup";
+import { group_table } from "@/lib/db/schema/group";
+import jsonContent from "@/lib/openapi/helpers/json-content";
+import httpStatus from "@/lib/http-status-codes"
+import { db } from "@/lib/db";
+import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
+import { get_current_user_and_res, get_session_token_payload, SessionTokenPayload } from "@/lib/middleware/auth";
+import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
+import { createDBProject } from "@/lib/db/q/project/create";
+import { linkUserGroup } from "@/lib/db/schema/linkUserGroup";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { eq, and, InferSelectModel } from "drizzle-orm";
-import { listProjectByUser, ListProjectByUserResult } from "~/lib/db/q/project/get";
-import { proj_table } from "~/lib/db/schema/proj";
-import { offset_limit_query_schema } from "~/lib/schema/query";
+import { listProjectByUser, ListProjectByUserResult } from "@/lib/db/q/project/get";
+import { proj_table } from "@/lib/db/schema/proj";
+import { offset_limit_query_schema } from "@/lib/schema/query";
 
 export type DBProj = InferSelectModel<typeof proj_table>;
 // export const DBProjSchema = createSelectSchema(proj_table); // 意思Bug

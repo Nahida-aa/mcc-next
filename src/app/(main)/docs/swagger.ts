@@ -1,4 +1,4 @@
-import oneOf from "~/lib/openapi/helpers/one-of";
+import oneOf from "@/lib/openapi/helpers/one-of";
 import { desc } from "drizzle-orm";
 import { createSwaggerSpec } from "next-swagger-doc";
 

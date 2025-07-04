@@ -1,5 +1,5 @@
 "use client"
-import gameReleaseVersions from '~/constants/gameReleaseVersions.json'
+import gameReleaseVersions from '@/constants/gameReleaseVersions.json'
 
 export const useGameReleaseVersions = () => {
   return gameReleaseVersions

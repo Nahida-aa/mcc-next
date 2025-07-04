@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { server_auth } from '~/app/(auth)/auth';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import { Loading } from '~/components/ui/loading/Loading';
-import { listProjectByUser } from '~/lib/db/q/project/get';
+import { server_auth } from '@/app/(auth)/auth';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Loading } from '@/components/ui/loading/Loading';
+import { listProjectByUser } from '@/lib/db/q/project/get';
 import { DemoList } from './_comp/DemoList';
 import { ProjectList } from './_comp/ProjectList';
 import {ScrollShadow} from "@heroui/scroll-shadow";

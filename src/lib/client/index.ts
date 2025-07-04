@@ -1,6 +1,6 @@
 // import {hc} from "hono/client"
 
-// import type { AppType } from '~/app/api/hono/[[...route]]/route'
+// import type { AppType } from '@/app/api/hono/[[...route]]/route'
 
 // const client = hc<AppType>("http://127.0.0.1:3000/api/hono/");
 

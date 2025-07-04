@@ -1,15 +1,15 @@
-import { db } from "~/lib/db";
+import { db } from "@/lib/db";
 import { eq, sql, and, getTableColumns } from "drizzle-orm";
-import { follow_table } from "~/lib/db/schema/follow";
-import { createRouter } from "~/lib/create-app";
-import NameParamsSchema from "~/lib/openapi/schemas/name-params";
+import { follow_table } from "@/lib/db/schema/follow";
+import { createRouter } from "@/lib/create-app";
+import NameParamsSchema from "@/lib/openapi/schemas/name-params";
 import { createRoute, z } from "@hono/zod-openapi";
-import { user_table } from "~/lib/db/schema/user";
-import { group_table } from "~/lib/db/schema/group";
-import { offset_limit_query_schema } from "~/lib/schema/query";
-import { get_current_user_and_res } from "~/lib/middleware/auth";
-import jsonContent from "~/lib/openapi/helpers/json-content";
-import { user_meta_schema } from "~/lib/schema/user";
+import { user_table } from "@/lib/db/schema/user";
+import { group_table } from "@/lib/db/schema/group";
+import { offset_limit_query_schema } from "@/lib/schema/query";
+import { get_current_user_and_res } from "@/lib/middleware/auth";
+import jsonContent from "@/lib/openapi/helpers/json-content";
+import { user_meta_schema } from "@/lib/schema/user";
 
 export const group_meta_schema = z.object({
   id: z.string(),

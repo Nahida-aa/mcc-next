@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
-import { Loading } from '~/components/ui/loading/Loading';
+import { Loading } from '@/components/ui/loading/Loading';
 import { ProjectHeader } from './_comp/ProjectHeader';
 import { PublishingChecklist } from './_comp/PublishingChecklist';
 import { UploadRelease } from './_comp/ReleaseList';
-import { listReleaseByProjectId, listReleaseByProjectSlug, releaseIdById } from '~/lib/db/q/project/release/get';
-import { projectBySlug } from '~/lib/db/q/project/get';
+import { listReleaseByProjectId, listReleaseByProjectSlug, releaseIdById } from '@/lib/db/q/project/release/get';
+import { projectBySlug } from '@/lib/db/q/project/get';
 
 const ProjectReleasePage = async ({
   params,

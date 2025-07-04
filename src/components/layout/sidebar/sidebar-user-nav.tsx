@@ -12,14 +12,14 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '~/components/ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '~/components/ui/sidebar';
-import { client_logout, client_sign_out } from '~/app/(auth)/client';
-import { UserMeta } from '~/components/layout/sidebar/user-side-toggle';
+} from '@/components/ui/sidebar';
+import { client_logout, client_sign_out } from '@/app/(auth)/client';
+import { UserMeta } from '@/components/layout/sidebar/user-side-toggle';
 
 interface UserAvatarProps {
   user?: UserMeta 
@@ -42,7 +42,7 @@ export const UserAvatar = ({
     height={32}
     className="rounded-full hover:glow-purple-box-shadow"
   />
-    <span className={`absolute bottom-1 right-1 w-2 h-2  border-1 rounded-full 
+    <span className={`absolute bottom-1 right-1 w-2 h-2  border rounded-full 
 ${status === "online" ? 'bg-green-500' : 'bg-gray-500'}
 `}></span>
 </div>
@@ -76,7 +76,7 @@ export function SidebarUserNav({
           </DropdownMenuTrigger>
           <DropdownMenuContent
             side="top"
-            className="w-[--radix-popper-anchor-width]"
+            className="w-(--radix-popper-anchor-width)"
           >
             <DropdownMenuItem
               className="cursor-pointer"

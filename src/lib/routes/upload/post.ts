@@ -1,13 +1,13 @@
-import { createRouter } from "~/lib/create-app";
+import { createRouter } from "@/lib/create-app";
 import { createRoute, z } from "@hono/zod-openapi";
-import jsonContent from "~/lib/openapi/helpers/json-content";
-import httpStatus from "~/lib/http-status-codes"
-import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
-import { get_current_user_and_res } from "~/lib/middleware/auth";
-import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
+import jsonContent from "@/lib/openapi/helpers/json-content";
+import httpStatus from "@/lib/http-status-codes"
+import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
+import { get_current_user_and_res } from "@/lib/middleware/auth";
+import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
 import { generateSignatureURLAndKey, OSS_upload_url } from "./util";
 import { createUploadthing, type FileRouter } from "uploadthing/server";
-import { inferBaseUrl } from "~/server/utils/url";
+import { inferBaseUrl } from "@/server/utils/url";
 
 const router = createRouter()
 

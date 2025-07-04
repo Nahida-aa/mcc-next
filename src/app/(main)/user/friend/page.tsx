@@ -1,12 +1,12 @@
-import { HomeHeader } from '~/components/layout/header/home-header'
+import { HomeHeader } from '@/components/layout/header/home-header'
 import React from 'react'
 import { cookies } from 'next/headers';
 import Link from 'next/link'; // 对 next 内的 router 的跳转
-import { Button } from '~/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { redirect } from 'next/navigation'
-import { ScrollArea } from '~/components/ui/scroll-area';
-import { CommonHeader } from '~/components/layout/header/common-header';
-import { server_auth } from '~/app/(auth)/auth';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { CommonHeader } from '@/components/layout/header/common-header';
+import { server_auth } from '@/app/(auth)/auth';
 import { ChevronRight } from 'lucide-react';
 import { FriendList } from './_comp/friend-list';
 

@@ -1,6 +1,6 @@
 'use client'
-import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { CirclePlus, Smile } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -32,7 +32,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => 
         }}
       />
       {content==='' ? <><Smile className='opacity-80' /> <CirclePlus className='opacity-80' /></> : <Button
-        className="h-[1.875rem] p-2"
+        className="h-7.5 p-2"
         disabled={content===''}
         onClick={handleSendMessage}
       >

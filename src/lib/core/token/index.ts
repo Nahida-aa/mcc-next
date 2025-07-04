@@ -1,4 +1,4 @@
-import settings from "~/lib/settings"
+import settings from "@/lib/settings"
 import { sign, verify } from "hono/jwt"
 
 /** Web compatible method to create a hash, using SHA256 */

@@ -1,5 +1,5 @@
-import { db } from "~/lib/db";
-import { proj_table, projectRelease_table, releaseFile_table } from "~/lib/db/schema/proj";
+import { db } from "@/lib/db";
+import { proj_table, projectRelease_table, releaseFile_table } from "@/lib/db/schema/proj";
 import { eq, and, ilike, inArray, exists, sql, SQLWrapper } from "drizzle-orm";
 
 type CreateDBProjectReleaseInput = {

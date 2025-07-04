@@ -150,8 +150,8 @@ for (let i of items) {
 #### createDBProjectRelease.ts
 
 ```typescript
-import { db } from "~/lib/db";
-import { projectRelease_table, releaseFile_table } from "~/lib/db/schema/proj";
+import { db } from "@/lib/db";
+import { projectRelease_table, releaseFile_table } from "@/lib/db/schema/proj";
 import { v4 as uuidv4 } from 'uuid';
 import { S3 } from 'aws-sdk';
 

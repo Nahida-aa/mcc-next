@@ -1,20 +1,20 @@
-import { createRouter } from "~/lib/create-app"
-import jsonContent from "~/lib/openapi/helpers/json-content";
+import { createRouter } from "@/lib/create-app"
+import jsonContent from "@/lib/openapi/helpers/json-content";
 import { createRoute, z } from "@hono/zod-openapi";
-import {httpStatusCodes} from "~/lib/http-status-codes"
-import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
+import {httpStatusCodes} from "@/lib/http-status-codes"
+import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
 import { not } from "drizzle-orm";
-import { notFoundSchema } from "~/lib/constans";
-import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
+import { notFoundSchema } from "@/lib/constans";
+import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
 import { createInsertSchema } from "drizzle-zod";
-import { db } from "~/lib/db";
-import { createJWT, verifyJWT } from "~/lib/core/token";
-import { idCardInfo_insertSchema, platformInfo_schema, } from "~/lib/schema/userBy"
-import { user_table, idCardInfo_table, User } from "~/lib/db/schema/user"
+import { db } from "@/lib/db";
+import { createJWT, verifyJWT } from "@/lib/core/token";
+import { idCardInfo_insertSchema, platformInfo_schema, } from "@/lib/schema/userBy"
+import { user_table, idCardInfo_table, User } from "@/lib/db/schema/user"
 import { eq } from "drizzle-orm";
 import { genSaltSync, hash, hashSync } from 'bcrypt-ts';
 import { compare } from 'bcrypt-ts';
-import settings from "~/lib/settings";
+import settings from "@/lib/settings";
 import {
   getCookie,
   getSignedCookie,
@@ -22,8 +22,8 @@ import {
   setSignedCookie,
   deleteCookie,
 } from 'hono/cookie'
-import jsonContentOneOf from "~/lib/openapi/helpers/json-content-one-of";
-import { create_sessionToken_and_setCookie } from "~/lib/middleware/utils";
+import jsonContentOneOf from "@/lib/openapi/helpers/json-content-one-of";
+import { create_sessionToken_and_setCookie } from "@/lib/middleware/utils";
 import { sessionTokenWithName_schema } from "./login";
 
 export const register_user_schema = z.object({

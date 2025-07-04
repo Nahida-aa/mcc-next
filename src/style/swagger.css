@@ -2,7 +2,7 @@
     @apply text-[#3b4151] dark:text-slate-200;
 }
 .swagger-ui .scheme-container {
-    @apply !bg-[#ffffff8f] dark:!bg-[#110c2483];
+    @apply bg-[#ffffff8f]! dark:bg-[#110c2483]!;
 }
 .swagger-ui .info .title {
     @apply text-[#3b4151] dark:text-slate-200;
@@ -12,7 +12,7 @@
 }
 .opblock-summary-path,
 .opblock-description-wrapper p{
-    @apply text-[#3b4151] dark:!text-slate-200;
+    @apply text-[#3b4151] dark:text-slate-200!;
 }
 .swagger-ui .opblock .opblock-summary-description {
     @apply text-[#3b4151] dark:text-gray-300;
@@ -24,16 +24,16 @@
     @apply text-[#3b4151] dark:text-slate-300;
 }
 .swagger-ui .prop-format {
-    @apply !text-violet-500 dark:text-violet-300;
+    @apply text-violet-500! dark:text-violet-300;
 }
 .swagger-ui .parameter__extension, .swagger-ui .parameter__in {
     @apply text-[grey] dark:text-slate-400;
 }
 .swagger-ui input[type=email], .swagger-ui input[type=file], .swagger-ui input[type=password], .swagger-ui input[type=search], .swagger-ui input[type=text], .swagger-ui textarea {
-    @apply bg-[#fff] dark:bg-[#110c2483] ;
+    @apply bg-white dark:bg-[#110c2483] ;
 }
 .swagger-ui .json-schema-2020-12-expand-deep-button {
-    @apply !text-[#505050] dark:!text-slate-400;
+    @apply text-[#505050]! dark:text-slate-400!;
 }
 .swagger-ui .json-schema-2020-12__attribute--primary {
     @apply text-violet-400 dark:text-violet-400
@@ -42,7 +42,7 @@
     @apply text-[#3b4151] dark:text-slate-300;
 }
 .swagger-ui textarea {
-    @apply !bg-[hsla(0,0%,100%,.6)] dark:!bg-[#110c2483] text-[#3b4151] dark:text-slate-300;
+    @apply bg-[hsla(0,0%,100%,.6)]! dark:bg-[#110c2483]! text-[#3b4151] dark:text-slate-300;
 }
 .swagger-ui .opblock .opblock-section-header h4 {
     @apply text-[#3b4151] dark:text-slate-300;
@@ -69,15 +69,15 @@
 }
 
 .swagger-ui .tab li {
-    @apply text-[#3b4151] dark:!text-slate-300;
+    @apply text-[#3b4151] dark:text-slate-300!;
 }
 .swagger-ui table thead tr td, .swagger-ui table thead tr th {
-    @apply text-[#3b4151] dark:!text-slate-300;
+    @apply text-[#3b4151] dark:text-slate-300!;
 }
 .swagger-ui .response-col_status {
-    @apply text-[#3b4151] dark:!text-slate-300;
+    @apply text-[#3b4151] dark:text-slate-300!;
 }
 
 .swagger-ui .opblock .opblock-section-header {
-    @apply !bg-[hsla(0,0%,100%,.6)] dark:!bg-[#110c2483];
+    @apply bg-[hsla(0,0%,100%,.6)]! dark:bg-[#110c2483]!;
 }

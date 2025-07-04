@@ -4,7 +4,7 @@ import { db } from '..';
 // import { linkUserFollow } from '../schema/link';
 import {  user_table,  idCardInfo_table } from '../schema/user';
 import type { User } from '../schema/user';
-import { hash_password } from '~/lib/core/auth';
+import { hash_password } from '@/lib/core/auth';
 import { friend_table } from '../schema/follow';
 import { friendIdList_byUserId } from './user/friend';
 import { SelectedFields } from 'drizzle-orm/pg-core';

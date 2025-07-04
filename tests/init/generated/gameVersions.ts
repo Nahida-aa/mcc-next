@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import gameVersions from '~/constants/gameVersions.json'
-import { filterReleaseVersions } from "~/lib/utils/mc";
+import gameVersions from '@/constants/gameVersions.json'
+import { filterReleaseVersions } from "@/lib/utils/mc";
 
 if (require.main === module) {
   // bun tests/init/generated/gameVersions.ts

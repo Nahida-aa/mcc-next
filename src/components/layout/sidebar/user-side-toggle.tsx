@@ -1,23 +1,23 @@
 import React, { useEffect, useState, type ComponentProps } from 'react';
 import NextImage from 'next/image';
-import { type SidebarTrigger, useSidebar } from '~/components/ui/sidebar';
-import { BetterTooltip } from '~/components/common/BetterTooltip';
+import { type SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
+import { BetterTooltip } from '@/components/common/BetterTooltip';
 
-import { SidebarLeftIcon } from '~/components/icons';
-import { Button } from '~/components/ui/button';
+import { SidebarLeftIcon } from '@/components/icons';
+import { Button } from '@/components/ui/button';
 import { CalendarIcon, Copy } from "lucide-react"
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "~/components/ui/avatar"
+} from "@/components/ui/avatar"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "~/components/ui/hover-card"
-import { Skeleton } from '~/components/ui/skeleton';
+} from "@/components/ui/hover-card"
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 export type UserMeta = {
@@ -78,7 +78,7 @@ export function UserSidebarToggle({
           height={32}
           className="rounded-full hover:glow-purple-box-shadow"
         />
-          <span className={`absolute bottom-1 right-1 w-2 h-2  border-1 rounded-full 
+          <span className={`absolute bottom-1 right-1 w-2 h-2  border rounded-full 
             ${status === "online" ? 'bg-green-500' : 'bg-gray-500'}
             `}></span>
         {/* {status === "online" && (

@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { SubmitButton } from "~/components/common/submit-button";
-import { Button } from "~/components/ui/button";
-import { UploadOutFile } from "~/lib/routes/upload/post";
+import { SubmitButton } from "@/components/common/submit-button";
+import { Button } from "@/components/ui/button";
+import { UploadOutFile } from "@/lib/routes/upload/post";
 import {
   UploadButton,
   UploadDropzone,
   useHonoUpload,
   useUploadThing,
-} from "~/lib/utils/uploadthing";
+} from "@/lib/utils/uploadthing";
 
 export default function Home() {
   // const { startUpload } = useUploadThing("videoAndImage", {

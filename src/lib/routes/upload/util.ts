@@ -1,5 +1,5 @@
 import SQIds, { defaultOptions } from "sqids";
-import { djb2, shuffle } from "~/lib/utils/encode";
+import { djb2, shuffle } from "@/lib/utils/encode";
 import { UploadInFile, UploadOutFile } from "./post";
 import crypto from "crypto";
 

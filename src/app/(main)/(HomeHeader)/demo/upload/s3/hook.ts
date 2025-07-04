@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { UploadOutFile } from "~/lib/routes/upload/s3";
+import { UploadOutFile } from "@/lib/routes/upload/s3";
 export const useFileUpload = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number[]>([]);

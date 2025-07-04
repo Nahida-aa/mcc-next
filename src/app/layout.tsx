@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "~/style/globals.css";
-import { ThemeProvider } from '~/components/providers/theme-provider';
-import { Toaster } from "~/components/ui/sonner"
-import { SocketProvider } from "~/components/providers/socket-provider";
-import { AuthSessionProvider } from "~/components/providers/auth-provider";
+import "@/style/globals.css";
+import { ThemeProvider } from '@/components/providers/theme-provider';
+import { Toaster } from "@/components/ui/sonner"
+import { SocketProvider } from "@/components/providers/socket-provider";
+import { AuthSessionProvider } from "@/components/providers/auth-provider";
 import { server_auth } from "./(auth)/auth";
-import { ProgressBar } from "~/components/layout/header/ProgressBar";
-import { UIProviders } from "~/components/providers/HeroUIProvider";
+import { ProgressBar } from "@/components/layout/header/ProgressBar";
+import { UIProviders } from "@/components/providers/HeroUIProvider";
+import { DebugPanel } from "@/components/common/debug-panel";
+import { StyleContextProvider } from "@/components/context/styleContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,6 +48,7 @@ export default async function RootLayout({
           // enableSystem
           disableTransitionOnChange
         >
+          <StyleContextProvider>
           <UIProviders>
           <AuthSessionProvider session={session}>
             <SocketProvider>
@@ -54,6 +57,8 @@ export default async function RootLayout({
             </SocketProvider>
           </AuthSessionProvider>
           </UIProviders>
+          <DebugPanel />
+          </StyleContextProvider>
           <Toaster position="top-right" richColors   />
         </ThemeProvider>
       </body>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { SubmitButton } from "~/components/common/submit-button";
-import { UploadOutFile } from "~/lib/routes/upload/post";
-import { analyzeMCFile } from "~/app/(main)/(HomeHeader)/project/[slug]/release/create/lib/infer";
+import { SubmitButton } from "@/components/common/submit-button";
+import { UploadOutFile } from "@/lib/routes/upload/post";
+import { analyzeMCFile } from "@/app/(main)/(HomeHeader)/project/[slug]/release/create/lib/infer";
 import { useFileUpload } from "./hook";
 
 export default function NxtPage() {

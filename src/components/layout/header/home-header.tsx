@@ -4,22 +4,22 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation'
 import { useWindowSize } from 'usehooks-ts';
 
-// import { ModelSelector } from '~/components/model-selector';
-import { SidebarToggle } from '~/components/layout/sidebar/sidebar-toggle';
-import { Button } from '~/components/ui/button';
-import { BetterTooltip } from '~/components/common/BetterTooltip';
-import { PlusIcon, VercelIcon } from '~/components/icons';
-import { useSidebar } from '~/components/ui/sidebar';
+// import { ModelSelector } from '@/components/model-selector';
+import { SidebarToggle } from '@/components/layout/sidebar/sidebar-toggle';
+import { Button } from '@/components/ui/button';
+import { BetterTooltip } from '@/components/common/BetterTooltip';
+import { PlusIcon, VercelIcon } from '@/components/icons';
+// import { useSidebar } from '@/components/ui/sidebar';
 import { UserMeta, UserSidebarToggle } from '../sidebar/user-side-toggle';
-import { ModeToggle } from '~/components/common/ModeToggle';
+import { ModeToggle } from '@/components/common/theme-toggle';
 import { Search, AlignRight, X, Sparkles, UserRound, House, UserRoundPlus, Box, Users } from 'lucide-react';
 // import { useState } from 'react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "~/components/ui/popover"
-import { useAuthSession } from '~/components/providers/auth-provider';
+} from "@/components/ui/popover"
+import { useAuthSession } from '@/components/providers/auth-provider';
 
 export const MoreMenu = () => {
   const router = useRouter();
@@ -88,13 +88,13 @@ export function HomeHeader({
         {/* <Button className='p-0 gap-0 flex-col justify-start' variant={'ghost'} onClick={() => {} }> */}
         <Button 
         className='flex pt-0 
-        pb-[0.125rem]
-        px-1 mt-[0.125rem] h-8 gap-0 flex-col items-start ' 
+        pb-0.5
+        px-1 mt-0.5 h-8 gap-0 flex-col items-start ' 
         variant={'ghost'} onClick={() => {
           router.push('/user/status')
         } }
         >
-          <div className="text-[0.8rem] font-medium leading-[1.25rem]">{user?.nickname || user?.name || "Guest"}</div>
+          <div className="text-[0.8rem] font-medium leading-5">{user?.nickname || user?.name || "Guest"}</div>
           <div className='text-xs text-gray-400 leading-3'>{user_status}</div>
         </Button>
         {/* )} */}

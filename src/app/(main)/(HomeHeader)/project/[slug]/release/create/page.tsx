@@ -1,11 +1,11 @@
 
 import { Suspense } from 'react';
-import { Loading } from '~/components/ui/loading/Loading';
+import { Loading } from '@/components/ui/loading/Loading';
 import { MainComp } from './client';
-import { genUUIDonServer } from '~/server/utils/encode';
-import { releaseIdById } from '~/lib/db/q/project/release/get';
-import { uuidToBase64 } from '~/lib/utils/encode';
-import { projectBySlug } from '~/lib/db/q/project/get';
+import { genUUIDonServer } from '@/server/utils/encode';
+import { releaseIdById } from '@/lib/db/q/project/release/get';
+import { uuidToBase64 } from '@/lib/utils/encode';
+import { projectBySlug } from '@/lib/db/q/project/get';
 
 const generateUniqueReleaseId = async () => {
   let releaseId;

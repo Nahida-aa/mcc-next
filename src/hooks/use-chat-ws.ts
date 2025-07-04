@@ -1,10 +1,10 @@
 'use client';
 import { useEffect } from "react";
-import { SocketContextType, useSocket } from "~/components/providers/socket-provider";
-import { ClientMessageI } from "~/app/(main)/chat/[name]/_comp/MessageList";
+import { SocketContextType, useSocket } from "@/components/providers/socket-provider";
+import { ClientMessageI } from "@/app/(main)/chat/[name]/_comp/MessageList";
 import { useMsgQuery } from "./use-chat-query";
 import { SWRInfiniteKeyedMutator } from "swr/infinite";
-import { MsgLsCursorI } from "~/lib/routes/chats/messages";
+import { MsgLsCursorI } from "@/lib/routes/chats/messages";
 import { Socket } from "socket.io-client";
 
 type MsgSocketProps = {

@@ -3,10 +3,10 @@
 // import type { User } from 'next-auth';
 import { useRouter } from 'next/navigation';
 
-import { PlusIcon } from '~/components/icons';
-// import { SidebarHistory } from '~/components/sidebar-history';
-// import { SidebarUserNav } from '~/components/layout/sidebar/sidebar-user-nav';
-import { Button } from '~/components/ui/button';
+import { PlusIcon } from '@/components/icons';
+// import { SidebarHistory } from '@/components/sidebar-history';
+// import { SidebarUserNav } from '@/components/layout/sidebar/sidebar-user-nav';
+import { Button } from '@/components/ui/button';
 import {
   Sidebar,
   SidebarContent,
@@ -18,18 +18,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '~/components/ui/sidebar';
-import { BetterTooltip } from '~/components/common/BetterTooltip';
+} from '@/components/ui/sidebar';
+import { BetterTooltip } from '@/components/common/BetterTooltip';
 import Link from 'next/link';
 import { UserMeta } from './user-side-toggle';
 import { Box, Check, ChevronDown, ChevronRight, FileIcon, FileUser, LogIn, MessageCircle, Milestone, PencilLine, QrCode, Settings, ShipWheel, Star, UserRound, X } from 'lucide-react';
 import { UserSidebarFooter } from './footer';
-import { ModeToggle } from '~/components/common/ModeToggle';
-import { ShadcnAvatar } from '~/components/common/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '~/components/ui/dropdown-menu';
+import { ModeToggle } from '@/components/common/theme-toggle';
+import { ShadcnAvatar } from '@/components/common/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import {Button as UIButton} from "@heroui/react";
 import { SidebarContentMenuComponent } from './content';
-import { cn } from '~/lib/utils';
+import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 
@@ -70,7 +70,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+              <DropdownMenuContent className="w-(--radix-popper-anchor-width)">
               {sideHeadSelects.map((sideHeadSelect) => (
                 <DropdownMenuItem key={sideHeadSelect.value}
                 >
@@ -142,7 +142,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>
-              <section className='w-auto h-[3.75rem] justify-between flex flex-col items-end'>
+              <section className='w-auto h-15 justify-between flex flex-col items-end'>
                 <DropdownMenu>
                   <DropdownMenuTrigger className='text-xs h-4 top-0' asChild>
                     <Button variant='ghost' className='p-1'>

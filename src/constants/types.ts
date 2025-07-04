@@ -1,4 +1,4 @@
-// import gameVersions from '~/constants/gameVersions.json'
+// import gameVersions from '@/constants/gameVersions.json'
 
 export type GameVersion = {
   version: string

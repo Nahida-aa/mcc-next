@@ -1,18 +1,18 @@
-import httpStatus from "~/lib/http-status-codes"
-import { db } from "~/lib/db";
-import { user_insertSchema, user_patchSchema, user_selectSchema } from "~/lib/schema/userBy";
-import { createRouter } from "~/lib/create-app";
-import jsonContent from "~/lib/openapi/helpers/json-content";
+import httpStatus from "@/lib/http-status-codes"
+import { db } from "@/lib/db";
+import { user_insertSchema, user_patchSchema, user_selectSchema } from "@/lib/schema/userBy";
+import { createRouter } from "@/lib/create-app";
+import jsonContent from "@/lib/openapi/helpers/json-content";
 import { createRoute, z } from "@hono/zod-openapi";
 import { hash } from "bcrypt-ts";
 import { eq } from "drizzle-orm";
-import { user_table, idCardInfo_table, User} from "~/lib/db/schema/user"
-import IdUUIDParamsSchema from "~/lib/openapi/schemas/id-uuid-params";
-import { notFoundSchema } from "~/lib/constans";
-import jsonContentOneOf from "~/lib/openapi/helpers/json-content-one-of";
-import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
-import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
-import NameParamsSchema from "~/lib/openapi/schemas/name-params";
+import { user_table, idCardInfo_table, User} from "@/lib/db/schema/user"
+import IdUUIDParamsSchema from "@/lib/openapi/schemas/id-uuid-params";
+import { notFoundSchema } from "@/lib/constans";
+import jsonContentOneOf from "@/lib/openapi/helpers/json-content-one-of";
+import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
+import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
+import NameParamsSchema from "@/lib/openapi/schemas/name-params";
 import exp from "constants";
 
 const userPatchApiSchema = z.object({

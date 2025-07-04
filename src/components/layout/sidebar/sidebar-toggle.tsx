@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react';
 
-import { type SidebarTrigger, useSidebar } from '~/components/ui/sidebar';
-import { BetterTooltip } from '~/components/common/BetterTooltip';
+import { type SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
+import { BetterTooltip } from '@/components/common/BetterTooltip';
 
-import { SidebarLeftIcon } from '~/components/icons';
-import { Button } from '~/components/ui/button';
+import { SidebarLeftIcon } from '@/components/icons';
+import { Button } from '@/components/ui/button';
 
 
 export function SidebarToggle({

@@ -1,6 +1,6 @@
-import { db } from "~/lib/db";
-import { chat_table, link_chat_user_table } from "~/lib/db/schema/message";
-import { user_table } from "~/lib/db/schema/user";
+import { db } from "@/lib/db";
+import { chat_table, link_chat_user_table } from "@/lib/db/schema/message";
+import { user_table } from "@/lib/db/schema/user";
 import { eq, and, inArray, aliasedTable, or, not, InferSelectModel, sql } from "drizzle-orm";
 import { group_table } from "../../schema/group";
 

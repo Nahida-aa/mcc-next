@@ -1,33 +1,33 @@
 'use client'
-import { SubHeader } from '~/components/layout/header/sub-header'
-import { Badge } from '~/components/ui/badge'
-import { Button } from '~/components/ui/button'
-import { ScrollArea } from '~/components/ui/scroll-area'
-import { useMsgScroll, useScrollToBottom } from '~/hooks/use-scroll-to-bottom'
+import { SubHeader } from '@/components/layout/header/sub-header'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { useMsgScroll, useScrollToBottom } from '@/hooks/use-scroll-to-bottom'
 import { AlignJustify, CirclePlus, Mic, Plus, Send, Smile, Sparkles } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { MessageInput } from './MessageInput'
-import { UserMeta } from '~/components/layout/sidebar/user-side-toggle'
+import { UserMeta } from '@/components/layout/sidebar/user-side-toggle'
 import { useRouter } from 'next/navigation'
 import {  MessageListComp, ClientMessage, ClientMessageI } from './MessageList'
 import { toast as sonner_toast } from "sonner"
-import { SocketIndicator } from '~/components/common/socket-indicator'
-import { Input } from '~/components/ui/input'
+import { SocketIndicator } from '@/components/common/socket-indicator'
+import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import useSWR from 'swr' //pnpm add swr SWR 的缓存是存储在内存中的，这意味着当页面刷新或应用重新加载时，缓存的数据会丢失
-import { fetcher, generateUUID } from '~/lib/utils'
-import { UserMetaWithStatus } from '~/lib/routes/users/get'
-import { Textarea } from '~/components/ui/textarea'
+import { fetcher, generateUUID } from '@/lib/utils'
+import { UserMetaWithStatus } from '@/lib/routes/users/get'
+import { Textarea } from '@/components/ui/textarea'
 import NextImage from 'next/image'
-import { ListUserChatMessages } from '~/lib/db/q/user/msg'
-import { ChatForDB } from '~/lib/db/q/user/chat'
-import { useMsgQuery } from '~/hooks/use-chat-query'
-import { MsgLsCursor } from '~/lib/routes/chats/messages'
+import { ListUserChatMessages } from '@/lib/db/q/user/msg'
+import { ChatForDB } from '@/lib/db/q/user/chat'
+import { useMsgQuery } from '@/hooks/use-chat-query'
+import { MsgLsCursor } from '@/lib/routes/chats/messages'
 import next from 'next'
-import { useSocket } from '~/components/providers/socket-provider'
-import { useMsgSocket } from '~/hooks/use-chat-ws'
+import { useSocket } from '@/components/providers/socket-provider'
+import { useMsgSocket } from '@/hooks/use-chat-ws'
 
 type ApiSendMessageParm =  {
   message: ClientMessageI
@@ -193,13 +193,13 @@ export const ChatMain = ({
         {/* <NextImage src={targetUser_forServer.image} width={32} height={32} alt={targetUser_forServer.name} className='rounded-full' /> */}
         <Button 
         className='flex pt-0 
-        pb-[0.125rem]
-        px-1 mt-[0.125rem] h-8 gap-0 flex-col items-start ' 
+        pb-0.5
+        px-1 mt-0.5 h-8 gap-0 flex-col items-start ' 
         variant={'ghost'} onClick={() => {
           router.push(`/${decodeURLComponentName}`)
         }}
         >
-          <div className="text-[0.8rem] font-medium leading-[1.25rem]">{targetUser_forServer?.nickname || targetUser_forServer?.name || "Guest"}</div>
+          <div className="text-[0.8rem] font-medium leading-5">{targetUser_forServer?.nickname || targetUser_forServer?.name || "Guest"}</div>
           <div className='text-xs text-gray-400 leading-3'>{targetUser_forServer.status}</div>
         </Button>
 

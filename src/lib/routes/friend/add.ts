@@ -1,12 +1,12 @@
-import { createRouter } from "~/lib/create-app"
-import { acceptFriendRequest, createFriendRequest, getFriendship } from "~/lib/db/q/user/friend"
-import { httpStatusCodes } from "~/lib/http-status-codes"
-import { get_current_user_and_res } from "~/lib/middleware/auth"
-import jsonContent from "~/lib/openapi/helpers/json-content"
-import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object"
+import { createRouter } from "@/lib/create-app"
+import { acceptFriendRequest, createFriendRequest, getFriendship } from "@/lib/db/q/user/friend"
+import { httpStatusCodes } from "@/lib/http-status-codes"
+import { get_current_user_and_res } from "@/lib/middleware/auth"
+import jsonContent from "@/lib/openapi/helpers/json-content"
+import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object"
 import { createRoute, z } from "@hono/zod-openapi"
 import { not } from "drizzle-orm"
-import createErrorSchema from "~/lib/openapi/schemas/create-error-schema";
+import createErrorSchema from "@/lib/openapi/schemas/create-error-schema";
 
 const router = createRouter()
 

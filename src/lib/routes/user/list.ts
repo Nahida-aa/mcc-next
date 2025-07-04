@@ -1,17 +1,17 @@
-import { db } from "~/lib/db";
-import { follow_table } from "~/lib/db/schema/follow";
-import { user_table } from "~/lib/db/schema/user";
-import { group_table } from "~/lib/db/schema/group";
-import { createRouter } from "~/lib/create-app";
-import { offset_limit_query_schema } from "~/lib/schema/query";
-import { get_current_user_and_res } from "~/lib/middleware/auth";
+import { db } from "@/lib/db";
+import { follow_table } from "@/lib/db/schema/follow";
+import { user_table } from "@/lib/db/schema/user";
+import { group_table } from "@/lib/db/schema/group";
+import { createRouter } from "@/lib/create-app";
+import { offset_limit_query_schema } from "@/lib/schema/query";
+import { get_current_user_and_res } from "@/lib/middleware/auth";
 import { createRoute, z } from "@hono/zod-openapi";
 import { sql } from "drizzle-orm";
 import { unionAll } from "drizzle-orm/pg-core";
-import jsonContent from "~/lib/openapi/helpers/json-content";
-import createMessageObjectSchema from "~/lib/openapi/schemas/create-message-object";
+import jsonContent from "@/lib/openapi/helpers/json-content";
+import createMessageObjectSchema from "@/lib/openapi/schemas/create-message-object";
 import { StatusCode } from "hono/utils/http-status";
-import { user_meta_with_follow_schema } from "~/lib/schema/user";
+import { user_meta_with_follow_schema } from "@/lib/schema/user";
 
 
 const router = createRouter()

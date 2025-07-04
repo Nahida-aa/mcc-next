@@ -2,10 +2,10 @@
 import { Button } from '@heroui/button';
 import { EditIcon, Trash2 } from 'lucide-react';
 import { Suspense } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-import { Loading } from '~/components/ui/loading/Loading';
-import { releaseWithFilesById, releaseIdById } from '~/lib/db/q/project/release/get';
-import { base64ToUuid } from '~/lib/utils/encode';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Loading } from '@/components/ui/loading/Loading';
+import { releaseWithFilesById, releaseIdById } from '@/lib/db/q/project/release/get';
+import { base64ToUuid } from '@/lib/utils/encode';
 
 
 const ProjectReleasePage = async ({

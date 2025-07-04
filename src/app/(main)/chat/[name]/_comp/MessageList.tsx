@@ -1,10 +1,10 @@
-import { ShadcnAvatar } from '~/components/common/avatar';
-import { UserMeta } from '~/lib/schema/user';
+import { ShadcnAvatar } from '@/components/common/avatar';
+import { UserMeta } from '@/lib/schema/user';
 import React, { Fragment } from 'react';
 import NextImage from 'next/image'
-import { useMsgQuery } from '~/hooks/use-chat-query';
-import { ChatForDB } from '~/lib/db/q/user/chat';
-import { Markdown } from '~/components/common/markdown';
+import { useMsgQuery } from '@/hooks/use-chat-query';
+import { ChatForDB } from '@/lib/db/q/user/chat';
+import { Markdown } from '@/components/common/markdown';
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -19,8 +19,8 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "~/components/ui/context-menu"
-import { MsgLsCursor } from '~/lib/routes/chats/messages';
+} from "@/components/ui/context-menu"
+import { MsgLsCursor } from '@/lib/routes/chats/messages';
 
 export type ClientMessage =  {
   id: string;

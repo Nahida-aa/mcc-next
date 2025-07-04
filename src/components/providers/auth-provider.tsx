@@ -1,5 +1,5 @@
 'use client'
-import { AuthSession } from "~/app/(auth)/auth"
+import { AuthSession } from "@/app/(auth)/auth"
 import { createContext, useContext, useEffect, useMemo, useState } from "react"
 
 export type UpdateSession = (data?: any) => Promise<AuthSession | null | undefined>

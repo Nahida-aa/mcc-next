@@ -1,7 +1,7 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { Chip, Button as UIButton } from "@heroui/react";
-import { Button } from "~/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -9,12 +9,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "~/components/ui/command"
+} from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "~/components/ui/popover"
+} from "@/components/ui/popover"
 import { ChevronDown } from "lucide-react";
 
 export type Option = { value: string; label: string };
@@ -97,7 +97,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "~/components/ui/select"
+} from "@/components/ui/select"
 
 interface SelectDemoProps {
   value: string;
@@ -135,7 +135,7 @@ export const SelectDemo = ({
   )
 }
 import * as SelectPrimitive from "@radix-ui/react-select"
-import { cn } from "~/lib/utils";
+import { cn } from "@/lib/utils";
 const ASelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>

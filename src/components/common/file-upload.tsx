@@ -1,5 +1,5 @@
 "use client";
-import { UploadDropzone } from "~/lib/utils/uploadthing";
+import { UploadDropzone } from "@/lib/utils/uploadthing";
 import NextImage from 'next/image';
 import { useState } from "react";
 
