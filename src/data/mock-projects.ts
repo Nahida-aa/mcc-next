@@ -3,9 +3,9 @@ import { ListProjectParams, ProjectMeta } from "@/lib/types/project";
 export const mockProjects: ProjectMeta[] = [
   {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod1",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -22,9 +22,9 @@ export const mockProjects: ProjectMeta[] = [
   },
     {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod2",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -59,9 +59,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-456"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod3",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -77,9 +77,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod4",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -95,9 +95,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod5",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -113,9 +113,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod6",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -131,9 +131,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod7",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -149,9 +149,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod8",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -167,9 +167,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod9",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -185,9 +185,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod10",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -203,9 +203,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod11",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -221,9 +221,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod12",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -239,9 +239,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod13",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -257,9 +257,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod131",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -275,9 +275,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod14",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -293,9 +293,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod15",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -311,9 +311,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod16",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -329,9 +329,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod17",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -347,9 +347,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },  {
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod18",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -365,9 +365,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },{
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod19",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -383,9 +383,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },{
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod20",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -401,9 +401,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },{
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod21",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -419,9 +419,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },{
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod22",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -437,9 +437,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },{
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod23",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -455,9 +455,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },{
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod24",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -473,9 +473,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },{
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod25",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -491,9 +491,9 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "release-123"
   },{
     type: "mod",
-    slug: "awesome-mod",
+    slug: "awesome-mod26",
     name: "Awesome Mod",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "An awesome mod that enhances gameplay.",
     game_versions: ["1.16.5", "1.17.1"],
     tags: ["gameplay", "enhancement"],
@@ -512,7 +512,7 @@ export const mockProjects: ProjectMeta[] = [
     type: "plugin",
     slug: "super-plugin",
     name: "Super Plugin",
-    icon_url: "/project/icon/sodium.webp",
+    icon_url: "/project/icon/Sodium.webp",
     summary: "A super plugin that adds new features.",
     game_versions: ["1.19.1"],
     tags: ["plugin", "features"],
@@ -546,7 +546,7 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "jei-1.20.1-15.2.0.27",
   },{
     type: "mod",
-    slug: "jei-just-enough-items",
+    slug: "jei-just-enough-items1",
     name: "JEI (Just Enough Items)",
     icon_url: "/project/icon/FA.png?height=64&width=64",
     summary: "物品管理和合成配方查看模组，是现代Minecraft必备的实用工具",
@@ -566,7 +566,7 @@ export const mockProjects: ProjectMeta[] = [
   // 模组 (Mods)
   {
     type: "mod",
-    slug: "jei-just-enough-items",
+    slug: "jei-just-enough-items2",
     name: "JEI (Just Enough Items)",
     icon_url: "/project/icon/FA.png?height=64&width=64",
     summary: "物品管理和合成配方查看模组，是现代Minecraft必备的实用工具",
@@ -604,7 +604,7 @@ export const mockProjects: ProjectMeta[] = [
   },
     {
     type: "mod",
-    slug: "create-mod",
+    slug: "create-mod1",
     name: "Create",
     icon_url: "/project/icon/FA.png?height=64&width=64",
     summary: "机械工程模组，添加齿轮、传送带等机械装置，让你建造复杂的自动化工厂",
@@ -623,7 +623,7 @@ export const mockProjects: ProjectMeta[] = [
   },
     {
     type: "mod",
-    slug: "create-mod",
+    slug: "create-mod2",
     name: "Create",
     icon_url: "/project/icon/FA.png?height=64&width=64",
     summary: "机械工程模组，添加齿轮、传送带等机械装置，让你建造复杂的自动化工厂",
@@ -661,7 +661,7 @@ export const mockProjects: ProjectMeta[] = [
   },
   {
     type: "mod",
-    slug: "biomes-o-plenty",
+    slug: "biomes-o-plenty1",
     name: "Biomes O' Plenty",
     icon_url: "/project/icon/FA.png?height=64&width=64",
     summary: "生物群系扩展模组，添加80+全新生物群系，让世界更加丰富多彩",
@@ -679,7 +679,7 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "bop-1.20.1-18.0.0.592",
   },  {
     type: "mod",
-    slug: "biomes-o-plenty",
+    slug: "biomes-o-plenty2",
     name: "Biomes O' Plenty",
     icon_url: "/project/icon/FA.png?height=64&width=64",
     summary: "生物群系扩展模组，添加80+全新生物群系，让世界更加丰富多彩",
@@ -697,7 +697,7 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "bop-1.20.1-18.0.0.592",
   },  {
     type: "mod",
-    slug: "biomes-o-plenty",
+    slug: "biomes-o-plenty3",
     name: "Biomes O' Plenty",
     icon_url: "/project/icon/FA.png?height=64&width=64",
     summary: "生物群系扩展模组，添加80+全新生物群系，让世界更加丰富多彩",
@@ -715,7 +715,7 @@ export const mockProjects: ProjectMeta[] = [
     latest_release_id: "bop-1.20.1-18.0.0.592",
   },  {
     type: "mod",
-    slug: "biomes-o-plenty",
+    slug: "biomes-o-plenty4",
     name: "Biomes O' Plenty",
     icon_url: "/project/icon/FA.png?height=64&width=64",
     summary: "生物群系扩展模组，添加80+全新生物群系，让世界更加丰富多彩",
@@ -775,7 +775,7 @@ export const mockProjects: ProjectMeta[] = [
   // 光影 (Shaders)
   {
     type: "shader",
-    slug: "bsl-shaders",
+    slug: "bsl-shaders5",
     name: "BSL Shaders",
     icon_url: "/project/icon/FA.png?height=64&width=64",
     summary: "平衡性能与画质的光影包，适合中等配置电脑，提供美丽的光照效果",

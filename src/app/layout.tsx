@@ -1,25 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono } from "next/font/google";
 import "@/style/globals.css";
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from "@/components/ui/sonner"
 import { SocketProvider } from "@/components/providers/socket-provider";
 import { AuthSessionProvider } from "@/components/providers/auth-provider";
-import { server_auth } from "./(auth)/auth";
+// import { server_auth } from "./(auth)/auth";
 import { ProgressBar } from "@/components/layout/header/ProgressBar";
 import { UIProviders } from "@/components/providers/HeroUIProvider";
 import { DebugPanel } from "@/components/common/debug-panel";
 import { StyleContextProvider } from "@/components/context/styleContext";
+import { ModalProvider } from "@/components/providers/modal-provider";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { auth } from "@/lib/auth";
+import { headers } from 'next/headers'
+import { server_auth } from "./(auth)/auth";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: {
@@ -38,7 +43,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -51,10 +56,13 @@ export default async function RootLayout({
           <StyleContextProvider>
           <UIProviders>
           <AuthSessionProvider session={session}>
+        <AppLayout>
             <SocketProvider>
               <ProgressBar />
               {children}
             </SocketProvider>
+        </AppLayout>
+
           </AuthSessionProvider>
           </UIProviders>
           <DebugPanel />

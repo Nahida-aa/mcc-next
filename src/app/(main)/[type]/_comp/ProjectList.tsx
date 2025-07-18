@@ -2,6 +2,7 @@
 
 import { Suspense, useState, useEffect } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import {ScrollShadow} from "@heroui/scroll-shadow";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { filterProjects } from "@/data/mock-projects"
@@ -83,7 +84,7 @@ export const ProjectList = ({
             <div className="text-[#795548]">加载中...</div>
           </div>
         ) : (
-          <ScrollArea className="h-full ">
+          <ScrollArea hideScrollBar className="h-full ">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 p-1">
               {projects.map((project) => (
                 <ProjectCard key={project.slug} project={project} />
@@ -97,14 +98,6 @@ export const ProjectList = ({
             )}
           </ScrollArea>
         )}
-
-        <style jsx global>{`
-        
-          .minecraft-pixel-image {
-            image-rendering: pixelated;
-          }
-          
-        `}</style>
       </div>
     </Suspense>
   )

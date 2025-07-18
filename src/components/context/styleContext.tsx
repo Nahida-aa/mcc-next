@@ -18,7 +18,7 @@ interface StyleContextType {
 // 3. 为 Context 提供一个初始（默认）值
 // 这里的 setStyleState 是一个空操作函数，以避免在 Provider 外部调用时出错
 const initialStyleState: StyleState = {
-  border: false,
+  border: true,
   // 在这里初始化其他未来添加的属性
 };
 

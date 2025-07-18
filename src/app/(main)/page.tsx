@@ -43,7 +43,7 @@ export default async function Page( {
   const type = 'mod'
   // const session = await server_auth();
   return <Suspense fallback={<LoadingS />}>
-    <Main type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} />
+    {/* <Main type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} /> */}
   </Suspense>
 
   // return <>

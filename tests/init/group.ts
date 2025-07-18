@@ -1,9 +1,9 @@
 // 0.or_1 list friend
 // 1. new group
-import { CreateGroupReq } from "@/lib/routes/groups/create";
+import { CreateGroupReq } from "@/server/routes/groups/create";
 import { localhostV0, session_token } from "./user";
-import { db } from "@/lib/db";
-import { link_chat_user_table } from "@/lib/db/schema/message";
+import { db } from "@/db";
+import { link_chat_user_table } from "@/db/schema/message";
 
 const listFriend = async () => {
   const res = await fetch(`${localhostV0}/user/list/is_friend`, {

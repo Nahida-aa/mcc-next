@@ -1,0 +1,126 @@
+<svg width="240" height="80" viewBox="0 0 240 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景渐变 -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#357ABD;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E6AA0;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 文字阴影 -->
+    <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" flood-color="#1a1a1a" flood-opacity="0.5"/>
+    </filter>
+    
+    <!-- 大字阴影 -->
+    <filter id="bigTextShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="3" flood-color="#1a1a1a" flood-opacity="0.6"/>
+    </filter>
+    
+    <!-- 光晕效果 -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/> 
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="240" height="80" rx="8" fill="url(#bgGradient)" stroke="#2E6AA0" stroke-width="2"/>
+  
+  <!-- 装饰性像素边框 -->
+  <rect x="4" y="4" width="8" height="8" fill="#5BA3F5" opacity="0.8"/>
+  <rect x="4" y="16" width="8" height="8" fill="#4A90E2" opacity="0.6"/>
+  <rect x="4" y="28" width="8" height="8" fill="#357ABD" opacity="0.8"/>
+  <rect x="4" y="40" width="8" height="8" fill="#5BA3F5" opacity="0.6"/>
+  <rect x="4" y="52" width="8" height="8" fill="#4A90E2" opacity="0.8"/>
+  <rect x="4" y="64" width="8" height="8" fill="#357ABD" opacity="0.6"/>
+  
+  <rect x="228" y="4" width="8" height="8" fill="#5BA3F5" opacity="0.8"/>
+  <rect x="228" y="16" width="8" height="8" fill="#4A90E2" opacity="0.6"/>
+  <rect x="228" y="28" width="8" height="8" fill="#357ABD" opacity="0.8"/>
+  <rect x="228" y="40" width="8" height="8" fill="#5BA3F5" opacity="0.6"/>
+  <rect x="228" y="52" width="8" height="8" fill="#4A90E2" opacity="0.8"/>
+  <rect x="228" y="64" width="8" height="8" fill="#357ABD" opacity="0.6"/>
+  
+  <!-- 主标题 MC - 更大更突出 -->
+  <text x="30" y="55" font-family="monospace, 'Courier New'" font-size="36" font-weight="bold" 
+        fill="#FFFFFF" filter="url(#bigTextShadow)">MC</text>
+  
+  <!-- 中文主标题 -->
+  <text x="110" y="35" font-family="SimHei, '微软雅黑', sans-serif" font-size="18" font-weight="bold" 
+        fill="#FFFFFF" filter="url(#textShadow)">联合创作论坛</text>
+  
+  <!-- 英文副标题 -->
+  <text x="110" y="55" font-family="Arial, sans-serif" font-size="12" font-weight="normal"
+        fill="#E6F3FF" opacity="0.9">Minecraft Community Forum</text>
+  
+  <!-- 描述文字 -->
+  <text x="110" y="68" font-family="SimHei, '微软雅黑', sans-serif" font-size="8" 
+        fill="#B3D9FF" opacity="0.8">创作者们的联合创作基地</text>
+  
+  <!-- 装饰性方块群组 -->
+  <g transform="translate(180, 15)">
+    <!-- 草方块 -->
+    <rect x="0" y="0" width="12" height="12" fill="#7CB342" rx="1"/>
+    <rect x="2" y="2" width="8" height="8" fill="#8BC34A" rx="1"/>
+    <rect x="4" y="4" width="4" height="4" fill="#9CCC65" opacity="0.8"/>
+    
+    <!-- 石头方块 -->
+    <rect x="15" y="0" width="12" height="12" fill="#757575" rx="1"/>
+    <rect x="17" y="2" width="8" height="8" fill="#9E9E9E" rx="1"/>
+    <rect x="19" y="4" width="4" height="4" fill="#BDBDBD" opacity="0.8"/>
+    
+    <!-- 木头方块 -->
+    <rect x="30" y="0" width="12" height="12" fill="#8D6E63" rx="1"/>
+    <rect x="32" y="2" width="8" height="8" fill="#A1887F" rx="1"/>
+    <rect x="34" y="4" width="4" height="4" fill="#BCAAA4" opacity="0.8"/>
+  </g>
+  
+  <!-- 第二排方块 -->
+  <g transform="translate(180, 30)">
+    <!-- 钻石方块 -->
+    <rect x="0" y="0" width="12" height="12" fill="#00BCD4" rx="1"/>
+    <rect x="2" y="2" width="8" height="8" fill="#26C6DA" rx="1"/>
+    <rect x="4" y="4" width="4" height="4" fill="#4DD0E1" opacity="0.8"/>
+    
+    <!-- 金方块 -->
+    <rect x="15" y="0" width="12" height="12" fill="#FFC107" rx="1"/>
+    <rect x="17" y="2" width="8" height="8" fill="#FFCA28" rx="1"/>
+    <rect x="19" y="4" width="4" height="4" fill="#FFD54F" opacity="0.8"/>
+    
+    <!-- 红石方块 -->
+    <rect x="30" y="0" width="12" height="12" fill="#F44336" rx="1"/>
+    <rect x="32" y="2" width="8" height="8" fill="#EF5350" rx="1"/>
+    <rect x="34" y="4" width="4" height="4" fill="#E57373" opacity="0.8"/>
+  </g>
+  
+  <!-- 第三排方块 -->
+  <g transform="translate(180, 45)">
+    <!-- 蓝宝石方块 -->
+    <rect x="0" y="0" width="12" height="12" fill="#3F51B5" rx="1"/>
+    <rect x="2" y="2" width="8" height="8" fill="#5C6BC0" rx="1"/>
+    <rect x="4" y="4" width="4" height="4" fill="#7986CB" opacity="0.8"/>
+    
+    <!-- 紫水晶方块 -->
+    <rect x="15" y="0" width="12" height="12" fill="#9C27B0" rx="1"/>
+    <rect x="17" y="2" width="8" height="8" fill="#AB47BC" rx="1"/>
+    <rect x="19" y="4" width="4" height="4" fill="#BA68C8" opacity="0.8"/>
+    
+    <!-- 绿宝石方块 -->
+    <rect x="30" y="0" width="12" height="12" fill="#4CAF50" rx="1"/>
+    <rect x="32" y="2" width="8" height="8" fill="#66BB6A" rx="1"/>
+    <rect x="34" y="4" width="4" height="4" fill="#81C784" opacity="0.8"/>
+  </g>
+  
+  <!-- 顶部装饰线 -->
+  <rect x="16" y="8" width="200" height="2" fill="#FFFFFF" opacity="0.3" rx="1"/>
+  
+  <!-- 底部装饰线 -->
+  <rect x="16" y="70" width="200" height="2" fill="#FFFFFF" opacity="0.3" rx="1"/>
+  
+  <!-- 边框高光 -->
+  <rect width="236" height="76" x="2" y="2" rx="6" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.4"/>
+</svg>

@@ -1,0 +1,165 @@
+<svg width="240" height="80" viewBox="0 0 240 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="240" height="80" fill="#8B7355"/>
+  
+  <!-- 木质纹理背景 -->
+  <rect x="0" y="0" width="240" height="8" fill="#A0956B"/>
+  <rect x="0" y="16" width="240" height="8" fill="#A0956B"/>
+  <rect x="0" y="32" width="240" height="8" fill="#A0956B"/>
+  <rect x="0" y="48" width="240" height="8" fill="#A0956B"/>
+  <rect x="0" y="64" width="240" height="8" fill="#A0956B"/>
+  
+  <!-- 装饰性边框 -->
+  <rect x="0" y="0" width="240" height="4" fill="#6B5B47"/>
+  <rect x="0" y="76" width="240" height="4" fill="#6B5B47"/>
+  <rect x="0" y="0" width="4" height="80" fill="#6B5B47"/>
+  <rect x="236" y="0" width="4" height="80" fill="#6B5B47"/>
+  
+  <!-- 内部边框 -->
+  <rect x="8" y="8" width="224" height="64" fill="none" stroke="#5D4E3A" stroke-width="2"/>
+  
+  <!-- 左侧像素艺术 - MC 字母 -->
+  <g transform="translate(20, 20)">
+    <!-- M 字母 (像素风格) -->
+    <rect x="0" y="0" width="4" height="40" fill="#FFFFFF"/>
+    <rect x="4" y="0" width="4" height="4" fill="#FFFFFF"/>
+    <rect x="8" y="4" width="4" height="4" fill="#FFFFFF"/>
+    <rect x="12" y="8" width="4" height="4" fill="#FFFFFF"/>
+    <rect x="16" y="4" width="4" height="4" fill="#FFFFFF"/>
+    <rect x="20" y="0" width="4" height="4" fill="#FFFFFF"/>
+    <rect x="24" y="0" width="4" height="40" fill="#FFFFFF"/>
+    
+    <!-- C 字母 (像素风格) -->
+    <rect x="36" y="4" width="20" height="4" fill="#FFFFFF"/>
+    <rect x="32" y="8" width="4" height="24" fill="#FFFFFF"/>
+    <rect x="36" y="32" width="20" height="4" fill="#FFFFFF"/>
+    <rect x="52" y="8" width="4" height="4" fill="#FFFFFF"/>
+    <rect x="52" y="28" width="4" height="4" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- 中央区域 - 中文文字背景 -->
+  <rect x="80" y="15" width="100" height="50" fill="#D4C4A8" stroke="#5D4E3A" stroke-width="1"/>
+  
+  <!-- 中文标题 (用矩形模拟像素字体) -->
+  <g transform="translate(85, 20)" fill="#2C1810">
+    <!-- 联 -->
+    <rect x="0" y="0" width="2" height="12" fill="#2C1810"/>
+    <rect x="3" y="2" width="8" height="2" fill="#2C1810"/>
+    <rect x="3" y="6" width="8" height="2" fill="#2C1810"/>
+    <rect x="12" y="0" width="2" height="12" fill="#2C1810"/>
+    
+    <!-- 合 -->
+    <rect x="18" y="0" width="8" height="2" fill="#2C1810"/>
+    <rect x="21" y="2" width="2" height="4" fill="#2C1810"/>
+    <rect x="18" y="6" width="8" height="2" fill="#2C1810"/>
+    <rect x="18" y="10" width="2" height="2" fill="#2C1810"/>
+    <rect x="24" y="10" width="2" height="2" fill="#2C1810"/>
+    
+    <!-- 创 -->
+    <rect x="30" y="0" width="2" height="12" fill="#2C1810"/>
+    <rect x="33" y="2" width="6" height="2" fill="#2C1810"/>
+    <rect x="36" y="4" width="2" height="8" fill="#2C1810"/>
+    <rect x="33" y="10" width="6" height="2" fill="#2C1810"/>
+    
+    <!-- 作 -->
+    <rect x="45" y="0" width="8" height="2" fill="#2C1810"/>
+    <rect x="48" y="2" width="2" height="4" fill="#2C1810"/>
+    <rect x="45" y="6" width="8" height="2" fill="#2C1810"/>
+    <rect x="45" y="10" width="2" height="2" fill="#2C1810"/>
+    <rect x="51" y="10" width="2" height="2" fill="#2C1810"/>
+    
+    <!-- 论 -->
+    <rect x="60" y="0" width="2" height="12" fill="#2C1810"/>
+    <rect x="63" y="2" width="6" height="2" fill="#2C1810"/>
+    <rect x="66" y="4" width="2" height="4" fill="#2C1810"/>
+    <rect x="63" y="8" width="6" height="2" fill="#2C1810"/>
+    <rect x="63" y="10" width="2" height="2" fill="#2C1810"/>
+    <rect x="67" y="10" width="2" height="2" fill="#2C1810"/>
+    
+    <!-- 坛 -->
+    <rect x="75" y="0" width="8" height="2" fill="#2C1810"/>
+    <rect x="78" y="2" width="2" height="10" fill="#2C1810"/>
+    <rect x="75" y="6" width="8" height="2" fill="#2C1810"/>
+    <rect x="75" y="10" width="2" height="2" fill="#2C1810"/>
+    <rect x="81" y="10" width="2" height="2" fill="#2C1810"/>
+  </g>
+  
+  <!-- 中文副标题 -->
+  <g transform="translate(85, 45)" fill="#5D4E3A">
+    <!-- 简化的副标题像素字 -->
+    <rect x="0" y="0" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="10" y="0" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="20" y="0" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="30" y="0" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="40" y="0" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="50" y="0" width="8" height="1" fill="#5D4E3A"/>
+    
+    <rect x="0" y="3" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="10" y="3" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="20" y="3" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="30" y="3" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="40" y="3" width="8" height="1" fill="#5D4E3A"/>
+    <rect x="50" y="3" width="8" height="1" fill="#5D4E3A"/>
+  </g>
+  
+  <!-- 右侧装饰 - 像素化方块堆叠 -->
+  <g transform="translate(190, 15)">
+    <!-- 草方块 -->
+    <rect x="0" y="30" width="12" height="12" fill="#7CB342"/>
+    <rect x="2" y="30" width="8" height="2" fill="#8BC34A"/>
+    <rect x="2" y="32" width="8" height="8" fill="#6B8E23"/>
+    <rect x="4" y="34" width="4" height="4" fill="#556B2F"/>
+    
+    <!-- 石头方块 -->
+    <rect x="0" y="18" width="12" height="12" fill="#808080"/>
+    <rect x="2" y="20" width="8" height="8" fill="#A0A0A0"/>
+    <rect x="4" y="22" width="4" height="4" fill="#C0C0C0"/>
+    
+    <!-- 钻石方块 -->
+    <rect x="0" y="6" width="12" height="12" fill="#00BFFF"/>
+    <rect x="2" y="8" width="8" height="8" fill="#87CEEB"/>
+    <rect x="4" y="10" width="4" height="4" fill="#B0E0E6"/>
+    
+    <!-- 第二列方块 -->
+    <!-- 木头方块 -->
+    <rect x="16" y="30" width="12" height="12" fill="#8B4513"/>
+    <rect x="18" y="32" width="8" height="8" fill="#A0522D"/>
+    <rect x="20" y="34" width="4" height="4" fill="#CD853F"/>
+    
+    <!-- 金方块 -->
+    <rect x="16" y="18" width="12" height="12" fill="#FFD700"/>
+    <rect x="18" y="20" width="8" height="8" fill="#FFA500"/>
+    <rect x="20" y="22" width="4" height="4" fill="#FFFF00"/>
+    
+    <!-- 红石方块 -->
+    <rect x="16" y="6" width="12" height="12" fill="#DC143C"/>
+    <rect x="18" y="8" width="8" height="8" fill="#FF6347"/>
+    <rect x="20" y="10" width="4" height="4" fill="#FF0000"/>
+    
+    <!-- 第三列方块 -->
+    <!-- 青金石方块 -->
+    <rect x="32" y="30" width="12" height="12" fill="#4169E1"/>
+    <rect x="34" y="32" width="8" height="8" fill="#6495ED"/>
+    <rect x="36" y="34" width="4" height="4" fill="#87CEFA"/>
+    
+    <!-- 绿宝石方块 -->
+    <rect x="32" y="18" width="12" height="12" fill="#228B22"/>
+    <rect x="34" y="20" width="8" height="8" fill="#32CD32"/>
+    <rect x="36" y="22" width="4" height="4" fill="#7CFC00"/>
+    
+    <!-- 紫水晶方块 -->
+    <rect x="32" y="6" width="12" height="12" fill="#9370DB"/>
+    <rect x="34" y="8" width="8" height="8" fill="#BA55D3"/>
+    <rect x="36" y="10" width="4" height="4" fill="#DDA0DD"/>
+  </g>
+  
+  <!-- 装饰性钉子 -->
+  <circle cx="16" cy="16" r="3" fill="#696969"/>
+  <circle cx="224" cy="16" r="3" fill="#696969"/>
+  <circle cx="16" cy="64" r="3" fill="#696969"/>
+  <circle cx="224" cy="64" r="3" fill="#696969"/>
+  
+  <!-- 高光效果 -->
+  <rect x="12" y="12" width="216" height="2" fill="#FFFFFF" opacity="0.3"/>
+  <rect x="12" y="12" width="2" height="56" fill="#FFFFFF" opacity="0.3"/>
+</svg>

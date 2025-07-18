@@ -1,34 +1,20 @@
-import { cookies } from 'next/headers';
+// "use client";
 
-// import { AppSidebar } from '@/components/layout/sidebar/app-sidebar';
-// import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { Main } from "./_comp/Main"
+import { Test } from "../test/Test"
 
-import { server_auth } from '../(auth)/auth';
-// import { HomeHeader } from '@/components/layout/header/home-header';
-// import { NavigationSidebar } from './chat/_comp/side';
-// import { Separator } from '@/components/ui/separator';
-// import { ScrollArea } from '@/components/ui/scroll-area';
-
-// export const experimental_ppr = true; // next
 
 export default async function Layout({
-  children,
+  children, project, chat
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode, 
+  project: React.ReactNode, 
+  chat: React.ReactNode
 }) {
-  const [session, cookieStore] = await Promise.all([server_auth(), cookies()]);
-  console.log(`app/(main)/layout.tsx: Layout: session.user: ${JSON.stringify(session?.user)}`);
-  let user_status: string
-  if (session?.user) {
-    user_status = "online"
-  } else {
-    user_status = "未登录"
-  }
-  const isCollapsed = cookieStore.get('sidebar:state')?.value !== 'true';
-  console.log(`app/(main)/layout.tsx: Layout: isCollapsed: ${isCollapsed}`);
 
   return <>
-    {children}
+    {/* {children} */}
+    <Main projectUI={project} chatUI={chat} />
   </>
     // <SidebarProvider defaultOpen={!isCollapsed} className='h-screen SidebarProvider  '> 
     // {/* 模糊背景 */}

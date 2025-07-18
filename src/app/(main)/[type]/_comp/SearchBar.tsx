@@ -50,7 +50,7 @@ export const SearchBar = ({ type, keyword = "", onSearch, onTypeChange }: Search
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center  gap-3 bg-[#8B4513] rounded-md h-12 min-h-12 mt-2 px-2">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-[#8B4513] rounded-md h-12 min-h-12 mt-2 px-2">
       <div className="relative w-full md:w-80">
         <SearchIcon size={16} className="absolute left-2 top-1/2 transform -translate-y-1/2 text-[#795548]" />
         <Input

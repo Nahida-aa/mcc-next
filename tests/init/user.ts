@@ -1,6 +1,6 @@
 // 1. register
 // 2. session
-import { ReqRegisterUserBody } from "@/lib/routes/auth/register";
+import { ReqRegisterUserBody } from "@/server/routes/auth/register";
 
 export const localhostV0 = 'http://localhost:3000/api/hono';
 async function initTestCreateUsers() {

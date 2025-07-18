@@ -78,8 +78,8 @@ export function UserSidebarToggle({
           height={32}
           className="rounded-full hover:glow-purple-box-shadow"
         />
-          <span className={`absolute bottom-1 right-1 w-2 h-2  border rounded-full 
-            ${status === "online" ? 'bg-green-500' : 'bg-gray-500'}
+        <span className={`absolute bottom-1 right-1 w-2 h-2  border rounded-full 
+          ${status === "online" ? 'bg-green-500' : 'bg-gray-500'}
             `}></span>
         {/* {status === "online" && (
         )} */}

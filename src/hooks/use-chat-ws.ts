@@ -4,7 +4,7 @@ import { SocketContextType, useSocket } from "@/components/providers/socket-prov
 import { ClientMessageI } from "@/app/(main)/chat/[name]/_comp/MessageList";
 import { useMsgQuery } from "./use-chat-query";
 import { SWRInfiniteKeyedMutator } from "swr/infinite";
-import { MsgLsCursorI } from "@/lib/routes/chats/messages";
+import { MsgLsCursorI } from "@/server/routes/chats/messages";
 import { Socket } from "socket.io-client";
 
 type MsgSocketProps = {

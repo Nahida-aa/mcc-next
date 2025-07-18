@@ -7,7 +7,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-const ACCOUNT_ID = process.env.CF_Account_ID!
+const ACCOUNT_ID = process.env.CF_ACCOUNT_ID!
 const ACCESS_KEY_ID = process.env.CF_Access_Key_ID!
 const SECRET_ACCESS_KEY = process.env.CF_Secret_Access_Key!
 

@@ -130,7 +130,7 @@ const MinecraftTeamContent = () => (
       </div>
     </div> 
 
-    <div className="minecraft-update-item">
+    <div className="">
       <div className="flex items-center gap-2 mb-2">
         <Pickaxe className="w-4 h-4 text-gray-600" />
         <span className="font-bold text-[#5D4037]">挖矿小队</span>
@@ -145,7 +145,7 @@ const MinecraftTeamContent = () => (
       </div>
     </div>
 
-    <div className="minecraft-update-item">
+    <div className="">
       <div className="flex items-center gap-2 mb-2">
         <Home className="w-4 h-4 text-brown-600" />
         <span className="font-bold text-[#5D4037]">红石工程师</span>
@@ -160,7 +160,7 @@ const MinecraftTeamContent = () => (
       </div>
     </div>
 
-    <div className="minecraft-update-item">
+    <div className="">
       <div className="flex items-center gap-2 mb-2">
         <Sword className="w-4 h-4 text-purple-600" />
         <span className="font-bold text-[#5D4037]">冒险公会</span>
@@ -175,7 +175,7 @@ const MinecraftTeamContent = () => (
       </div>
     </div>
 
-    <div className="minecraft-update-item">
+    <div className="">
       <div className="flex items-center gap-2 mb-2">
         <Diamond className="w-4 h-4 text-cyan-600" />
         <span className="font-bold text-[#5D4037]">装备制作组</span>
@@ -194,7 +194,7 @@ const MinecraftTeamContent = () => (
 
 const MinecraftProjectContent = () => (
   <div className="space-y-4 text-sm">
-    <div className="minecraft-update-item ">
+    <div className=" ">
       <div className="flex items-center gap-2 mb-2">
         <Home className="w-4 h-4 text-amber-600" />
         <span className="font-bold text-[#5D4037]">巨型城堡建设</span>
@@ -209,7 +209,7 @@ const MinecraftProjectContent = () => (
       </div>
     </div>
 
-    <div className="minecraft-update-item">
+    <div className="">
       <div className="flex items-center gap-2 mb-2">
         <Pickaxe className="w-4 h-4 text-gray-600" />
         <span className="font-bold text-[#5D4037]">自动化农场</span>
@@ -224,7 +224,7 @@ const MinecraftProjectContent = () => (
       </div>
     </div>
 
-    <div className="minecraft-update-item">
+    <div className="">
       <div className="flex items-center gap-2 mb-2">
         <Sword className="w-4 h-4 text-red-600" />
         <span className="font-bold text-[#5D4037]">地下城探索</span>
@@ -239,7 +239,7 @@ const MinecraftProjectContent = () => (
       </div>
     </div>
 
-    <div className="minecraft-update-item">
+    <div className="">
       <div className="flex items-center gap-2 mb-2">
         <Diamond className="w-4 h-4 text-blue-600" />
         <span className="font-bold text-[#5D4037]">红石计算机</span>
@@ -254,7 +254,7 @@ const MinecraftProjectContent = () => (
       </div>
     </div>
 
-    <div className="minecraft-update-item">
+    <div className="">
       <div className="flex items-center gap-2 mb-2">
         <Home className="w-4 h-4 text-purple-600" />
         <span className="font-bold text-[#5D4037]">主题公园建设</span>
@@ -274,7 +274,7 @@ const MinecraftProjectContent = () => (
 export const MinecraftTeamUpdates = () => {
   return (
     <section className="h-full">
-      <Card className=" h-full bg-[#BCAAA4] p-0 gap-0 border border-[#5D4037]">
+      <Card className=" h-full bg-[#D7CCC8] p-0 gap-0 border border-[#5D4037]">
           <CardHeader className="m-0 p-2 mt-1">
             <CardTitle className="text-center text-[#5D4037] text-base flex items-center justify-center gap-2">
               <Users className="w-5 h-5 " />
@@ -282,7 +282,7 @@ export const MinecraftTeamUpdates = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="flex-1 p-2">
-            <ScrollArea className="h-[calc(100vh-480px)] minecraft-scroll">
+            <ScrollArea hideScrollBar className="h-[calc(100vh-480px)] ">
               <MinecraftTeamContent />
             </ScrollArea>
           </CardContent>
@@ -314,80 +314,14 @@ export const MinecraftProjectUpdates = () => {
 
 export const MinecraftUpdatesSection = () => {
   return (
-    <ResizablePanelGroup className="flex-1 h-auto minecraft-panel-group" direction="horizontal">
+    <ResizablePanelGroup className="flex-1 h-auto gap-2" direction="horizontal">
       <ResizablePanel defaultSize={50}>
         <MinecraftTeamUpdates />
       </ResizablePanel>
-      <ResizableHandle className="my-3 minecraft-handle" />
+      <ResizableHandle className="my-3 minecraft-handle bg-[#8D6E63] hover:bg-[#795548] border-2 border-solid border-[#5D4037] rounded-sm" />
       <ResizablePanel defaultSize={50}>
         <MinecraftProjectUpdates />
       </ResizablePanel>
-
-      <style jsx global>{`
-        .minecraft-card {
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-          position: relative;
-        }
-        
-        .minecraft-card::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23795548' fillOpacity='0.1'%3E%3Crect x='0' y='0' width='10' height='10' /%3E%3Crect x='10' y='10' width='10' height='10' /%3E%3C/g%3E%3C/svg%3E");
-          z-index: 0;
-          border-radius: inherit;
-        }
-        
-        .minecraft-inner {
-          position: relative;
-          z-index: 1;
-        }
-        
-        .minecraft-title {
-          font-family: 'Courier New', monospace;
-          font-weight: bold;
-          text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
-        }
-        
-        .minecraft-update-item {
-          background: rgba(161, 136, 127, 0.1);
-          padding: 12px;
-          margin-bottom: 8px;
-          transition: all 0.2s ease;
-        }
-        
-        .minecraft-update-item:hover {
-          background: rgba(161, 136, 127, 0.2);
-          transform: translateY(-1px);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        .minecraft-scroll [data-radix-scroll-area-viewport] {
-          scrollbar-width: thin;
-          scrollbar-color: #8D6E63 #D7CCC8;
-        }
-        
-        .minecraft-scroll [data-radix-scroll-area-scrollbar] {
-          background: #8D6E63;
-        }
-        
-        .minecraft-handle {
-          background: #8D6E63;
-          border: 2px solid #5D4037;
-          border-radius: 4px;
-        }
-        
-        .minecraft-handle:hover {
-          background: #795548;
-        }
-        
-        .minecraft-panel-group {
-          gap: 8px;
-        }
-      `}</style>
     </ResizablePanelGroup>
   )
 }

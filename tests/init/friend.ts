@@ -5,7 +5,7 @@
 
 import { OffsetLimitQuery_withQ } from "@/lib/schema/query";
 import { localhostV0, session_token } from "./user";
-import { AddFriendSendRequest } from "@/lib/routes/friend/add";
+import { AddFriendSendRequest } from "@/server/routes/friend/add";
 
 const listUserNotFriendReqQuery: OffsetLimitQuery_withQ = {q: "test"}
 

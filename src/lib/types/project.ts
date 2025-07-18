@@ -18,6 +18,7 @@ export type ProjectMeta = {
   latest_release_id: string;
 }
 
+// 项目列表查询参数
 export type ListProjectParams = {
   type: string;
   limit?: number;
@@ -40,17 +41,3 @@ export type ProjectList = {
   count: number;
 }
 
-export type UserMeta = {
-  name: string;
-  image: string;
-  online: boolean;
-}
-
-export type UserMetaWithChatInfo = {
-  name: string;
-  image: string;
-  online: boolean;
-  hasMessage: boolean;
-  messageCount: number
-  lastMessageTime: string
-}

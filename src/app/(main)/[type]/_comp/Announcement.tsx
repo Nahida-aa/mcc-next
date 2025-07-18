@@ -84,22 +84,23 @@ export const Announcement2 = () => {
 }
 
 export const MinecraftAnnouncement = () => {
+  console.log("MinecraftAnnouncement rendered");
   return (
-    <section className="flex flex-col md:flex-row gap-6 mb-8 max-w-fit justify-center items-center relative">
+    <section className="flex flex-col md:flex-row gap-6 mb-8 max-w-fit justify-center items-center relative h-80">
       {/* 主告示牌 */}
       <div className="relative">
         {/* 木桩支撑 */}
-        <div className="absolute left-1/2 -bottom-16 w-8 h-20 bg-[#8B4513] -translate-x-1/2 z-0 rounded-b-md shadow-md"></div>
+        <div className="absolute left-1/2 -bottom-20 w-8 h-24 bg-[#8B4513] -translate-x-1/2 z-0 rounded-b-md shadow-md"></div>
 
         <Card className="p-3 border-4 border-[#5D4037] bg-[#A1887F] shadow-lg relative z-10 transform rotate-1 minecraft-sign">
           <CardHeader className="flex p-2 justify-center items-center">
-            <div className="relative w-[180px] h-[38px] mb-2">
+            <div className="relative w-[240px] h-[80px] mb-2">
               <Image
                 className="minecraft-pixel-image"
-                src="/placeholder.svg?height=38&width=180"
-                alt="Minecraft Logo"
-                width={180}
-                height={38}
+                src="/mc-forum-logo-pixel.svg"
+                alt="MC联合创作论坛 Logo"
+                width={240}
+                height={80}
                 priority
               />
             </div>
@@ -143,7 +144,7 @@ export const MinecraftAnnouncement = () => {
         {/* 平台寄语告示牌 */}
         <div className="relative">
           {/* 木桩支撑 */}
-          <div className="absolute left-1/2 -bottom-12 w-6 h-16 bg-[#8B4513] -translate-x-1/2 z-0 rounded-b-md shadow-md"></div>
+          <div className="absolute left-1/2 -bottom-14 w-6 h-16 bg-[#8B4513] -translate-x-1/2 z-0 rounded-b-md shadow-md"></div>
 
           <Card className="p-3 border-4 border-[#5D4037] bg-[#A1887F] shadow-lg relative z-10 transform rotate-2 minecraft-sign">
             <CardContent className="bg-[#D7CCC8] rounded-md p-3 h-full border-2 border-[#8D6E63]">
