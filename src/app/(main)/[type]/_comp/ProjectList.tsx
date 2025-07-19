@@ -7,10 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { filterProjects } from "@/data/mock-projects"
 import Image from "next/image"
-import type { ClientListProjectParams, ProjectMeta } from "@/lib/types/project"
+import type { ClientListProjectParams, ProjectListItem } from "@/lib/types/project"
 import { useStyle } from "@/components/context/styleContext"
 
-const ProjectCard = ({ project }: { project: ProjectMeta }) => {
+const ProjectCard = ({ project }: { project: ProjectListItem }) => {
   const { styleState } = useStyle();
   return (
     <Card className={`  bg-[#D7CCC8] hover:bg-[#BCAAA4] transition-all duration-200 p-2 gap-1 ${
@@ -55,7 +55,7 @@ export const ProjectList = ({
   environment,
   is_open_source,
 }: ClientListProjectParams) => {
-  const [projects, setProjects] = useState<ProjectMeta[]>([])
+  const [projects, setProjects] = useState<ProjectListItem[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export const ProjectList = ({
             <div className="text-[#795548]">加载中...</div>
           </div>
         ) : (
-          <ScrollArea hideScrollBar className="h-full ">
+          <ScrollArea hideScrollBar  className="h-full ">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 p-1">
               {projects.map((project) => (
                 <ProjectCard key={project.slug} project={project} />

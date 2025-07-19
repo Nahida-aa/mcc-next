@@ -19,7 +19,7 @@ export const RightUI = ({
 
             {/* 区域 右3 */}
             <Card
-              className={`bg-[#D7CCC8] mt-2 border border-[#5D4037] transition-all duration-500 p-0 overflow-hidden flex flex-col ${
+              className={`border-0  mt-2  transition-all duration-500 p-0 overflow-hidden flex flex-col ${
                 isExpanded ? "opacity-0 mt-0" : "opacity-100"
               }`}
             >

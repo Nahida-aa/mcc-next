@@ -4,10 +4,10 @@ import { CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { usePathname, useRouter } from 'next/navigation'
-import { Home, Users, Settings, Coffee, MessageSquare, Building } from 'lucide-react'
+import { Home, Users, Settings, Coffee, MessageSquare, Building, LayoutDashboard } from 'lucide-react'
 import { useAuthSession } from "@/components/providers/auth-provider"
-import NextImage from 'next/image';
 import { User } from "@/components/aa/User"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 export const ChatNav = ({children,
 }:{
@@ -24,9 +24,9 @@ export const ChatNav = ({children,
     { 
       label: '个人工作室', 
       path: '/studio', 
-      icon: Settings, 
-      description: '个人设置和工具',
-      badge: '2' // 未读消息数
+      icon: LayoutDashboard, 
+      description: '通知, 统计分析, 项目管理, 收藏管理...',
+      badge: '2' // 未读消息数 
     },
     { 
       label: '客厅', 
@@ -98,56 +98,86 @@ export const ChatNav = ({children,
     </div>
   )
 
-  return <>
-    {/* 顶部导航 */}
-    <CardHeader className="p-1 flex-row justify-between items-center bg-card border-b space-y-0">
-      <User image={session?.user?.image} status={session ? "online" : "offline"} displayName={session?.user?.displayUsername} email={session?.user?.email} className="ml-1" />
-
-      
-      <div className="flex items-center gap-1">
-        {topNavItems.map((item, index) => (
-          <div key={item.path} className="flex items-center">
-            <NavButton 
-              item={item} 
-              isActive={pathname === item.path} 
-            />
-            {index < topNavItems.length - 1 && (
-              <Separator orientation="vertical" className="mx-1 h-6" />
-            )}
+  return (
+    <div className="h-full max-h-full grid grid-rows-[48px_1px_auto_1px_48px] bg-background">
+      {/* 顶部导航 - 响应式网格布局 */}
+      <CardHeader className="p-1 bg-card ">
+        <div className="grid grid-cols-[auto_1fr_auto] lg:grid-cols-[1fr_auto_1fr] items-center gap-2 lg:gap-4">
+          {/* 左侧用户信息 */}
+          <User 
+            image={session?.user?.image} 
+            status={session ? "online" : "offline"} 
+            displayName={session?.user?.displayUsername} 
+            email={session?.user?.email} 
+            className="justify-self-start ml-1"
+          />
+          {/* 中间预留空间 */}
+          <div className="justify-self-end w-8 lg:w-auto"></div>
+          {/* 右侧导航按钮 - 响应式网格 */}
+          <div className="justify-self-end col-span-1 lg:col-span-1">
+            <div className="flex items-center">
+              {topNavItems.map((item, index) => (
+                <div key={item.path} className="flex items-center justify-center">
+                  <NavButton 
+                    item={item} 
+                    isActive={pathname === item.path} 
+                  />
+                  {index < topNavItems.length - 1 && (
+                    <Separator 
+                      orientation="vertical" 
+                      className=" h-6 hidden sm:block" 
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
-    </CardHeader>
-    
-    <Separator className="bg-border" />
-    
-    {/* 主要内容区域 */}
-    <div className="flex-1 bg-background text-foreground">
+        </div>
+      </CardHeader>
+      
+      {/* 分隔线 */}
+      <Separator className="bg-border" />
+      
+      {/* 主要内容区域 - 在需要时: 网格自动填充，处理溢出 */}
       {children}
-    </div>
-    
-    <Separator className="bg-border" />
-    
-    {/* 底部导航 */}
-    <CardFooter className="p-1 flex justify-center items-center bg-card border-t">
-      <div className="flex items-center gap-1">
-        {bottomNavItems.map((item, index) => (
-          <div key={item.path} className="flex items-center">
-            <NavButton 
-              item={item} 
-              isActive={pathname === item.path} 
-            />
-            {index < bottomNavItems.length - 1 && (
-              <Separator orientation="vertical" className="mx-1 h-6" />
-            )}
-          </div>
-        ))}
-      </div>
+      {/* <ScrollArea hideScrollBar className="  h-full">
+      <CardContent aria-label="CardContent" className="p-0 h-full">
+      </CardContent>
+      </ScrollArea> */}
       
-      <div className="ml-auto mr-3 flex items-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-blue-500" />
-        <span className="text-xs text-muted-foreground">V2.1.0</span>
-      </div>
-    </CardFooter>
-  </>
+      {/* 分隔线 */}
+      <Separator className="bg-border" />
+      
+      {/* 底部导航 - 响应式网格布局 */}
+      <CardFooter className="p-1 bg-card border-t">
+        <div className="grid grid-cols-[1fr_auto] items-center w-full ">
+          {/* 左侧底部导航按钮 */}
+          <div className="justify-self-start">
+            <div className="flex   items-center">
+              {bottomNavItems.map((item, index) => (
+                <div key={item.path} className="flex items-center justify-center">
+                  <NavButton 
+                    item={item} 
+                    isActive={pathname === item.path} 
+                  />
+                  {index < bottomNavItems.length - 1 && (
+                    <Separator 
+                      orientation="vertical" 
+                      className=" h-6 hidden sm:block" 
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* 右侧版本信息 */}
+          <div className="justify-self-end flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-blue-500" />
+            <span className="text-xs text-muted-foreground whitespace-nowrap">V2.1.0</span>
+          </div>
+        </div>
+      </CardFooter>
+    </div>
+  )
 }

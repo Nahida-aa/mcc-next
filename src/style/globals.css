@@ -158,7 +158,7 @@
     --background-6: hsl(75, 59%, 93%);
 
     --foreground: 20 14.3% 4.1%; /* 前景色 */
-    --card: 0 0% 100%; /* 卡片背景 */
+    --card: 75 59% 93%; /* 卡片背景 */
     --card-foreground: 20 14.3% 4.1%;
     --popover: 0 0% 100%; /* 弹出层背景 */
     --popover-foreground: 20 14.3% 4.1%;

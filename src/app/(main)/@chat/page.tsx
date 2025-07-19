@@ -22,9 +22,8 @@ export default function ChatPage() {
     return <CardContent className="h-full flex flex-col justify-center items-center space-y-4"><NotLogin /></CardContent>
   }
 
-  return <>
-  <CardContent className="h-full flex flex-col justify-center items-center space-y-4">
-      <div className="space-y-3">
+  return <section>
+      <div className="flex flex-col h-full  justify-center items-center space-y-3 max-w-2xs mx-auto">
         <Button variant="shadow"
           // onPress={() => {router.push('/sign_in')}}
           className="w-full bg-primary text-primary-foreground bg-linear-to-tr from-green-500 to-lime-500 hover:scale-105 "
@@ -54,6 +53,5 @@ export default function ChatPage() {
           退出登录
         </Button>
       </div>
-  </CardContent>
-  </>
+  </section>
 }

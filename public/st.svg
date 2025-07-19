@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- Top face: crafting grid (isometric rhombus) -->
+  <polygon points="5,9 12,4 19,9 12,13.2" fill="#bfae94" stroke="#444" stroke-width="0.4"/>
+  <!-- Simulated 3x3 grid lines (skewed to fit rhombus) -->
+  <path d="M7.5,7.1 L16.5,7.1" stroke="#777" stroke-width="0.3"/>
+  <path d="M8.2,8.6 L15.8,8.6" stroke="#777" stroke-width="0.3"/>
+  <path d="M9.5,6 L9.5,10.5" stroke="#777" stroke-width="0.3" transform="skewX(-20)"/>
+  <path d="M14.5,6 L14.5,10.5" stroke="#777" stroke-width="0.3" transform="skewX(-20)"/>
+
+  <!-- Left face: wood texture -->
+  <polygon points="5,9 5,16 12,20 12,13.2" fill="#7a4a22" stroke="#2a1b0a" stroke-width="0.4"/>
+  <path d="M6 10 l2 1 M6 12 l3 1.5 M7 14 l2 1" stroke="#4e2f14" stroke-width="0.4"/>
+
+  <!-- Right face: wood planks -->
+  <polygon points="19,9 19,15 12,20 12,13.2" fill="#944f27" stroke="#2a1b0a" stroke-width="0.4"/>
+  <path d="M13 14 l3 -1 M13.5 16 l2.5 -1 M14 18 l2 -0.5" stroke="#5b3217" stroke-width="0.4"/>
+
+  <!-- Subtle depth enhancement -->
+  <path d="M12,4 L12,13.2" stroke="#000" stroke-opacity="0.1" stroke-width="0.4"/>
+  <path d="M5,9 L12,13.2 L19,9" fill="none" stroke="#000" stroke-opacity="0.08" stroke-width="0.4"/>
+</svg>
