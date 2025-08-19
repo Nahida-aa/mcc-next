@@ -13,10 +13,10 @@ export default async function ProjectListPageUI({
     sort?: string;
     keyword?: string;
     tags?: string;
-    game_versions?: string;
+    gameVersions?: string;
     loaders?: string;
     environment?: string;
-    is_open_source?: string;
+    isOpenSource?: string;
   }
   >
 }) {
@@ -27,6 +27,6 @@ export default async function ProjectListPageUI({
   const type = 'mod'
 
   return <>
-    <ProjectUI type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} />
+    <ProjectUI type={type} gameVersions={parsedQuery.versions} isOpenSource={parsedQuery.isOpen} {...parsedQuery} />
   </>
 }

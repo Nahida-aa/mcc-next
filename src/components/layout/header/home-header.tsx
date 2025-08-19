@@ -73,17 +73,17 @@ export function HomeHeader({
 
   // const { width: windowWidth } = useWindowSize();
   // const displayUser = user || { email: 'guest@example.com', name: 'Guest', image: null };
-  // const user_status = "online" // online, offline, away, 未登录
-  let user_status
+  // const userStatus = "online" // online, offline, away, 未登录
+  let userStatus
   if (user) {
-    user_status = "online"
+    userStatus = "online"
   } else {
-    user_status = "未登录"
+    userStatus = "未登录"
   }
   return (<>
     <header className={`flex  backdrop-blur-md absolute w-full  px-2 py-1 items-center gap-2 justify-between top-0 z-10 ${className}`}>
       <div className='flex gap-1 items-center'>
-        <UserSidebarToggle user={user} status={user_status} />
+        <UserSidebarToggle user={user} status={userStatus} />
         {/* {windowWidth >= 768 && ( */}
         {/* <Button className='p-0 gap-0 flex-col justify-start' variant={'ghost'} onClick={() => {} }> */}
         <Button 
@@ -95,7 +95,7 @@ export function HomeHeader({
         } }
         >
           <div className="text-[0.8rem] font-medium leading-5">{user?.nickname || user?.name || "Guest"}</div>
-          <div className='text-xs text-gray-400 leading-3'>{user_status}</div>
+          <div className='text-xs text-gray-400 leading-3'>{userStatus}</div>
         </Button>
         {/* )} */}
       </div>

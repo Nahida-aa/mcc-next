@@ -8,7 +8,7 @@ import { useListIsExpandContext } from "../@project/[type]/_comp/ListWithSearchC
 import { ClientListProjectParams } from "@/server/apps/project/type"
 
 export const ProjectUI = ({
-  type, page=1, sort="relevance", keyword, tags, game_versions, loaders, environment, is_open_source,
+  type, page=1, sort="relevance", keyword, tags, gameVersions, loaders, environment, isOpenSource,
 }: ClientListProjectParams) => {
     const {state: isExpanded, setState: setIsExpanded} = useListIsExpandContext()
     const { styleState } = useStyle();
@@ -21,8 +21,8 @@ export const ProjectUI = ({
         <div className="flex-1 overflow-hidden p-0 min-h-0 m-2">
           <ProjectList
             type={type}
-            game_versions={game_versions}
-            is_open_source={is_open_source}
+            gameVersions={gameVersions}
+            isOpenSource={isOpenSource}
             page={page}
             sort={sort}
             keyword={keyword}

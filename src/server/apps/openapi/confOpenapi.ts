@@ -23,15 +23,15 @@ export default async function configOpenAPI(app: AppOpenAPI) {
   app.openAPIRegistry.registerComponent('securitySchemes', 'SessionToken', {
     type: "apiKey",
     in: "cookie",
-    name: "session_token",
+    name: "sessionToken",
   });
   app.openAPIRegistry.registerComponent('securitySchemes', 'OAuth2PasswordBearer', {
     type: "oauth2",
     flows: {
       password: {
         scopes: {
-          read_user: "read user",
-          write_self: "write user self",
+          readUser: "read user",
+          writeSelf: "write user self",
         },
         tokenUrl: "/api/auth/token",
       },
@@ -45,7 +45,7 @@ export default async function configOpenAPI(app: AppOpenAPI) {
   app.openAPIRegistry.registerComponent('securitySchemes', 'CSRF', {
     type: "apiKey",
     in: "cookie",
-    name: "csrf_token",
+    name: "csrfToken",
   });
   app.get('/doc/scalar', 
     Scalar({

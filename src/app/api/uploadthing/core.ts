@@ -1,4 +1,4 @@
-import { server_auth } from "@/app/(auth)/auth";
+import { serverAuth } from "@/app/(auth)/auth";
 import { createUploadthing, UTFiles, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
@@ -33,13 +33,13 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
-      const auth_session = await server_auth();
+      const authSession = await serverAuth();
 
       // If you throw, the user will not be able to upload
-      if (!auth_session?.user) throw new UploadThingError("Unauthorized");
+      if (!authSession?.user) throw new UploadThingError("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: auth_session.user.id };
+      return { userId: authSession.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
@@ -86,11 +86,11 @@ export const ourFileRouter = {
       // });
 
       // This code runs on your server before upload
-      const auth_session = await server_auth();
+      const authSession = await serverAuth();
 
       // If you throw, the user will not be able to upload
-      if (!auth_session?.user) throw new UploadThingError("Unauthorized"); //注意：默认情况下，抛出的 UploadThingError '的消息将发送到客户端的 onError
-      const user = auth_session.user;
+      if (!authSession?.user) throw new UploadThingError("Unauthorized"); //注意：默认情况下，抛出的 UploadThingError '的消息将发送到客户端的 onError
+      const user = authSession.user;
       
       // Return some metadata to be stored with the file
       return { foo: "bar" as const, userId: user.id, files,  [UTFiles]: filesWithMyIds };

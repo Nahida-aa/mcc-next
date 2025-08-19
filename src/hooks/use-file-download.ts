@@ -3,10 +3,10 @@
 import { useState } from 'react';
 
 interface FileDownloadInfo {
-  download_url: string;
+  downloadUrl: string;
   filename: string;
-  file_size: number;
-  expires_at: string;
+  fileSize: number;
+  expiresAt: string;
 }
 
 interface UseFileDownloadOptions {
@@ -29,7 +29,7 @@ export function useFileDownload(options: UseFileDownloadOptions = {}) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ file_id: fileId }),
+        body: JSON.stringify({ fileId: fileId }),
       });
 
       if (!response.ok) {
@@ -45,7 +45,7 @@ export function useFileDownload(options: UseFileDownloadOptions = {}) {
       // 自动下载文件
       if (autoDownload) {
         const link = document.createElement('a');
-        link.href = downloadInfo.download_url;
+        link.href = downloadInfo.downloadUrl;
         link.download = downloadInfo.filename;
         link.style.display = 'none';
         document.body.appendChild(link);
@@ -72,8 +72,8 @@ export function useFileDownload(options: UseFileDownloadOptions = {}) {
   const copyDownloadLink = async (fileId: string) => {
     try {
       const downloadInfo = await downloadFile(fileId, false);
-      await navigator.clipboard.writeText(downloadInfo.download_url);
-      return downloadInfo.download_url;
+      await navigator.clipboard.writeText(downloadInfo.downloadUrl);
+      return downloadInfo.downloadUrl;
     } catch (err) {
       throw err;
     }
@@ -130,7 +130,7 @@ export function useBatchFileDownload() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ file_id: file.id }),
+          body: JSON.stringify({ fileId: file.id }),
         });
 
         if (!response.ok) {
@@ -143,7 +143,7 @@ export function useBatchFileDownload() {
 
         // 下载文件
         const link = document.createElement('a');
-        link.href = downloadInfo.download_url;
+        link.href = downloadInfo.downloadUrl;
         link.download = downloadInfo.filename;
         link.style.display = 'none';
         document.body.appendChild(link);

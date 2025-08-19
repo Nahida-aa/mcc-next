@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from "@/components/ui/sonner"
 import { SocketProvider } from "@/components/providers/socket-provider";
 import { AuthSessionProvider } from "@/components/providers/auth-provider";
-// import { server_auth } from "./(auth)/auth";
+// import { serverAuth } from "./(auth)/auth";
 import { ProgressBar } from "@/components/layout/header/ProgressBar";
 import { UIProviders } from "@/components/providers/HeroUIProvider";
 import { DebugPanel } from "@/components/common/debug-panel";
@@ -14,7 +14,7 @@ import { ModalProvider } from "@/components/providers/modal-provider";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { auth } from "@/lib/auth";
 import { headers } from 'next/headers'
-import { server_auth } from "./(auth)/auth";
+import { serverAuth } from "./(auth)/auth";
 import { ListIsExpandContextProvider } from "./(main)/@project/[type]/_comp/ListWithSearchContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -41,7 +41,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await server_auth();
+  const session = await serverAuth();
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

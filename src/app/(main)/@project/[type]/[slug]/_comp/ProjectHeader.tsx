@@ -13,9 +13,9 @@ export const ProjectHeader = ({
 }) => {
   return <div aria-label='Header' className="grid grid-cols-1 gap-x-8 gap-y-6 border-0 border-b border-solid border-divider pb-4 my-4 lg:grid-cols-[1fr_auto]">
         <div className="flex flex-row gap-4">
-          {project.icon_url ? (
+          {project.iconUrl ? (
             <NextImage 
-              src={project.icon_url} 
+              src={project.iconUrl} 
               alt={project.name}
               width={96}
               height={96}
@@ -35,11 +35,11 @@ export const ProjectHeader = ({
             </div>
             <p className=" line-clamp-2 ">{project.summary}</p>
             <div className="mt-auto flex flex-wrap gap-4 empty:hidden" >
-              <BetterTooltip content={`${project.download_count.toString()} 下载`}  >
-                <div className='flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold cursor-help'><Download className="size-6 text-secondary-foreground" /> {formatSize(project.download_count)}</div>
+              <BetterTooltip content={`${project.downloadCount.toString()} 下载`}  >
+                <div className='flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold cursor-help'><Download className="size-6 text-secondary-foreground" /> {formatSize(project.downloadCount)}</div>
               </BetterTooltip>
-              <BetterTooltip content={`${project.follow_count.toString()} 点赞`}  >
-                <div className='flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold cursor-help'><Heart className="size-6 text-secondary-foreground" /> {formatSize(project.follow_count)}</div>
+              <BetterTooltip content={`${project.followCount.toString()} 点赞`}  >
+                <div className='flex items-center gap-2 border-0 border-r border-solid border-divider pr-4 font-semibold cursor-help'><Heart className="size-6 text-secondary-foreground" /> {formatSize(project.followCount)}</div>
               </BetterTooltip>
               <div className="flex flex-wrap items-center gap-2">
                 <TagsIcon className="size-6 text-secondary-foreground" />

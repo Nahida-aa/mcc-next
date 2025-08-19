@@ -49,14 +49,14 @@ export default function StudioProjectsPage() {
       slug: "optifine-hd",
       name: "OptiFine HD",
       summary: "Minecraft优化模组，提升游戏性能和画质",
-      icon_url: "/project/icon/optifine.png",
+      iconUrl: "/project/icon/optifine.png",
       category: "优化",
       tags: ["性能", "光影", "优化"],
-      game_versions: ["1.20.4", "1.20.1", "1.19.4"],
+      gameVersions: ["1.20.4", "1.20.1", "1.19.4"],
       loaders: ["forge", "fabric"],
       environment: "client",
       status: "published",
-      is_open_source: false,
+      isOpenSource: false,
       license: "Custom",
       owner: {
         type: "user",
@@ -64,13 +64,13 @@ export default function StudioProjectsPage() {
         name: session.user?.name || "You",
         username: session.user?.username || "you"
       },
-      download_count: 45670,
-      follow_count: 1200,
+      downloadCount: 45670,
+      followCount: 1200,
       createdAt: "2023-12-01T00:00:00Z",
       updatedAt: "2024-01-15T00:00:00Z",
-      published_at: "2023-12-05T00:00:00Z",
-      latest_version_number: "HD U I5",
-      latest_version_id: "v1"
+      publishedAt: "2023-12-05T00:00:00Z",
+      latestVersionNumber: "HD U I5",
+      latestVersionId: "v1"
     },
     {
       id: "2",
@@ -78,14 +78,14 @@ export default function StudioProjectsPage() {
       slug: "faithful-32x",
       name: "Faithful 32x",
       summary: "高清材质包，保持原版风格",
-      icon_url: "/project/icon/faithful.png",
+      iconUrl: "/project/icon/faithful.png",
       category: "材质",
       tags: ["材质包", "高清", "原版风格"],
-      game_versions: ["1.20.4", "1.20.1"],
+      gameVersions: ["1.20.4", "1.20.1"],
       loaders: ["vanilla"],
       environment: "client",
       status: "draft",
-      is_open_source: true,
+      isOpenSource: true,
       license: "CC BY-SA 4.0",
       owner: {
         type: "user",
@@ -93,12 +93,12 @@ export default function StudioProjectsPage() {
         name: session.user?.name || "You",
         username: session.user?.username || "you"
       },
-      download_count: 0,
-      follow_count: 45,
+      downloadCount: 0,
+      followCount: 45,
       createdAt: "2024-01-10T00:00:00Z",
       updatedAt: "2024-01-15T00:00:00Z",
-      latest_version_number: "1.0.0-beta",
-      latest_version_id: "v2"
+      latestVersionNumber: "1.0.0-beta",
+      latestVersionId: "v2"
     },
     {
       id: "3",
@@ -106,14 +106,14 @@ export default function StudioProjectsPage() {
       slug: "jei",
       name: "JEI 物品管理器",
       summary: "Just Enough Items - 物品查询和配方查看",
-      icon_url: "/project/icon/jei.png",
+      iconUrl: "/project/icon/jei.png",
       category: "实用工具",
       tags: ["物品", "配方", "查询", "JEI"],
-      game_versions: ["1.20.4", "1.20.1", "1.19.4", "1.18.2"],
+      gameVersions: ["1.20.4", "1.20.1", "1.19.4", "1.18.2"],
       loaders: ["forge", "fabric"],
       environment: "client",
       status: "published",
-      is_open_source: true,
+      isOpenSource: true,
       license: "MIT",
       owner: {
         type: "user",
@@ -121,13 +121,13 @@ export default function StudioProjectsPage() {
         name: session.user?.name || "You",
         username: session.user?.username || "you"
       },
-      download_count: 123456,
-      follow_count: 2300,
+      downloadCount: 123456,
+      followCount: 2300,
       createdAt: "2023-06-01T00:00:00Z",
       updatedAt: "2024-01-10T00:00:00Z",
-      published_at: "2023-06-15T00:00:00Z",
-      latest_version_number: "15.2.0.27",
-      latest_version_id: "v3"
+      publishedAt: "2023-06-15T00:00:00Z",
+      latestVersionNumber: "15.2.0.27",
+      latestVersionId: "v3"
     }
   ]
 
@@ -181,9 +181,9 @@ export default function StudioProjectsPage() {
       <div className="flex gap-4">
         {/* 项目图标 */}
         <div className="w-16 h-16 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
-          {project.icon_url ? (
+          {project.iconUrl ? (
             <NextImage
-              src={project.icon_url}
+              src={project.iconUrl}
               alt={project.name}
               width={64}
               height={64}
@@ -234,11 +234,11 @@ export default function StudioProjectsPage() {
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Download className="w-3 h-3" />
-                  {project.download_count.toLocaleString()}
+                  {project.downloadCount.toLocaleString()}
                 </div>
                 <div className="flex items-center gap-1">
                   <Heart className="w-3 h-3" />
-                  {project.follow_count.toLocaleString()}
+                  {project.followCount.toLocaleString()}
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" />

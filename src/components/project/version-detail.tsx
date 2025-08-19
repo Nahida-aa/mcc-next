@@ -11,8 +11,8 @@ import { Clock, Download, Upload, FileIcon } from 'lucide-react';
 
 interface ProjectVersion {
   id: string;
-  version_name: string;
-  version_number: string;
+  versionName: string;
+  versionNumber: string;
   status: 'draft' | 'uploading' | 'processing' | 'completed' | 'rejected';
   description?: string;
   changelog?: string;
@@ -23,8 +23,8 @@ interface ProjectVersion {
 interface ProjectFile {
   id: string;
   filename: string;
-  file_size?: number;
-  upload_status: 'pending' | 'uploading' | 'completed' | 'failed';
+  fileSize?: number;
+  uploadStatus: 'pending' | 'uploading' | 'completed' | 'failed';
   createdAt: string;
 }
 
@@ -84,7 +84,7 @@ export function ProjectVersionDetail({ versionId }: ProjectVersionDetailProps) {
   };
 
   const canAddFiles = version?.status === 'draft' || version?.status === 'uploading';
-  const canSubmitForReview = version?.status === 'draft' && files.some(f => f.upload_status === 'completed');
+  const canSubmitForReview = version?.status === 'draft' && files.some(f => f.uploadStatus === 'completed');
 
   const handleSubmitForReview = async () => {
     try {
@@ -127,11 +127,11 @@ export function ProjectVersionDetail({ versionId }: ProjectVersionDetailProps) {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="flex items-center gap-2">
-                {version.version_name}
+                {version.versionName}
                 {getStatusBadge(version.status)}
               </CardTitle>
               <CardDescription className="mt-1">
-                版本号: {version.version_number}
+                版本号: {version.versionNumber}
               </CardDescription>
               {version.description && (
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -162,7 +162,7 @@ export function ProjectVersionDetail({ versionId }: ProjectVersionDetailProps) {
             </div>
             <div className="flex items-center gap-1">
               <Download className="h-4 w-4" />
-              {files.filter(f => f.upload_status === 'completed').length} 个可下载
+              {files.filter(f => f.uploadStatus === 'completed').length} 个可下载
             </div>
           </div>
         </CardContent>
@@ -277,9 +277,9 @@ export function FilePreview({ file }: FilePreviewProps) {
         <FileIcon className="h-5 w-5 text-muted-foreground" />
         <div>
           <div className="font-medium">{file.filename}</div>
-          {file.file_size && (
+          {file.fileSize && (
             <div className="text-sm text-muted-foreground">
-              {(file.file_size / 1024 / 1024).toFixed(1)} MB
+              {(file.fileSize / 1024 / 1024).toFixed(1)} MB
             </div>
           )}
         </div>

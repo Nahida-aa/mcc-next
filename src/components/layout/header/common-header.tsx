@@ -33,17 +33,17 @@ export function CommonHeader(
   const { width: windowWidth } = useWindowSize();
   // const displayUser = user || { email: 'guest@example.com', name: 'Guest', image: null };
   const displayUser = user
-  // const user_status = "online" // online, offline, away, 未登录
-  let user_status
+  // const userStatus = "online" // online, offline, away, 未登录
+  let userStatus
   if (user) {
-    user_status = "online"
+    userStatus = "online"
   } else {
-    user_status = "未登录"
+    userStatus = "未登录"
   }
   return (
     <header className={`flex sticky backdrop-blur-md px-1.5 py-1 items-center md:px-2 gap-2 justify-between bg-card ${className}`}>
       <div className='flex gap-1 items-center'>
-        <UserSidebarToggle user={user} status={user_status} />
+        <UserSidebarToggle user={user} status={userStatus} />
         {/* {windowWidth >= 768 && ( */}
         <div className=''>
           <div className="text-base font-medium">Friends</div>

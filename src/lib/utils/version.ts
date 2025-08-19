@@ -1,6 +1,6 @@
 export type GameVersion = {
   version: string
-  version_type: string
+  versionType: string
   date: string
   major: boolean
 }
@@ -12,10 +12,10 @@ export function formatVersionsForDisplay(
   const inputVersions = gameVersions.slice()
   const allVersions = allGameVersions.slice()
 
-  const allSnapshots = allVersions.filter((version) => version.version_type === 'snapshot')
-  const allReleases = allVersions.filter((version) => version.version_type === 'release')
+  const allSnapshots = allVersions.filter((version) => version.versionType === 'snapshot')
+  const allReleases = allVersions.filter((version) => version.versionType === 'release')
   const allLegacy = allVersions.filter(
-    (version) => version.version_type !== 'snapshot' && version.version_type !== 'release',
+    (version) => version.versionType !== 'snapshot' && version.versionType !== 'release',
   )
 
   {

@@ -15,10 +15,10 @@ export const community = pgTable("community", {
   
   // 社区设置
   isPublic: boolean('is_public').default(true).notNull(),
-  verification_level: integer('verification_level').default(0).notNull(), // 0-4, 类似Discord验证等级
+  verificationLevel: integer('verification_level').default(0).notNull(), // 0-4, 类似Discord验证等级
   
   // 创建者
-  owner_id: varchar('owner_id', { length: 255 }).notNull().references(() => user.id),
+  ownerId: varchar('owner_id', { length: 255 }).notNull().references(() => user.id),
 }, (table) => [
   uniqueIndex("community_entity_unique_idx").on(table.type, table.entityId), // 确保1对1
   index("community_entity_idx").on(table.type, table.entityId),
@@ -67,9 +67,9 @@ export const communityRole = pgTable("community_role", {
   permissions: bigint('permissions', { mode: 'bigint' }).default(BigInt(0)).notNull(),
   
   // 角色设置
-  is_mentionable: boolean('is_mentionable').default(true).notNull(),
-  is_hoisted: boolean('is_hoisted').default(false).notNull(), // 是否在成员列表中单独显示
-  is_managed: boolean('is_managed').default(false).notNull(), // 是否由系统管理（如bot角色）
+  isMentionable: boolean('is_mentionable').default(true).notNull(),
+  isHoisted: boolean('is_hoisted').default(false).notNull(), // 是否在成员列表中单独显示
+  isManaged: boolean('is_managed').default(false).notNull(), // 是否由系统管理（如bot角色）
 }, (table) => [
   index("community_role_community_idx").on(table.communityId),
   index("community_role_position_idx").on(table.communityId, table.position),
@@ -99,8 +99,8 @@ export const channel = pgTable("channel", {
   }>>().default([]).notNull(),
   
   // 频道设置
-  is_nsfw: boolean('is_nsfw').default(false).notNull(),
-  rate_limit_per_user: integer('rate_limit_per_user').default(0).notNull(), // 慢速模式，秒数
+  isNsfw: boolean('is_nsfw').default(false).notNull(),
+  rateLimitPerUser: integer('rate_limit_per_user').default(0).notNull(), // 慢速模式，秒数
 }, (table) => [
   index("channel_community_idx").on(table.communityId),
   index("channel_parent_idx").on(table.parentId),
@@ -114,16 +114,16 @@ export const channelMessage = pgTable("channel_message", {
   userId: varchar('user_id', { length: 255 }).notNull().references(() => user.id, { onDelete: 'cascade' }),
   
   content: text('content'),
-  content_type: varchar('content_type', { length: 20 }).default('text').notNull(),
+  contentType: varchar('content_type', { length: 20 }).default('text').notNull(),
   
   // 消息关联
-  reply_to_id: uuid('reply_to_id').references(() => channelMessage.id),
+  replyToId: uuid('reply_to_id').references(() => channelMessage.id),
   threadId: uuid('thread_id').references(() => channelMessage.id),
   
   // 消息状态
-  is_edited: boolean('is_edited').default(false).notNull(),
-  is_deleted: boolean('is_deleted').default(false).notNull(),
-  is_pinned: boolean('is_pinned').default(false).notNull(),
+  isEdited: boolean('is_edited').default(false).notNull(),
+  isDeleted: boolean('is_deleted').default(false).notNull(),
+  isPinned: boolean('is_pinned').default(false).notNull(),
   
   // 消息数据
   attachments: jsonb('attachments').$type<Array<{

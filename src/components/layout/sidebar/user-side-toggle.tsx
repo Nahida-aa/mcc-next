@@ -41,8 +41,8 @@ export function UserSidebarToggle({
 ) {
   const { toggleSidebar } = useSidebar();
   // 如果没有登录则 `https://avatar.vercel.sh/Guest`, 如果登录了 但是没有 image 但有 email 则显示 `https://avatar.vercel.sh/${user?.email}`, 如果没有 email 则显示 `https://avatar.vercel.sh/${user?.name}`
-  const img_src = user?.image ?? `https://avatar.vercel.sh/Guest`
-  // const img_src_d = `https://raw.githubusercontent.com/Nahida-aa/avatar/refs/heads/main/star-80-d.webp`
+  const imgSrc = user?.image ?? `https://avatar.vercel.sh/Guest`
+  // const imgSrc_d = `https://raw.githubusercontent.com/Nahida-aa/avatar/refs/heads/main/star-80-d.webp`
 
   const imageLoader = ({ src, width, quality }: { src: string; width: number; quality?: number }) => {
     // return `https://example.com/${src}?w=${width}&q=${quality || 75}`
@@ -54,12 +54,12 @@ export function UserSidebarToggle({
 
   // useEffect(() => {
   //   const img = new Image();
-  //   img.src = img_src_d;
+  //   img.src = imgSrc_d;
   //   img.onload = () => {
   //     setImageLoaded(true);
-  //     setCachedImage(img_src_d);
+  //     setCachedImage(imgSrc_d);
   //   };
-  // }, [img_src_d]);
+  // }, [imgSrc_d]);
   
   return (
     <HoverCard>
@@ -72,7 +72,7 @@ export function UserSidebarToggle({
       >
         <NextImage
           // loader={imageLoader}
-          src={img_src}
+          src={imgSrc}
           alt={user?.email ?? 'User Avatar'}
           width={32}
           height={32}
@@ -89,14 +89,14 @@ export function UserSidebarToggle({
     <HoverCardContent className="w-60">
         <div className="flex flex-col">
           <Avatar className='size-20'>
-            <AvatarImage src={img_src} className='size-20'/>
+            <AvatarImage src={imgSrc} className='size-20'/>
             <AvatarFallback>
               <Skeleton className="size-20 rounded-full" />
             </AvatarFallback>
           </Avatar>
           {/* {imageLoaded && cachedImage ? (
           <img
-            src={img_src_d}
+            src={imgSrc_d}
             alt={user?.name || 'User'}
             width={80}
             height={80}
