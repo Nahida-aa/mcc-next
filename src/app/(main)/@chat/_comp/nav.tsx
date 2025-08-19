@@ -8,6 +8,7 @@ import { Home, Users, Settings, Coffee, MessageSquare, Building, LayoutDashboard
 import { useAuthSession } from "@/components/providers/auth-provider"
 import { User } from "@/components/aa/User"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { NewButton } from "./new"
 
 export const ChatNav = ({children,
 }:{
@@ -116,6 +117,11 @@ export const ChatNav = ({children,
           {/* 右侧导航按钮 - 响应式网格 */}
           <div className="justify-self-end col-span-1 lg:col-span-1">
             <div className="flex items-center">
+              <NewButton />
+              <Separator 
+                  orientation="vertical" 
+                  className=" h-6 hidden sm:block" 
+                />
               {topNavItems.map((item, index) => (
                 <div key={item.path} className="flex items-center justify-center">
                   <NavButton 

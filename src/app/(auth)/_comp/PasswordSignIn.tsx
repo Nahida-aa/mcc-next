@@ -6,9 +6,11 @@ import { Eye, EyeOff, LockKeyhole,
 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { signIn } from "@/lib/auth-client";
+import { authClient, signIn } from "@/lib/auth-client";
 import Link from "next/link";
-import { set } from "nprogress";
+import { useAuthSession } from "@/components/providers/auth-provider";
+import { auth } from "@/lib/auth";
+import { toast } from "sonner";
 
 export const PasswordSignIn = () => {
   const [phoneNumberOrEmail, setPhoneNumberOrEmail] = useState("")
@@ -19,6 +21,8 @@ export const PasswordSignIn = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams?.get('callbackUrl') || '/';
+  const { data: session, status, update } = useAuthSession()
+  // console.log("callbackUrl:", callbackUrl)
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,11 +51,12 @@ export const PasswordSignIn = () => {
       // 根据 Zod 验证结果确定的类型调用不同的登录方法
       if (validationResult.inputType === 'email') {
         // 邮箱登录
-        await signIn.email(
+        const res =  await signIn.email(
           {
             email: phoneNumberOrEmail,
             password,
-            rememberMe: true
+            rememberMe: true,
+            // callbackURL: callbackUrl
           },
           {
             onRequest: () => {
@@ -62,6 +67,7 @@ export const PasswordSignIn = () => {
             },
             onSuccess: () => {
               console.log("邮箱登录成功");
+              update() // 更新会话状态
               router.push(callbackUrl);
             },
             onError: (ctx) => {
@@ -76,7 +82,7 @@ export const PasswordSignIn = () => {
           {
             phoneNumber: `+86${phoneNumberOrEmail}`,
             password,
-            rememberMe: true
+            rememberMe: true,
           },
           {
             onRequest: () => {
@@ -101,6 +107,7 @@ export const PasswordSignIn = () => {
       
     } catch (error) {
       console.error("登录失败:", error);
+      toast.error("登录失败: " + (error instanceof Error ? error.message : "未知错误"));
     } finally {
       setLoading(false);
     }

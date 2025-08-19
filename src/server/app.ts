@@ -7,6 +7,10 @@ import openapi from '@/server/apps/openapi/router'
 import follow from '@/server/apps/follow/router'
 import friend from '@/server/apps/friend/router'
 import notification from '@/server/apps/notification/router'
+import project from '@/server/apps/project/router/index'
+import project_member from '@/server/apps/project/router/member'
+import projectVersion from '@/server/apps/project/router/version'
+import upload from '@/server/apps/upload/router'
 // import users from '@/server/routes/users/route'
 // // import users_get from '@/server/routes/users/get'
 // import user from '@/server/routes/user/route'
@@ -15,18 +19,21 @@ import notification from '@/server/apps/notification/router'
 // import friend from '@/server/routes/friend/route'
 // import chats from '@/server/routes/chats/route'
 // import project from '@/server/routes/project/route'
-// import upload from '@/server/routes/upload/route'
 
 import configOpenAPI from "@/server/apps/openapi/confOpenapi";
 
 const app = createApp()
 
-const routes = [
+const routers = [
   auth,
   openapi,
   follow,
   friend,
   notification,
+  project,
+  project_member,
+  projectVersion,
+  upload,
   // users,
   // users_get,
   // user,
@@ -34,18 +41,16 @@ const routes = [
   // follow,
   // friend,
   // chats,
-  // project,
-  // upload,
   // admin,
 ] as const;
 
 configOpenAPI(app)
 
-routes.forEach(route => {
-  app.route("/", route)
+routers.forEach(router => {
+  app.route("/", router)
 })
 
 export default app // for Cloudflare Workers or Bun
 
-export type AppType = typeof routes[number];
+export type AppType = typeof routers[number];
 // export type AppTypes = typeof _app;

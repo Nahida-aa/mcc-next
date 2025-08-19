@@ -10,7 +10,7 @@ export const useMsgQuery = (apiUrl: string) => {
     // if (previousPageData && !previousPageData.items.length) return null; // 没有更多数据
     if (previousPageData) {
       if (!previousPageData.next_cursor) return null; // 没有更多数据
-      const { id, created_at } = previousPageData.next_cursor
+      const { id, createdAt } = previousPageData.next_cursor
       return `${apiUrl}?limit=10&cursor_id=${id}&cursor_created_at=${created_at}`
     }
     // 在首页时，没有 `previousPageData`

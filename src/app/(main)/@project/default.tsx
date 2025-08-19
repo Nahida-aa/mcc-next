@@ -1,5 +1,5 @@
 import { querySchema } from "../page";
-import { Client } from "./client";
+import { ProjectUI } from "../_comp/ProjectUI";
 
 export default async function ProjectListPageUI({
   searchParams,
@@ -27,6 +27,6 @@ export default async function ProjectListPageUI({
   const type = 'mod'
 
   return <>
-    <Client type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} />
+    <ProjectUI type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} />
   </>
 }

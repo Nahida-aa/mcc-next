@@ -6,6 +6,7 @@ import { ConfirmModal } from '@/components/modals/ConfirmModal'
 import { AlertModal } from '@/components/modals/AlertModal'
 import { PromptModal } from '@/components/modals/PromptModal'
 import { LoadingModal } from '@/components/modals/LoadingModal'
+import { CreateProjectModal } from '@/components/modals/CreateProjectModal'
 
 export function GlobalModalRenderer() {
   const { isOpen, type, data, closeModal } = useModal()
@@ -71,6 +72,16 @@ export function GlobalModalRenderer() {
           isOpen={isOpen}
           text={data.loadingText}
           progress={data.progress}
+        />
+      )
+    
+    case 'createProject':
+      return (
+        <CreateProjectModal
+          open={isOpen}
+          onOpenChange={(open) => {
+            if (!open) closeModal()
+          }}
         />
       )
     

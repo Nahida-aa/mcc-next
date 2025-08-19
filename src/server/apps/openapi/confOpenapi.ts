@@ -9,7 +9,7 @@ export default async function configOpenAPI(app: AppOpenAPI) {
     info: {
       title: 'Hono API',
       version: packageJson.version,
-      description: `- [swagger-ui](/api/hono/doc/swagger)\n- [scalar-ui](/api/hono/doc/scalar)\n- [index](/)
+      description: `- [swagger-ui](/api/doc/swagger)\n- [scalar-ui](/api/doc/scalar)\n- [index](/)
       `,
     },
     servers: [

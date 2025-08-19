@@ -1,5 +1,5 @@
-import { db } from "@/db";
-import { follow, friend, user, notification } from "@/db/schema";
+import { db } from "@/server/db";
+import { follow, friend, user, notification } from "@/server/db/schema";
 import { eq, and, or } from "drizzle-orm";
 import { 
   createFollowNotification,

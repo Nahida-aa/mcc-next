@@ -1,11 +1,15 @@
 // "use client";
 
 import { Main } from "./_comp/Main"
-import { Test } from "../test/Test"
+import { Test } from "../demo/Test"
+import { ListIsExpandContextProvider } from "./@project/[type]/_comp/ListWithSearchContext"
+import { LayoutExpandToggle } from "./_comp/LayoutExpandToggle"
 
 
 export default async function Layout({
-  children, project, chat
+  children, 
+  project, 
+  chat
 }: {
   children: React.ReactNode, 
   project: React.ReactNode, 
@@ -13,8 +17,12 @@ export default async function Layout({
 }) {
 
   return <>
-    {/* {children} */}
-    <Main projectUI={project} chatUI={chat} />
+    {/* <div className="relative h-screen w-full"> */}
+      {/* 全局展开/收起按钮 - 最外层 */}
+      <LayoutExpandToggle />
+      {/* {children} */}
+      <Main projectUI={project} chatUI={chat} />
+    {/* </div> */}
   </>
     // <SidebarProvider defaultOpen={!isCollapsed} className='h-screen SidebarProvider  '> 
     // {/* 模糊背景 */}

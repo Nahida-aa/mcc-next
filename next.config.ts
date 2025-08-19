@@ -16,7 +16,10 @@ const nextConfig: NextConfig = {
 		  },
       {
 			  hostname: 'utfs.io',
+		  },      {
+			  hostname: 'cdn.modrinth.com',
 		  },
+
 		],
 	},
   async rewrites() {

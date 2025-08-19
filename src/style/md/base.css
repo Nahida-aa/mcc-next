@@ -1,0 +1,235 @@
+/* .markdown-body {
+
+  p>a:has(img){
+    text-decoration: none; 
+    border-bottom: none; 
+    @apply hover:bg-transparent hover:shadow-none;
+  }
+  p>img,
+  p>a>img{
+    @apply inline-block;
+  }
+  .heading-element {
+    position: relative;
+  }
+  .heading-element:hover .anchor,
+  .anchor:hover {
+    opacity: 1;
+  }
+  .anchor  {
+    text-decoration: none !important;
+    @apply absolute !no-underline hover:shadow-none 
+    hover:bg-transparent 
+    hover:text-[#f472b6]
+    ;
+    top: 50%;
+    margin-left: -20px;
+    padding-right: 10px;
+    cursor: pointer;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease; 
+    font-size: 1.25em; 
+    color: #f472b6; 
+  }
+  *:hover>.anchor a {
+    @apply visible ;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    @apply font-semibold mt-6 mb-4 leading-[1.25];
+    color: #fdfdfd;
+    text-shadow: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975, 0 0 8px #03edf975;
+    mark{
+      color: inherit;
+    }
+  }
+  table {
+    @apply my-4 
+    ;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border-collapse: collapse;
+    thead {
+      @apply border-y-1 border-border;
+    }
+    tbody {
+      @apply border-b-1;
+      th {
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        text-align: left;
+      }
+      td {
+        padding: 0.5rem 1rem;
+      }
+    }
+  };
+}
+.dark {
+  .markdown-body {
+    .anchor  {
+      text-decoration: none !important;
+      @apply absolute !no-underline hover:shadow-none 
+      hover:bg-transparent 
+      hover:text-[#fbcfe8]
+      ;
+      top: 50%;
+      margin-left: -20px;
+      padding-right: 10px;
+      cursor: pointer;
+      transform: translateY(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-size: 1.25em; 
+      color: #fbcfe8; 
+    }
+    a {
+      text-decoration: none;
+      border-bottom: 1px solid #fbcfe8;
+      @apply text-pink-200 border-b-pink-300 shadow-[0_0_0_0.2rem_text-transparent] hover:text-zinc-900 hover:bg-pink-200 rounded-[1px] hover:shadow-[0_0_0_0.2rem_#fbcfe8] hover:border-b-pink-200;
+    }
+    p>a:has(img){
+      text-decoration: none;
+      border-bottom: none; 
+      @apply hover:bg-transparent hover:shadow-none;
+    }
+    p>img,
+    p>a>img{
+      @apply inline-block;
+    }
+    h1,h2,h3,h4,h5,h6 {
+      @apply font-semibold mt-6 mb-4 leading-[1.25];
+
+      color: #f4eee4;
+      text-shadow: 0 0 2px #393a33, 0 0 8px #f1c91475, 0 0 2px #f3cf0575;
+      mark{
+        color: inherit;
+      }
+    }
+    pre foreignObject p:is(.dark *) {
+      color: rgb(38 38 38 / var(--tw-text-opacity, 1));
+    }
+    .mermaid-wrapper foreignObject div> span.edgeLabel p:is(.dark *) {
+      fill: rgb(204, 204, 204);
+      background: #CCC !important;
+    }
+  }
+} */
+
+.markdown-body {
+  h1 {
+    @apply scroll-m-20  text-4xl font-extrabold tracking-tight text-balance mb-4;
+  }
+  h2 {
+    @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0;
+  }
+  h3 {
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight mb-4;
+  }
+  h4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight mb-4;
+  }
+  p {
+    @apply leading-7 mb-4 ;
+  }
+  a {
+    text-decoration: none;
+    /* border-bottom: 1px solid #fbcfe8; */
+    @apply mb-4
+    text-blue-400 border-b-blue-500 shadow-[0_0_0_0.2rem_text-transparent] hover:text-zinc-900 hover:bg-blue-200 rounded-[1px]  hover:border-b-blue-200;
+  }
+  img {
+    @apply mb-4;
+
+  }
+  hr {
+    @apply my-6
+  }
+}
+.markdown-body>*:last-child  {
+  margin-bottom: 0;
+}
+.markdown-body {
+  counter-reset: h2-counter h3-counter h4-counter h5-counter h6-counter;
+  counter-reset: h2-section h3-section h4-section h5-section h6-section;
+}
+
+.markdown-body h2 {
+  counter-increment: h2-counter;
+  counter-reset: h3-counter h4-counter h5-counter h6-counter; 
+  counter-set: h3-counter h4-counter h5-counter h6-counter; 
+}
+
+.markdown-body h2 .heading-text::before {
+  content: counter(h2-counter) " ";
+  @apply font-semibold;
+}
+
+.markdown-body h3 {
+  counter-increment: h3-counter; 
+  counter-reset: h4-counter h5-counter h6-counter;
+}
+
+.markdown-body h3 .heading-text::before {
+  content: counter(h2-counter) "." counter(h3-counter) " ";
+  @apply font-semibold;
+}
+
+.markdown-body h4 {
+  counter-increment: h4-counter;
+  counter-reset: h5-counter h6-counter;
+}
+
+.markdown-body h4 .heading-text::before {
+  content: counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) " ";
+  @apply font-semibold;
+}
+
+.markdown-body h5 {
+  counter-increment: h5-counter;
+  counter-reset: h6-counter;
+}
+
+.markdown-body h5 .heading-text::before {
+  content: counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) "." counter(h5-counter) " ";
+  @apply font-semibold;
+}
+
+.markdown-body h6 {
+  counter-increment: h6-counter;
+}
+
+.markdown-body h6 .heading-text::before {
+  content: counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) "." counter(h5-counter) "." counter(h6-counter) " ";
+  @apply font-semibold;
+}
+
+
+
+.markdown-body ul {
+@apply list-disc pl-6;
+}
+
+.markdown-body ol {
+@apply list-decimal pl-6;
+}
+.markdown-body {
+  .MathJax svg,
+  svg.lucide {
+    @apply inline-block;
+  }
+  svg[aria-roledescription="flowchart-v2"] {
+    @apply block mx-auto;
+  }
+  .node rect,
+  g .default {
+    @apply fill-[#ECECFF] dark:!fill-[rgb(51,51,51)];
+  }
+  .edgeLabel p {
+    @apply bg-[rgba(232,232,232,0.8)] dark:!bg-[rgba(51,51,51,0.8)];
+  }
+  caption {
+    @apply block;
+  }
+}

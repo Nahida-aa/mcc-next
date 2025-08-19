@@ -11,7 +11,7 @@ export const messageObjectSchema = (exampleMessage: string = "Hello World") => {
 };
 
 
-import type { ZodSchema } from "../helpers/types.ts";
+import type { ZodSchema } from "../helpers/types.js";
 
 export const validationErrorSchema = <
   T extends ZodSchema,

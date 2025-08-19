@@ -8,7 +8,7 @@ import {
   listFollowers, 
   getUserRelationship 
 } from "@/server/apps/follow/func";
-import { authMiddleware } from "@/server/apps/auth/middleware";
+import { requiredAuthMiddleware } from "@/server/apps/auth/middleware";
 import { messageObjectSchema, validationErrorSchema } from "@/server/apps/openapi/schemas/res";
 
 const followSchema = z.object({
@@ -16,7 +16,7 @@ const followSchema = z.object({
 });
 
 const app = createSubApp();
-app.use(authMiddleware)
+app.use(requiredAuthMiddleware)
 
 // 关注用户
 const followResSchema = z.object({
@@ -26,7 +26,7 @@ const followResSchema = z.object({
 })
 app.openapi(createRoute({
   tags: ['follow'], method: "post", path: "/follow", description: "Follow a user",
-  // middleware: [authMiddleware] as const,
+  // middleware: [requiredAuthMiddleware] as const,
   // request: {
   //   body: jsonContent(followSchema,"Request body for following a user"),
   // },

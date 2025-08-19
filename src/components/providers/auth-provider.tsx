@@ -1,71 +1,59 @@
 'use client'
-import { AuthSession } from "@/lib/auth"
-// import { AuthSession } from "@/app/(auth)/auth"
-import { createContext, useContext, useEffect, useMemo, useState } from "react"
 
-export type UpdateSession = (data?: any) => Promise<AuthSession | null | undefined>
-type AuthContextType = {
+import { authClient } from "@/lib/auth-client"
+import { createContext, ReactNode, useContext, useMemo } from "react"
+
+export type AuthSession = typeof authClient.$Infer.Session
+
+export type AuthContextValue = {
   data: AuthSession | null | undefined
-  update: UpdateSession
-  status: string //'loading' | 'authenticated' | 'unauthenticated'
+  status: "loading" | "authenticated" | "unauthenticated"
+  update: (data?: any) => Promise<AuthSession | null | undefined>
 }
 
-const AuthContext = createContext<AuthContextType>({
+const AuthContext = createContext<AuthContextValue>({
   data: null,
+  status: 'loading',
   update: async () => null,
-  status: 'loading'
 })
 
 export const useAuthSession = () => {
-  return useContext(AuthContext)
+  const context = useContext(AuthContext)
+  if (!context) {
+    throw new Error('useAuthSession must be used within an AuthSessionProvider')
+  }
+  return context
 }
 
-interface AuthSessionProviderProps {
-  children: React.ReactNode
+type AuthSessionProviderProps = {
+  children: ReactNode
   session?: AuthSession | null
 }
+
 export const AuthSessionProvider = (props: AuthSessionProviderProps) => {
   const { children } = props
 
-  // If session was `null`, there was an attempt to fetch it,
-  // but it failed, but we still treat it as a valid initial value.
-  // 翻译: 如果会话为 `null`，则尝试获取它，但(即使)失败了，但我们仍将其视为有效的初始值。
-  const hasInitialSession = props.session !== undefined
+  // 从 authClient 获取最新的会话状态
+  const { data: authSession, isPending } = authClient.useSession()
 
-  const [session, setSession] = useState(() => {
-    return props.session
-  })
-  // If session was passed, initialize as not loading 
-  // 翻译: 如果会话被传递，初始化为不加载
-  const [loading, setLoading] = useState(!hasInitialSession)
-
-
-  useEffect(() => {
-    return () => {
-    }
-  }, [])
+  // 优先使用 authClient 的数据，如果还在加载则使用初始 session
+  const currentSession = isPending ? props.session : authSession
 
   const value = useMemo(
     () => ({
-      data: session,
-      status: loading
+      data: currentSession,
+      status: (isPending
         ? "loading"
-        : session
+        : currentSession
           ? "authenticated"
-          : "unauthenticated",
-      async update(data: any) {
-        if (loading) return
-        setLoading(true)
-        // const newSession = await 
-        const newSession = session
-        setLoading(false)
-        if (newSession) {
-          setSession(newSession)
-        }
-        return newSession
+          : "unauthenticated") as "loading" | "authenticated" | "unauthenticated",
+      update: async (data?: any) => {
+        // update 函数主要用于触发重新渲染
+        // authClient.useSession() 会自动处理会话刷新
+        return currentSession
       },
     }),
-    [session, loading]
+    [currentSession, isPending]
   )
 
   return (

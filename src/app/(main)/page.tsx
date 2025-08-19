@@ -1,8 +1,9 @@
 // import { HomeHeader } from '@/components/layout/header/home-header'
 import React, { Suspense } from 'react'
 import { z } from 'zod';
-import Main from './[type]/_comp/main';
+import Main from './@project/[type]/_comp/main';
 import { LoadingS } from '@/components/common/Loading';
+import { ProjectUI } from './_comp/ProjectUI';
 // import { server_auth } from '../../(auth)/auth';
 // import { cookies } from 'next/headers';
 // import Link from 'next/link'; // 对 next 内的 router 的跳转
@@ -42,9 +43,11 @@ export default async function Page( {
   console.log("parsedQuery: ", parsedQuery)
   const type = 'mod'
   // const session = await server_auth();
-  return <Suspense fallback={<LoadingS />}>
-    {/* <Main type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} /> */}
-  </Suspense>
+  // return <Suspense fallback={<LoadingS />}>
+  //   {/* <ProjectUI type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} /> */}
+  //   {/* <Main type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} /> */}
+  // </Suspense>
+  return null
 
   // return <>
   //   <main className=''>

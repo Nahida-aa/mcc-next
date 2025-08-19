@@ -8,9 +8,25 @@
 import {Tabs, Tab} from "@heroui/react";
 import { PasswordSignIn } from "./PasswordSignIn"
 import { PhoneNumberOTPSignIn } from "./PhoneNumberOTPSignIn"
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useAuthSession } from "@/components/providers/auth-provider";
+import { useRouter } from "next/navigation";
 
 export function SignIn() {
+  const { data: session, status, update } = useAuthSession()
+  const router = useRouter()
+  
+  // 使用 useEffect 来处理路由跳转，避免在渲染期间执行副作用
+  useEffect(() => {
+    if (session && status === "authenticated") {
+      router.push("/")
+    }
+  }, [session, status, router])
+
+  // 如果用户已经登录，显示加载状态或空内容
+  if (session && status === "authenticated") {
+    return null
+  }
   return (<Suspense >
     <Tabs variant="underlined" className="w-full flex justify-center" color="primary">
         <Tab key="phone" title="验证码登录" className="pb-0">

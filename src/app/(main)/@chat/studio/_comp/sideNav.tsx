@@ -1,7 +1,7 @@
 "use client"
 import { Tab, Tabs } from "@heroui/react"
 import { BarChart3, Bell, Building2, DollarSign, LayoutList, Star, FolderOpen } from "lucide-react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
 
 // 导航项配置 - 统一管理
@@ -62,23 +62,23 @@ interface SideNavProps {
 }
 
 export const SideNav = ({ className = '' }: SideNavProps) => {
-  const pathname = usePathname()
+  // const pathname = usePathname()
+  const router = useRouter()
   
   return (
     <div className={`h-full ${className}`}>
-      {/* 桌面端 - 垂直布局 */}
       <Tabs aria-label="Studio Navigation" 
-        isVertical selectedKey={pathname} variant="light" color="primary"
+        isVertical 
+        // selectedKey={pathname} 
+        variant="light" color="primary"
         classNames={{
           base: "h-full",
         }}
       >
         {sideNavItems.map((item) => {
-          
           return (
-            <Tab 
+            <Tab onClick={() => router.push(item.key)}
               key={item.key}
-              href={item.key}
               title={
                 <div className="flex items-center justify-between w-full min-w-0">
                   <div className="flex items-center gap-3 min-w-0 flex-1">

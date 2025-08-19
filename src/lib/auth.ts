@@ -1,8 +1,8 @@
-import { betterAuth } from "better-auth";
+import { betterAuth} from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/db"; // your drizzle instance
+import { db } from "@/server/db"; // your drizzle instance
 // import { nextCookies } from "better-auth/next-js";
-import * as schema from "@/db/schema"; // Import the schema object
+import * as schema from "@/server/db/schema"; // Import the schema object
 import { admin, anonymous, openAPI, organization, phoneNumber, twoFactor, emailOTP } from "better-auth/plugins"
 import { username } from "better-auth/plugins"
 
@@ -18,6 +18,18 @@ export const auth = betterAuth({
     // },
     schema: schema,
   }),
+  user: {
+    additionalFields: {
+      summary: {
+        type: "string",
+        required: false,
+      },
+      description: {
+        type: "string",
+        required: false,
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true, 
   }, 
@@ -32,6 +44,11 @@ export const auth = betterAuth({
     username({
       minUsernameLength: 1, // 最小用户名长度, default 3
       // maxUsernameLength: 20, // 最大用户名长度, default 30
+      usernameValidator: (username) => { // 允许中文
+        const usernameRegex = /^[\u4e00-\u9fa5a-zA-Z0-9_]+$/; // 中文、字母、数字、下划线
+        return usernameRegex.test(username);
+      },
+      usernameNormalization: false, // 是否规范化用户名（如转换为小写）, default true
     }),
     // add: user.username: unique; user.displayUsername: text
     anonymous(), // user.isAnonymous: boolean
@@ -81,7 +98,24 @@ export const auth = betterAuth({
       }, 
     }),
     admin(),
-    organization(),
+    organization({
+      schema: {
+        organization: {
+          additionalFields: { // better-auth 1.3, @latest
+            summary: {
+              type: "string",
+              input: true,
+              required: false,
+            },
+            description: {
+              type: "string",
+              input: true,
+              required: false,
+            },
+          },
+        }
+      }
+    }),
     openAPI(), // basePath/reference: open-api doc
   ], 
   // socialProviders: {
@@ -105,3 +139,6 @@ export type AuthTypeNotNull = {
     user: typeof auth.$Infer.Session.user
     session: typeof auth.$Infer.Session.session
 }
+
+
+auth.api.getActiveMember

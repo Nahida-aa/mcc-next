@@ -14,14 +14,10 @@ const passwordSchema = z
   .regex(/^(?=.*[A-Za-z])(?=.*\d)/, "密码必须包含字母和数字");
 
 // 手机号或邮箱的联合验证
-const phoneOrEmailSchema = z.union([phoneSchema, emailSchema], {
-  errorMap: (issue, ctx) => {
-    if (issue.code === z.ZodIssueCode.invalid_union) {
-      return { message: "请输入有效的手机号或邮箱地址" }
-    }
-    return { message: ctx.defaultError };
-  },
-});
+const phoneOrEmailSchema = z.union([phoneSchema, emailSchema])
+  .refine((value) => phoneSchema.safeParse(value).success || emailSchema.safeParse(value).success, {
+    message: "请输入有效的手机号或邮箱地址",
+  });
 
 // 登录表单验证
 export const loginSchema = z.object({

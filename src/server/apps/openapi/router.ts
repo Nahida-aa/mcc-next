@@ -2,7 +2,7 @@
 import { createSubApp } from "@/server/createApp";
 import { createRoute, z } from "@hono/zod-openapi"; // available
 import {jsonContent} from "./helpers/json-content";
-import * as httpStatusCodes from "@/server/utils/http-status-codes"; // 
+import * as httpStatusCodes from "@/server/apps/openapi/http-status-codes"; // 
 import { messageObjectSchema } from "./schemas/res";
 
 const subApp = createSubApp();

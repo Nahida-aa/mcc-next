@@ -10,6 +10,7 @@ export type ModalType =
   | 'prompt'
   | 'loading'
   | 'custom'
+  | 'createProject'
 
 // 模态框数据接口
 export interface ModalData {
@@ -41,6 +42,9 @@ export interface ModalData {
   // 自定义模态框
   component?: ReactNode
   props?: Record<string, any>
+  
+  // 创建项目模态框
+  // CreateProjectModal 内部处理具体的创建逻辑，不需要外部 onSubmit
   
   // 样式配置
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
@@ -76,6 +80,7 @@ interface ModalContextType {
   ) => void
   showLoading: (text?: string, progress?: number) => void
   showSignOut: (userName?: string) => void
+  showCreateProject: () => void
 }
 
 // 创建 Context
@@ -177,6 +182,13 @@ export function ModalProvider({ children }: ModalProviderProps) {
     })
   }, [openModal])
 
+  // 显示创建项目模态框
+  const showCreateProject = useCallback(() => {
+    openModal('createProject', {
+      closable: true
+    })
+  }, [openModal])
+
   const value: ModalContextType = {
     isOpen,
     type,
@@ -188,7 +200,8 @@ export function ModalProvider({ children }: ModalProviderProps) {
     showConfirm,
     showPrompt,
     showLoading,
-    showSignOut
+    showSignOut,
+    showCreateProject
   }
 
   return (
@@ -236,4 +249,9 @@ export function useLoading() {
 export function useSignOut() {
   const { showSignOut } = useModal()
   return showSignOut
+}
+
+export function useCreateProject() {
+  const { showCreateProject } = useModal()
+  return showCreateProject
 }

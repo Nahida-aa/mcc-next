@@ -2,7 +2,10 @@
 /* @import './tailwindcss.css'; */
 @import './swagger.css' layer(base);
 @import './mc.css';
+
+
 @plugin './hero.ts';
+
 
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 
@@ -11,6 +14,8 @@
 @theme {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
+  --color-mc: hsl(var(--mc));
+  --color-mc-light: hsl(var(--mc-light));
 
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
@@ -145,7 +150,7 @@
     touch-action: none; /* 禁用触摸滚动 */
   }
 }
-
+/* hsl: H: 色相 S: 饱和度 L: 亮度 */
 @layer base {
   :root {
     --background: 75 59% 93%;  /* 背景色 */
@@ -156,9 +161,13 @@
     --background-4: hsl(286, 27%, 88%);
     --background-5: hsl(65, 25%, 91%);
     --background-6: hsl(75, 59%, 93%);
-
+    --mc: 16 15.79% 81.37%;
+    --mc-v: hsl(16, 15.79%, 81.37%);
+    --mc-light: 15 14.3% 89%; /* mc浅色 */
+    --mc-light-v: hsl(15, 14%, 89%);
     --foreground: 20 14.3% 4.1%; /* 前景色 */
-    --card: 75 59% 93%; /* 卡片背景 */
+    --card: 80 55% 96%; /* 卡片背景 */
+    --card-v: hsl(80, 55%, 96%);
     --card-foreground: 20 14.3% 4.1%;
     --popover: 0 0% 100%; /* 弹出层背景 */
     --popover-foreground: 20 14.3% 4.1%;
@@ -168,8 +177,8 @@
     --primary-foreground-v: hsl(60, 9%, 98%);
     --secondary: 60 4.8% 95.9%; /* 次要色 */
     --secondary-v: hsl(60 4.8% 95.9%);
-    --secondary-foreground: 24 9.8% 10%;
-    --secondary-foreground-v: hsl(24 9.8% 10%);
+    --secondary-foreground: 215 8% 31%;
+    --secondary-foreground-v: hsl(215, 8%, 31%);
     --muted: 60 4.8% 95.9%; /* 静音色（灰色调） */
     --muted-v: hsl(60 4.8% 95.9%);
     --muted-foreground: 25 5.3% 44.7%;
@@ -220,7 +229,8 @@
     --background-4: hsl(240, 28%, 14%);
     --background-5: hsl(248, 21%, 14%);
     --background-6: hsl(267, 83%, 5%);
-
+    --mc: 16 15.79% 81.37%;
+    --mc-light: 15 14.3% 89%; /* mc浅色 */
     --foreground: 60 9.1% 97.8%;
     --card: 240 21% 15%;
     --card-v: hsl(240 21% 15%);
@@ -314,4 +324,17 @@
     /* bg-m */
     text-foreground;
   }
+  h2{
+    @apply text-lg font-extrabold;
+  }
+  h3 {
+    @apply  font-semibold;
+  }
+  a {
+    @apply text-sky-500 hover:underline; 
+    /* 不需要颜色和下划线时: text-inherit no-underline */
+  }
 }
+
+@import './md/base.css';
+/* @import "./md/code.css"; */

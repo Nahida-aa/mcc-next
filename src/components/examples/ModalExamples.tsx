@@ -8,9 +8,10 @@ import {
   useConfirm, 
   usePrompt, 
   useLoading, 
-  useSignOut 
+  useSignOut,
+  useCreateProject
 } from "@/components/providers/modal-provider"
-import { LogOut, AlertTriangle, MessageSquare, Loader2, Info, Trash2 } from "lucide-react"
+import { LogOut, AlertTriangle, MessageSquare, Loader2, Info, Trash2, Plus } from "lucide-react"
 
 export function ModalExamples() {
   const modal = useModal()
@@ -19,6 +20,7 @@ export function ModalExamples() {
   const showPrompt = usePrompt()
   const { showLoading, hideLoading, updateProgress } = useLoading()
   const showSignOut = useSignOut()
+  const showCreateProject = useCreateProject()
 
   // 模拟异步操作
   const simulateAsyncOperation = async () => {
@@ -76,6 +78,16 @@ export function ModalExamples() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {/* 创建项目模态框 */}
+          <Button
+            variant="default"
+            onClick={() => showCreateProject()}
+            className="flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            创建项目
+          </Button>
+          
           {/* 警告模态框 */}
           <Button
             variant="outline"
@@ -177,6 +189,7 @@ export function ModalExamples() {
             <li>• 调用对应的方法显示模态框</li>
             <li>• 支持异步操作和错误处理</li>
             <li>• 自动管理打开/关闭状态</li>
+            <li>• 复杂表单用自定义模态框组件</li>
           </ul>
         </div>
       </CardContent>

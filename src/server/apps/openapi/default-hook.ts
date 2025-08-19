@@ -1,5 +1,5 @@
 import type { Hook } from "@hono/zod-openapi";
-import { UNPROCESSABLE_ENTITY } from "@/server/utils/http-status-codes";
+import { UNPROCESSABLE_ENTITY } from "@/server/apps/openapi/http-status-codes";
 
 
 const defaultHook: Hook<any, any, any, any> = (result, c) => {

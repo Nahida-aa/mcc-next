@@ -24,7 +24,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 
 export default function StudioPage() {
   const router = useRouter()
-  const { data: session, status } = useAuthSession()
+  const { data: session, status, update } = useAuthSession()
 
   if (!session) {
     return (

@@ -1,7 +1,7 @@
 // import { HomeHeader } from '@/components/layout/header/home-header'
 import React, { Suspense } from 'react'
 import { z } from 'zod';
-import Main from './[type]/_comp/main';
+import Main from './@project/[type]/_comp/main';
 import { LoadingS } from '@/components/common/Loading';
 // import { server_auth } from '../../(auth)/auth';
 // import { cookies } from 'next/headers';
@@ -42,7 +42,8 @@ export default async function Page( {
   console.log("parsedQuery: ", parsedQuery)
   const type = 'mod'
   // const session = await server_auth();
-  return <Suspense fallback={<LoadingS />}>
-    {/* <Main type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} /> */}
-  </Suspense>
+  // return <Suspense fallback={<LoadingS />}>
+  //   <Client type={type} game_versions={parsedQuery.versions} is_open_source={parsedQuery.is_open} {...parsedQuery} />
+  // </Suspense>
+  return null
 }

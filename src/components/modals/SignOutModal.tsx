@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { LogOut, AlertTriangle, Loader2, Info } from "lucide-react"
+import { useAuthSession } from "../providers/auth-provider"
 
 interface SignOutModalProps {
   isOpen: boolean
@@ -27,6 +28,7 @@ export function SignOutModal({ isOpen, onClose, userName }: SignOutModalProps) {
   const [clearData, setClearData] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const { data: session, status, update } = useAuthSession()
 
   const handleSignOut = async () => {
     try {
@@ -49,6 +51,7 @@ export function SignOutModal({ isOpen, onClose, userName }: SignOutModalProps) {
       await signOut({
         fetchOptions: {
           onSuccess: () => {
+            update()
             router.push("/")
             // 关闭模态框
             onClose()

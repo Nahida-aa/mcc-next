@@ -15,6 +15,8 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { auth } from "@/lib/auth";
 import { headers } from 'next/headers'
 import { server_auth } from "./(auth)/auth";
+import { ListIsExpandContextProvider } from "./(main)/@project/[type]/_comp/ListWithSearchContext";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -42,6 +44,14 @@ export default async function RootLayout({
   const session = await server_auth();
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          rel="icon"
+          href="/world.png"
+          type="image/png"
+          sizes="1024x1024"
+        />
+      </head>
       <body
         className={` antialiased`}
       >
@@ -54,18 +64,21 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <StyleContextProvider>
-          <UIProviders>
-          <AuthSessionProvider session={session}>
-        <AppLayout>
-            <SocketProvider>
-              <ProgressBar />
-              {children}
-            </SocketProvider>
-        </AppLayout>
-
-          </AuthSessionProvider>
-          </UIProviders>
-          <DebugPanel />
+            <ListIsExpandContextProvider>
+              <UIProviders>
+                <TooltipProvider>
+                  <AuthSessionProvider session={session}>
+                    <AppLayout>
+                        <SocketProvider>
+                          <ProgressBar />
+                          {children}
+                        </SocketProvider>
+                    </AppLayout>
+                  </AuthSessionProvider>
+                </TooltipProvider>
+              </UIProviders>
+              <DebugPanel />
+            </ListIsExpandContextProvider>
           </StyleContextProvider>
           <Toaster position="top-right" richColors   />
         </ThemeProvider>

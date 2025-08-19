@@ -27,7 +27,7 @@ import {
   Trash2,
   FolderOpen
 } from "lucide-react"
-import { ProjectListItem } from "@/lib/types/project"
+import { ProjectListItem } from "@/server/apps/project/type"
 import NextImage from 'next/image'
 
 export default function StudioProjectsPage() {
@@ -37,11 +37,8 @@ export default function StudioProjectsPage() {
   const [activeTab, setActiveTab] = useState("all")
 
   if (!session) {
-    return (
-      <CardContent className="h-full flex flex-col justify-center items-center space-y-4">
-        <NotLogin />
-      </CardContent>
-    )
+    router.push("/sign_in?callbackUrl=/studio/projects")
+    return 
   }
 
   // 模拟项目数据
@@ -69,8 +66,8 @@ export default function StudioProjectsPage() {
       },
       download_count: 45670,
       follow_count: 1200,
-      created_at: "2023-12-01T00:00:00Z",
-      updated_at: "2024-01-15T00:00:00Z",
+      createdAt: "2023-12-01T00:00:00Z",
+      updatedAt: "2024-01-15T00:00:00Z",
       published_at: "2023-12-05T00:00:00Z",
       latest_version_number: "HD U I5",
       latest_version_id: "v1"
@@ -98,8 +95,8 @@ export default function StudioProjectsPage() {
       },
       download_count: 0,
       follow_count: 45,
-      created_at: "2024-01-10T00:00:00Z",
-      updated_at: "2024-01-15T00:00:00Z",
+      createdAt: "2024-01-10T00:00:00Z",
+      updatedAt: "2024-01-15T00:00:00Z",
       latest_version_number: "1.0.0-beta",
       latest_version_id: "v2"
     },
@@ -126,8 +123,8 @@ export default function StudioProjectsPage() {
       },
       download_count: 123456,
       follow_count: 2300,
-      created_at: "2023-06-01T00:00:00Z",
-      updated_at: "2024-01-10T00:00:00Z",
+      createdAt: "2023-06-01T00:00:00Z",
+      updatedAt: "2024-01-10T00:00:00Z",
       published_at: "2023-06-15T00:00:00Z",
       latest_version_number: "15.2.0.27",
       latest_version_id: "v3"
@@ -245,7 +242,7 @@ export default function StudioProjectsPage() {
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" />
-                  {new Date(project.updated_at).toLocaleDateString()}
+                  {new Date(project.updatedAt).toLocaleDateString()}
                 </div>
               </div>
             </div>

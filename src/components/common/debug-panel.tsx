@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { ModeToggleGradientIcon } from "./theme-toggle"
 import { useStyle } from "../context/styleContext"
 import { Switch } from "../ui/switch"
+import { useAuthSession } from "../providers/auth-provider"
 
 type Position = "top-left" | "top-right" | "bottom-left" | "bottom-right"
 
@@ -16,7 +17,31 @@ export function DebugPanel() {
   const [position, setPosition] = useState<Position>("bottom-right")
   const [mounted, setMounted] = useState(false)
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
+  const [authStatusHistory, setAuthStatusHistory] = useState<string[]>([])
+  const [currentTime, setCurrentTime] = useState(new Date())
   const { styleState, setStyleState } = useStyle();
+  const { data: session, status, update } = useAuthSession()
+  
+  // 实时时钟
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+    
+    return () => clearInterval(timer)
+  }, [])
+  
+  // 监听 auth 状态变化
+  useEffect(() => {
+    if (mounted && status) {
+      setAuthStatusHistory(prev => {
+        const newHistory = [...prev, `${new Date().toLocaleTimeString()}: ${status}`]
+        // 只保留最近的5条记录
+        return newHistory.slice(-5)
+      })
+    }
+  }, [status, mounted])
+
   const toggleBorder = () => {
     setStyleState(prevState => ({
       ...prevState,
@@ -171,6 +196,20 @@ export function DebugPanel() {
                     {windowSize.width}x{windowSize.height}
                   </span>
                 </div>
+
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">时间:</span>
+                  <span className="font-mono">
+                    {currentTime.toLocaleTimeString()}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">挂载状态:</span>
+                  <Badge variant={mounted ? "default" : "secondary"} className="text-xs">
+                    {mounted ? "已挂载" : "未挂载"}
+                  </Badge>
+                </div>
               </div>
             </div>
 
@@ -193,6 +232,74 @@ export function DebugPanel() {
                   checked={styleState.border}
                   onCheckedChange={toggleBorder}
                 />
+              </div>
+            </div>
+            {/* auth 状态 */}
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-2 block">auth</label>
+              <div className="space-y-2 text-xs">
+                {/* 当前状态 */}
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">当前状态:</span>
+                  <Badge 
+                    variant={
+                      status === "authenticated" ? "default" : 
+                      status === "loading" ? "secondary" : "outline"
+                    } 
+                    className={`text-xs ${
+                      status === "loading" ? "animate-pulse" : ""
+                    }`}
+                  >
+                    {status === "authenticated" ? "已认证" :
+                     status === "loading" ? "加载中..." :
+                     status === "unauthenticated" ? "未认证" : status}
+                  </Badge>
+                </div>
+
+                {/* 用户信息 */}
+                {session && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">用户:</span>
+                    <span className="truncate max-w-32" title={session.user?.name || session.user?.email}>
+                      {session.user?.name || session.user?.email || "未知"}
+                    </span>
+                  </div>
+                )}
+
+                {/* 状态历史 */}
+                {authStatusHistory.length > 0 && (
+                  <div className="border-t pt-2">
+                    <div className="text-muted-foreground mb-1">状态历史:</div>
+                    <div className="space-y-1 max-h-20 overflow-y-auto">
+                      {authStatusHistory.map((historyItem, index) => (
+                        <div key={index} className="text-xs text-muted-foreground font-mono">
+                          {historyItem}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 操作按钮 */}
+                <div className="flex gap-2 pt-1">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => update()} 
+                    className="text-xs h-7 flex-1"
+                    disabled={status === "loading"}
+                  >
+                    {status === "loading" ? "更新中..." : "刷新会话"}
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => setAuthStatusHistory([])} 
+                    className="text-xs h-7"
+                  >
+                    清空历史
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>

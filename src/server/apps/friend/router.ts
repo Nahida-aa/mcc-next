@@ -6,7 +6,7 @@ import {
   removeFriend, 
   listFriends,
 } from "@/server/apps/friend/func";
-import { authMiddleware } from "@/server/apps/auth/middleware";
+import { requiredAuthMiddleware } from "@/server/apps/auth/middleware";
 import { messageObjectSchema, validationErrorSchema } from "@/server/apps/openapi/schemas/res";
 
 
@@ -15,7 +15,7 @@ const friendIdSchema = z.object({
 });
 
 const app = createSubApp();
-app.use(authMiddleware)
+app.use(requiredAuthMiddleware)
 
 const friendResSchema = z.object({
   success: z.boolean(),
