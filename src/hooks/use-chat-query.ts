@@ -9,9 +9,9 @@ export const useMsgQuery = (apiUrl: string) => {
   const getKey = (pageIndex: number, previousPageData: MsgLsCursor) => {
     // if (previousPageData && !previousPageData.items.length) return null; // 没有更多数据
     if (previousPageData) {
-      if (!previousPageData.next_cursor) return null; // 没有更多数据
-      const { id, createdAt } = previousPageData.next_cursor
-      return `${apiUrl}?limit=10&cursor_id=${id}&cursor_created_at=${created_at}`
+      if (!previousPageData.nextCursor) return null; // 没有更多数据
+      const { id, createdAt } = previousPageData.nextCursor
+      return `${apiUrl}?limit=10&cursorId=${id}&cursorCreatedAt=${createdAt}`
     }
     // 在首页时，没有 `previousPageData`
     if (pageIndex === 0) return apiUrl;
@@ -22,7 +22,7 @@ export const useMsgQuery = (apiUrl: string) => {
     // refreshInterval: 1000, // if have ws 则不轮询
   });
 
-  const hasNextPage: boolean = data ? data[size - 1]?.next_cursor ? true : false : false
+  const hasNextPage: boolean = data ? data[size - 1]?.nextCursor ? true : false : false
 
   const fetchNextPage = () => {
     setSize(size + 1);

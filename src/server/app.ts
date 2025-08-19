@@ -8,7 +8,7 @@ import follow from '@/server/apps/follow/router'
 import friend from '@/server/apps/friend/router'
 import notification from '@/server/apps/notification/router'
 import project from '@/server/apps/project/router/index'
-import project_member from '@/server/apps/project/router/member'
+import projectMember from '@/server/apps/project/router/member'
 import projectVersion from '@/server/apps/project/router/version'
 import upload from '@/server/apps/upload/router'
 // import users from '@/server/routes/users/route'
@@ -31,7 +31,7 @@ const routers = [
   friend,
   notification,
   project,
-  project_member,
+  projectMember,
   projectVersion,
   upload,
   // users,

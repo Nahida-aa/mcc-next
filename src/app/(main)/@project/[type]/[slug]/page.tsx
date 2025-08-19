@@ -68,8 +68,8 @@ async function getProjectData(type: string, slug: string) {
 // 项目类型的显示名称映射
 const typeDisplayNames = {
   mod: '模组',
-  resource_pack: '资源包',
-  data_pack: '数据包',
+  resourcePack: '资源包',
+  dataPack: '数据包',
   shader: '光影包',
   world: '地图',
   project: '项目'
@@ -99,13 +99,13 @@ function ProjectLoading() {
 
 
 import { MDXRemote } from 'next-mdx-remote-client/rsc'
-import { server_auth } from '@/app/(auth)/auth';
+import { serverAuth } from '@/app/(auth)/auth';
 
 export default async function ProjectPage({ params, searchParams
 
 }: {
   params: Promise< {
-    type: 'mod' | 'resource_pack' | 'data_pack' | 'shader' | 'world' | 'project';
+    type: 'mod' | 'resourcePack' | 'dataPack' | 'shader' | 'world' | 'project';
     slug: string;
   }>
   searchParams: Promise<
@@ -117,14 +117,14 @@ export default async function ProjectPage({ params, searchParams
     sort?: string;
     keyword?: string;
     tags?: string;
-    game_versions?: string;
+    gameVersions?: string;
     loaders?: string;
     environment?: string;
-    is_open_source?: string;
+    isOpenSource?: string;
   }>
 }) {
-  const { type, slug: src_slug } = await params;
-  const slug = decodeURIComponent(src_slug);
+  const { type, slug: srcSlug } = await params;
+  const slug = decodeURIComponent(srcSlug);
   console.log('Parsed slug:', slug);
   // 将 url 的 slug 转
     // const { role, ...itemSearchParams } = await searchParams

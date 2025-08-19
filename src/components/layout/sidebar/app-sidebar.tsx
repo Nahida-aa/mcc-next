@@ -45,7 +45,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
   // } else {
   //   user_status = "not logged in"
   // }
-  const img_src = user?.image ?? `https://avatar.vercel.sh/Guest`
+  const imgSrc = user?.image ?? `https://avatar.vercel.sh/Guest`
 
   const sideHeadSelects = [
     {value: "nav",label: "Navigate list",icon: Milestone},
@@ -120,7 +120,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
       <SidebarContent>
         <section className=''>
           <div className='flex gap-2 my-1.5 mx-3' >
-            <ShadcnAvatar src={img_src} size={14} className='size-14' onclick={()=>{
+            <ShadcnAvatar src={imgSrc} size={14} className='size-14' onclick={()=>{
               if (user) router.push(`/${user.name}`);
             }} />
             {user ? (<>

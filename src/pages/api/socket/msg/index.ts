@@ -13,14 +13,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponseS
     //   return res.status(401).json({ message: "Unauthorized" });
     // }
     // const sessionUser = session.user
-    const { message, target_id,  target_type } = req.body as ApiSendMessageBody
-    // const message = await sendMessage(sessionUser.id, target_id, content, target_type);
-    console.log('message', message, 'target_id', target_id, 'target_type', target_type)
-    const messageForDB = await sendMessage(message, target_id, target_type, false);
+    const { message, targetId,  targetType } = req.body as ApiSendMessageBody
+    // const message = await sendMessage(sessionUser.id, targetId, content, targetType);
+    console.log('message', message, 'targetId', targetId, 'targetType', targetType)
+    const messageForDB = await sendMessage(message, targetId, targetType, false);
 
-    // const wsChatRoomKey = `$chat:${message.chat_id}`
+    // const wsChatRoomKey = `$chat:${message.chatId}`
     // res.socket.server.io.to(wsChatRoomKey).emit('message', message); // 这个不知道为啥好像有问题 、 超时?
-    res.socket.server.io.emit(`$chat:${messageForDB.chat_id}:message`, message);
+    res.socket.server.io.emit(`$chat:${messageForDB.chatId}:message`, message);
     
     return res.status(201).json(messageForDB);
   } catch (error: any) {

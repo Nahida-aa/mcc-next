@@ -1,6 +1,6 @@
 import { formatVersionsForDisplay } from "@/lib/utils/version"
 import { ProjectDetail, ProjectMembers } from "@/server/apps/project/service"
-import mc_data from "@/data/mc.json";
+import mcData from "@/data/mc.json";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, BookOpen, Code, ExternalLink } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

@@ -21,7 +21,7 @@ const ProjectCard = ({ project }: { project: ProjectListItem }) => {
         <div className="flex items-start gap-3">
           <Link href={`/${project.type}/${project.slug}`}>
           <Image
-            src={project.icon_url || "/placeholder.svg"}
+            src={project.iconUrl || "/placeholder.svg"}
             alt={project.name}
             width={48}
             height={48}
@@ -55,10 +55,10 @@ export const ProjectList = ({
   sort = "relevance",
   keyword,
   tags,
-  game_versions,
+  gameVersions,
   loaders,
   environment,
-  is_open_source,
+  isOpenSource,
 }: ClientListProjectParams) => {
   const [projects, setProjects] = useState<ProjectListItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -72,14 +72,14 @@ export const ProjectList = ({
       sort,
       keyword,
       tags,
-      game_versions,
+      gameVersions,
       loaders,
       environment,
-      is_open_source,
+      isOpenSource,
     })
     setProjects(filtered)
     setLoading(false)
-  }, [type, page, sort, keyword, tags, game_versions, loaders, environment, is_open_source])
+  }, [type, page, sort, keyword, tags, gameVersions, loaders, environment, isOpenSource])
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

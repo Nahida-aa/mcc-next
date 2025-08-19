@@ -93,15 +93,15 @@ app.openapi(listUserSelfProjectRoute, async (c) => {
   // 获取项目列表 - 使用 Select API
   const projects = await db
     .select({
-      icon_url: project.iconUrl,
+      iconUrl: project.iconUrl,
       id: project.id,
       type: project.type,
       slug: project.slug,
       name: project.name,
       status: project.status,
       visibility: project.visibility,
-      download_count: project.downloadCount,
-      follow_count: project.followCount,
+      downloadCount: project.downloadCount,
+      followCount: project.followCount,
       createdAt: project.createdAt,
       updatedAt: project.updatedAt,
     })

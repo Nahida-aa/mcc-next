@@ -1,6 +1,6 @@
 import { formatVersionsForDisplay } from "@/lib/utils/version"
 import { ProjectDetail, ProjectMembers } from "@/server/apps/project/service"
-import mc_data from "@/data/mc.json";
+import mcData from "@/data/mc.json";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, BookOpen, Code, ExternalLink } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,10 +19,10 @@ export const ProjectSidebarOtherInfo = ({
               <span className="text-muted-foreground">许可证</span>
               <span>{project.license||"未知"}</span>
             </div>
-            {project.published_at ? (
+            {project.publishedAt ? (
             <div className="flex justify-between">
               <span className="text-muted-foreground">发布时间</span>
-              <span>{new Date(project.published_at).toLocaleDateString('zh-CN')}</span>
+              <span>{new Date(project.publishedAt).toLocaleDateString('zh-CN')}</span>
             </div>
             ) : (
             <div className="flex justify-between">

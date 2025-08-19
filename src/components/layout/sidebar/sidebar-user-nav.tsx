@@ -18,7 +18,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { client_logout, client_sign_out } from '@/app/(auth)/client';
+import { clientLogout, clientSignOut } from '@/app/(auth)/client';
 import { UserMeta } from '@/components/layout/sidebar/user-side-toggle';
 
 interface UserAvatarProps {
@@ -32,11 +32,11 @@ export const UserAvatar = ({
   status = "offline",
 }: UserAvatarProps
 )=> {
-  const img_src = user?.image ?? `https://avatar.vercel.sh/${user?.email}`
+  const imgSrc = user?.image ?? `https://avatar.vercel.sh/${user?.email}`
   return (
 <div className='relative size-10 p-1'>
   <Image
-    src={img_src}
+    src={imgSrc}
     alt={user?.name ?? 'User Avatar'}
     width={32}
     height={32}
@@ -62,7 +62,7 @@ export function SidebarUserNav({
   const { setTheme, theme } = useTheme();
   const router = useRouter();
   const isGuest = !user;
-  const img_src = user?.image ?? `https://avatar.vercel.sh/${user?.email}`
+  const imgSrc = user?.image ?? `https://avatar.vercel.sh/${user?.email}`
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -95,8 +95,8 @@ export function SidebarUserNav({
                     // router.push('/login'); // 导航到登录页面
                   } else {
                     // signOut({
-                    // client_sign_out({
-                    client_logout({
+                    // clientSignOut({
+                    clientLogout({
                       redirectTo: '/',
                     })
                   }

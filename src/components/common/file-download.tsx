@@ -16,8 +16,8 @@ import { useFileDownload } from '@/hooks/use-file-download';
 interface ProjectFile {
   id: string;
   filename: string;
-  file_size?: number;
-  upload_status: 'pending' | 'uploading' | 'completed' | 'failed';
+  fileSize?: number;
+  uploadStatus: 'pending' | 'uploading' | 'completed' | 'failed';
   createdAt: string;
 }
 
@@ -40,7 +40,7 @@ export function FileDownloadButton({
   
   const { downloadFile, previewFile, copyDownloadLink, formatFileSize, isDownloading, error } = useFileDownload({
     onSuccess: (info) => {
-      toast.success(`文件 ${info.filename} (${formatFileSize(info.file_size)}) 开始下载`);
+      toast.success(`文件 ${info.filename} (${formatFileSize(info.fileSize)}) 开始下载`);
     },
     onError: (error) => {
       toast.error(`下载失败: ${error}`);
@@ -48,7 +48,7 @@ export function FileDownloadButton({
   });
 
   const handleDownload = async () => {
-    if (file.upload_status !== 'completed') {
+    if (file.uploadStatus !== 'completed') {
       toast.error('文件尚未上传完成，无法下载');
       return;
     }
@@ -61,7 +61,7 @@ export function FileDownloadButton({
   };
 
   const handlePreview = async () => {
-    if (file.upload_status !== 'completed') {
+    if (file.uploadStatus !== 'completed') {
       toast.error('文件尚未上传完成，无法预览');
       return;
     }
@@ -69,14 +69,14 @@ export function FileDownloadButton({
     try {
       const downloadInfo = await previewFile(file.id);
       // 在新窗口打开文件（适用于图片、PDF等）
-      window.open(downloadInfo.download_url, '_blank');
+      window.open(downloadInfo.downloadUrl, '_blank');
     } catch (err) {
       // 错误已在 hook 中处理
     }
   };
 
   const handleCopyLink = async () => {
-    if (file.upload_status !== 'completed') {
+    if (file.uploadStatus !== 'completed') {
       toast.error('文件尚未上传完成，无法获取链接');
       return;
     }
@@ -89,7 +89,7 @@ export function FileDownloadButton({
     }
   };
 
-  const isFileReady = file.upload_status === 'completed';
+  const isFileReady = file.uploadStatus === 'completed';
 
   if (!showDropdown) {
     return (
@@ -167,7 +167,7 @@ export function FileList({ files, allowBatchDownload = true }: FileListProps) {
   };
 
   const handleSelectAll = () => {
-    const completedFiles = files.filter(f => f.upload_status === 'completed');
+    const completedFiles = files.filter(f => f.uploadStatus === 'completed');
     if (selectedFiles.size === completedFiles.length) {
       setSelectedFiles(new Set());
     } else {
@@ -184,12 +184,12 @@ export function FileList({ files, allowBatchDownload = true }: FileListProps) {
         const response = await fetch('/api/project/file/download-url', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ file_id: file.id }),
+          body: JSON.stringify({ fileId: file.id }),
         });
         
         if (response.ok) {
           const downloadInfo = await response.json();
-          link.href = downloadInfo.download_url;
+          link.href = downloadInfo.downloadUrl;
           link.download = downloadInfo.filename;
           link.style.display = 'none';
           document.body.appendChild(link);
@@ -208,7 +208,7 @@ export function FileList({ files, allowBatchDownload = true }: FileListProps) {
     setSelectedFiles(new Set());
   };
 
-  const completedFiles = files.filter(f => f.upload_status === 'completed');
+  const completedFiles = files.filter(f => f.uploadStatus === 'completed');
 
   return (
     <div className="space-y-4">
@@ -244,7 +244,7 @@ export function FileList({ files, allowBatchDownload = true }: FileListProps) {
             className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50"
           >
             <div className="flex items-center space-x-3">
-              {allowBatchDownload && file.upload_status === 'completed' && (
+              {allowBatchDownload && file.uploadStatus === 'completed' && (
                 <input
                   type="checkbox"
                   checked={selectedFiles.has(file.id)}
@@ -256,16 +256,16 @@ export function FileList({ files, allowBatchDownload = true }: FileListProps) {
               <div className="flex-1">
                 <div className="font-medium">{file.filename}</div>
                 <div className="text-sm text-muted-foreground">
-                  {file.file_size && formatFileSize(file.file_size)} • 
+                  {file.fileSize && formatFileSize(file.fileSize)} • 
                   <span className={`ml-1 ${
-                    file.upload_status === 'completed' ? 'text-green-600' :
-                    file.upload_status === 'uploading' ? 'text-blue-600' :
-                    file.upload_status === 'failed' ? 'text-red-600' :
+                    file.uploadStatus === 'completed' ? 'text-green-600' :
+                    file.uploadStatus === 'uploading' ? 'text-blue-600' :
+                    file.uploadStatus === 'failed' ? 'text-red-600' :
                     'text-yellow-600'
                   }`}>
-                    {file.upload_status === 'completed' ? '已完成' :
-                     file.upload_status === 'uploading' ? '上传中' :
-                     file.upload_status === 'failed' ? '上传失败' : '等待中'}
+                    {file.uploadStatus === 'completed' ? '已完成' :
+                     file.uploadStatus === 'uploading' ? '上传中' :
+                     file.uploadStatus === 'failed' ? '上传失败' : '等待中'}
                   </span>
                 </div>
               </div>
