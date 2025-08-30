@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { BetterTooltip } from '@/components/common/BetterTooltip';
 import { PlusIcon, VercelIcon } from '@/components/icons';
 // import { useSidebar } from '@/components/ui/sidebar';
-import { UserMeta, UserSidebarToggle } from '../sidebar/user-side-toggle';
+import {  UserSidebarToggle } from '../sidebar/user-side-toggle';
 import { ModeToggle } from '@/components/common/theme-toggle';
 import { Search, AlignRight, X, Sparkles, UserRound, House } from 'lucide-react';
 // import { useState } from 'react';
@@ -20,9 +20,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { MoreMenu } from './home-header';
+import { AuthUser } from '@/components/providers/auth-provider';
 
 export function CommonHeader(
-  { user, className }: { user: UserMeta | undefined, className?: string; }
+  { user, className }: { user: AuthUser | undefined, className?: string; }
   // { selectedModelId }: { selectedModelId: string }
 ) {
   const router = useRouter();

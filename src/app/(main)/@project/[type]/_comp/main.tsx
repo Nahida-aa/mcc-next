@@ -10,16 +10,17 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { MinecraftTeamUpdates, MinecraftUpdatesSection, ProjectUpdates, TeamUpdates } from "./TeamUpdates"
 import { ListIsExpandContextProvider } from "./ListWithSearchContext"
 // import { ListWithSearch } from "../[slug]/_comp/ListWithSearch"
-import { ClientListProjectParams } from "@/server/apps/project/type"
+import { ClientListProjectParams } from "@/server/project/type"
 import { ProjectList } from "./ProjectList"
 import { SearchBar } from "./SearchBar"
 import { useStyle } from "@/components/context/styleContext"
 import LoginUI from "@/app/(auth)/login"
 import { Chat } from "./Chat"
+import { ListProjectQuery } from "@/server/project/model"
 
 export default function Main({
-  type, page=1, sort="relevance", keyword, tags, gameVersions, loaders, environment, isOpenSource,
-}: ClientListProjectParams) {
+  type, offset, orderBy="relevance", q, categories, gameVersions, loaders, clientSide, serverSide, isOpenSource,
+}: ListProjectQuery) {
   const [isExpanded, setIsExpanded] = useState(false)
   const { styleState } = useStyle();
 
@@ -69,28 +70,29 @@ export default function Main({
                     type={type}
                     gameVersions={gameVersions}
                     isOpenSource={isOpenSource}
-                    page={page}
-                    sort={sort}
-                    keyword={keyword}
-                    tags={tags}
+                    q={q}
+                    offset={offset}
+                    orderBy={orderBy}
+                    categories={categories}
+                    clientSide={clientSide}
                     loaders={loaders}
-                    environment={environment}
+                    serverSide={serverSide}
                   />
                 </div>
             </Card>
 
             {/* 搜索栏区域 右2 - 独立的卡片 */}
             <SearchBar
-              type={type}
-              keyword={keyword}
-              onSearch={(newKeyword) => {
-                // 处理搜索逻辑
-                console.log("Search:", newKeyword)
-              }}
-              onTypeChange={(newType) => {
-                // 处理类型切换逻辑
-                console.log("Type changed:", newType)
-              }}
+              // type={type}
+              keyword={q}
+              // onSearch={(newKeyword) => {
+              //   // 处理搜索逻辑
+              //   console.log("Search:", newKeyword)
+              // }}
+              // onTypeChange={(newType) => {
+              //   // 处理类型切换逻辑
+              //   console.log("Type changed:", newType)
+              // }}
             />
 
             {/* 区域 右23 */}

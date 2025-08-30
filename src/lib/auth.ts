@@ -1,10 +1,11 @@
 import { betterAuth} from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/server/db"; // your drizzle instance
+import { db } from "@/server/admin/db"; // your drizzle instance
 // import { nextCookies } from "better-auth/next-js";
-import * as schema from "@/server/db/schema"; // Import the schema object
+import * as schema from "@/server/admin/db/schema"; // Import the schema object
 import { admin, anonymous, openAPI, organization, phoneNumber, twoFactor, emailOTP } from "better-auth/plugins"
 import { username } from "better-auth/plugins"
+import { nextCookies } from "better-auth/next-js";
 
 // # SERVER_ERROR:  [Error [BetterAuthError]: [# Drizzle Adapter]: The model "user" was not found in the schema object. Please pass the schema directly to the adapter options.] {
 //   cause: undefined
@@ -39,6 +40,7 @@ export const auth = betterAuth({
   // baseURL: "http://localhost:3000",
   basePath: "/api/auth",
   plugins: [
+    nextCookies(), // 适用于 Next.js 的 Cookie 处理
     twoFactor(), // 2FA: 即验证两次,且使用不同因素,开发初期不用考虑, 
     // add: twoFactor: Table, user.twoFactorEnabled: boolean, 
     username({
@@ -140,5 +142,4 @@ export type AuthTypeNotNull = {
     session: typeof auth.$Infer.Session.session
 }
 
-
-auth.api.getActiveMember
+export type SessionUser = typeof auth.$Infer.Session.user;

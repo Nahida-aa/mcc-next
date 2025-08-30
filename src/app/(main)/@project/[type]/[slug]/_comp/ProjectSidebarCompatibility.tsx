@@ -1,12 +1,12 @@
 import { formatVersionsForDisplay } from "@/lib/utils/version"
-import { ProjectDetail } from "@/server/apps/project/service"
 import mcData from "@/data/mc.json";
 import { Badge } from "@/components/ui/badge";
+import { ProjectSelect } from "@/server/admin/db/service";
 
 export const ProjectSidebarCompatibility = ({
   project,
 }: {
-  project: ProjectDetail
+  project: ProjectSelect
 }) => {
   return <>
   {(project.gameVersions.length || project.loaders.length || project.clientSide || project.serverSide) && (

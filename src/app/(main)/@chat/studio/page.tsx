@@ -238,7 +238,7 @@ export default function StudioPage() {
             </div>
             <div className="flex-1">
               <p className="text-sm">
-                <span className="font-medium">用户 Steve</span> 在 <span className="font-medium">Biomes O' Plenty</span> 项目下评论
+                <span className="font-medium">用户 Steve</span> 在 <span className="font-medium">Biomes O Plenty</span> 项目下评论
               </p>
               <p className="text-xs text-muted-foreground">3天前</p>
             </div>

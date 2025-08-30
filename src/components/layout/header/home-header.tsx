@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { BetterTooltip } from '@/components/common/BetterTooltip';
 import { PlusIcon, VercelIcon } from '@/components/icons';
 // import { useSidebar } from '@/components/ui/sidebar';
-import { UserMeta, UserSidebarToggle } from '../sidebar/user-side-toggle';
+import {  UserSidebarToggle } from '../sidebar/user-side-toggle';
 import { ModeToggle } from '@/components/common/theme-toggle';
 import { Search, AlignRight, X, Sparkles, UserRound, House, UserRoundPlus, Box, Users } from 'lucide-react';
 // import { useState } from 'react';
@@ -20,6 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useAuthSession } from '@/components/providers/auth-provider';
+import { UserBase, UserSelect } from '@/server/auth/model';
 
 export const MoreMenu = () => {
   const router = useRouter();
@@ -55,7 +56,7 @@ export const MoreMenu = () => {
 }
 
 interface HomeHeaderProps {
-  user?: UserMeta;
+  user?: UserSelect;
   className?: string;
 }
 
@@ -74,7 +75,7 @@ export function HomeHeader({
   // const { width: windowWidth } = useWindowSize();
   // const displayUser = user || { email: 'guest@example.com', name: 'Guest', image: null };
   // const userStatus = "online" // online, offline, away, 未登录
-  let userStatus
+  let userStatus: string
   if (user) {
     userStatus = "online"
   } else {
@@ -94,7 +95,7 @@ export function HomeHeader({
           router.push('/user/status')
         } }
         >
-          <div className="text-[0.8rem] font-medium leading-5">{user?.nickname || user?.name || "Guest"}</div>
+          <div className="text-[0.8rem] font-medium leading-5">{user?.displayUsername || user?.name || "Guest"}</div>
           <div className='text-xs text-gray-400 leading-3'>{userStatus}</div>
         </Button>
         {/* )} */}

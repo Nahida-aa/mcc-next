@@ -1,8 +1,39 @@
-import { notification } from "@/server/db/schema";
-import { createSelectSchema } from "../openapi/schemas/create";
+import { notification } from "@/server/admin/db/schema";
+import { createSelectSchema } from "../apps/openapi/schemas/create";
 import { z } from "@hono/zod-openapi";
-import { user } from "@heroui/react";
 import { userBaseSchema } from "../auth/model";
+
+// export type NotificationType =
+//   | 'invite_project_member'
+//   | 'invite_accepted'
+//   | 'invite_rejected'
+//   | 'project_join_request'
+//   | 'request_approved'
+//   | 'request_rejected'
+//   | 'project_update'
+//   | 'version_published'
+//   | 'comment_received'
+//   // 收到关注
+//   | 'followed_user' // 用户被关注
+//   | 'followed_project' // 项目被关注
+//   // 好友请求
+//   | 'friend_request' // 收到好友请求
+// 提供给 switch-case 使用, 不是 schema
+export const notificationType = {
+  invite_project_member: 'invite_project_member',
+  invite_accepted: 'invite_accepted',
+  invite_rejected: 'invite_rejected',
+  project_join_request: 'project_join_request',
+  request_approved: 'request_approved',
+  request_rejected: 'request_rejected',
+  project_update: 'project_update',
+  version_published: 'version_published',
+  comment_received: 'comment_received',
+  followed_user: 'followed_user',
+  followed_project: 'followed_project',
+  friend_request: 'friend_request'
+} 
+export type NotificationType = keyof typeof notificationType;
 
 export const notificationSelectSchema = createSelectSchema(notification);
 export type NotificationSelect = typeof notification.$inferSelect;

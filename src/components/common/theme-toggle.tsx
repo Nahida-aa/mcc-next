@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Moon, MoonIcon, MoonStar, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-import { motion  } from "framer-motion"
+import { Easing, motion, Variants  } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -95,7 +95,7 @@ export const ModeToggleGradientIcon =({
   // if (typeof window === "undefined") return null;
   if (!isClient) return LoadIcon()
 
-  const raysVariants = {
+  const raysVariants: Variants = {
     hidden: {
       strokeOpacity: 0,
       transition: {
@@ -111,7 +111,7 @@ export const ModeToggleGradientIcon =({
     },
   };
 
-  const rayVariant = {
+  const rayVariant: Variants = {
     hidden: {
       pathLength: 0,
       opacity: 0,
@@ -124,7 +124,7 @@ export const ModeToggleGradientIcon =({
       scale: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut",
+        ease: "easeOut" as Easing,
         // Customize timing for each property
         pathLength: { duration: 0.3 },
         opacity: { duration: 0.2 },
@@ -133,7 +133,7 @@ export const ModeToggleGradientIcon =({
     },
   };
 
-  const shineVariant = {
+  const shineVariant: Variants = {
     hidden: {
       opacity: 0,
       scale: 2,
@@ -147,7 +147,7 @@ export const ModeToggleGradientIcon =({
       filter: ["blur(2px)", "blur(2px)", "blur(0px)"],
       transition: {
         duration: 0.75,
-        ease: 'linear'
+        ease: 'linear' as Easing
       },
     },
 

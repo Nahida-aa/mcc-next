@@ -1,4 +1,4 @@
-import { querySchema } from "../page";
+import { listProjectQuerySchema } from "@/server/project/model";
 import { ProjectUI } from "../_comp/ProjectUI";
 
 export default async function ProjectListPageUI({
@@ -22,11 +22,11 @@ export default async function ProjectListPageUI({
 }) {
   const { role, ...itemSearchParams } = await searchParams
   console.log("ProjectListPageUI:searchParams:", role)
-  const parsedQuery = querySchema.parse(itemSearchParams);
+  const parsedQuery = listProjectQuerySchema.parse(itemSearchParams);
   console.log("ProjectListPageUI:parsedQuery: ", parsedQuery)
   const type = 'mod'
 
   return <>
-    <ProjectUI type={type} gameVersions={parsedQuery.versions} isOpenSource={parsedQuery.isOpen} {...parsedQuery} />
+    <ProjectUI type={type}  {...parsedQuery} />
   </>
 }

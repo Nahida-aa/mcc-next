@@ -3,7 +3,13 @@
 import { authClient } from "@/lib/auth-client"
 import { createContext, ReactNode, useContext, useMemo } from "react"
 
-export type AuthSession = typeof authClient.$Infer.Session
+export type AuthUser = Omit<(typeof authClient.$Infer.Session.user), 'username'> & {
+    username: string
+  }
+export type AuthSession = {
+  user: AuthUser
+  session: typeof authClient.$Infer.Session.session
+}
 
 export type AuthContextValue = {
   data: AuthSession | null | undefined
@@ -37,7 +43,7 @@ export const AuthSessionProvider = (props: AuthSessionProviderProps) => {
   const { data: authSession, isPending } = authClient.useSession()
 
   // 优先使用 authClient 的数据，如果还在加载则使用初始 session
-  const currentSession = isPending ? props.session : authSession
+  const currentSession = isPending ? props.session : (authSession as AuthSession)
 
   const value = useMemo(
     () => ({

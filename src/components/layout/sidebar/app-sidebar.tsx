@@ -21,7 +21,6 @@ import {
 } from '@/components/ui/sidebar';
 import { BetterTooltip } from '@/components/common/BetterTooltip';
 import Link from 'next/link';
-import { UserMeta } from './user-side-toggle';
 import { Box, Check, ChevronDown, ChevronRight, FileIcon, FileUser, LogIn, MessageCircle, Milestone, PencilLine, QrCode, Settings, ShipWheel, Star, UserRound, X } from 'lucide-react';
 import { UserSidebarFooter } from './footer';
 import { ModeToggle } from '@/components/common/theme-toggle';
@@ -31,11 +30,12 @@ import {Button as UIButton} from "@heroui/react";
 import { SidebarContentMenuComponent } from './content';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { AuthUser } from '@/components/providers/auth-provider';
 
 
 
 
-export function AppSidebar({ user }: { user: UserMeta | undefined }) {
+export function AppSidebar({ user }: { user?: AuthUser }) {
   const router = useRouter();
   const { setOpen, setOpenMobile, isMobile, toggleSidebar } = useSidebar();
   // const displayUser = user || { email: 'guest@example.com', name: 'Guest' }
@@ -128,7 +128,7 @@ export function AppSidebar({ user }: { user: UserMeta | undefined }) {
                 <SidebarMenuItem className='h-5'>
                   <SidebarMenuButton className='h-5' onClick={() => router.push(`/${user.name}`)}
                   >
-                    <span>{user.nickname ? user.nickname : user.name}</span>
+                    <span>{user.displayUsername || user.name}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem className='h-5'>

@@ -4,6 +4,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/
 export const BetterTooltip = ({
   content,
   children, 
+  delayDuration = 0,
   align = 'center',
   ...props
 }: React.ComponentPropsWithoutRef<typeof Tooltip> & {
@@ -11,10 +12,10 @@ export const BetterTooltip = ({
   align?: 'center' | 'end' | 'start';
 }) => {
   return (
-    <TooltipProvider delayDuration={0}>
-      <Tooltip {...props}>
+    <TooltipProvider delayDuration={delayDuration}>
+      <Tooltip  {...props}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent align={align}>{content}</TooltipContent>
+        <TooltipContent className="" align={align}>{content}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

@@ -3,6 +3,7 @@ import React, { Suspense } from 'react'
 import { z } from 'zod';
 import Main from './@project/[type]/_comp/main';
 import { LoadingS } from '@/components/common/Loading';
+import { listProjectQuerySchema } from '@/server/project/model';
 // import { server_auth } from '../../(auth)/auth';
 // import { cookies } from 'next/headers';
 // import Link from 'next/link'; // 对 next 内的 router 的跳转
@@ -16,20 +17,6 @@ import { LoadingS } from '@/components/common/Loading';
 // import { ChatsWithCount, listChat_by_userId } from '@/lib/db/q/user/chat';
 // import {ScrollShadow} from "@heroui/scroll-shadow";
 
-export const querySchema = z.object({
-  limit: z.string().default('40').transform((val) => parseInt(val, 10)),
-  page: z.string().default('1').transform((val) => parseInt(val, 10)),
-  sort: z.string().default('relevance'),
-  keyword: z.string().optional(),
-  versions: z.union([z.string(), z.undefined()])
-    .transform((val) => (val ? [val] : undefined)),
-  tags: z.union([z.string(), z.undefined()])
-  .transform((val) => (val ? [val] : undefined)),
-  loaders: z.union([z.string(), z.undefined()])
-  .transform((val) => (val ? [val] : undefined)),
-  environment: z.string().optional(),
-  is_open: z.string().optional().transform((val) => (val === undefined ? undefined : val === 'true')),
-});
 
 export default async function Page( {
   searchParams
@@ -38,7 +25,7 @@ export default async function Page( {
 }) {
   const { role, ...itemSearchParams } = await searchParams
   console.log("Page:searchParams:", role)
-  const parsedQuery = querySchema.parse(itemSearchParams);
+  const parsedQuery = listProjectQuerySchema.parse(itemSearchParams);
   console.log("parsedQuery: ", parsedQuery)
   const type = 'mod'
   // const session = await server_auth();

@@ -147,7 +147,7 @@ export default function UserRelations({ userId, onFollowToggle, onFriendToggle }
         <CardDescription>管理你的关注、粉丝和好友</CardDescription>
       </CardHeader>
       <CardContent>
-                <Tabs defaultValue="friends" className="w-full">
+        <Tabs defaultValue="friends" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="friends" className="flex items-center gap-2">
               <Heart className="w-4 h-4" />
@@ -162,30 +162,25 @@ export default function UserRelations({ userId, onFollowToggle, onFriendToggle }
               粉丝 ({followers.length})
             </TabsTrigger>
           </TabsList>
-
-                  <TabsContent value="friends" className="space-y-4 mt-4">
-
-
-            <div className="text-sm text-gray-600 mb-4">
-              好友是可以相互发送消息的用户。互相关注的用户会自动成为好友。
+          <TabsContent value="friends" className="space-y-4 mt-4">
+          <div className="text-sm text-gray-600 mb-4">
+            好友是可以相互发送消息的用户。互相关注的用户会自动成为好友。
+          </div>
+          {friends.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <Heart className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+              <p>还没有好友</p>
+              <p className="text-sm">关注其他用户，当对方也关注你时，你们会自动成为好友</p>
             </div>
-            {friends.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <Heart className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <p>还没有好友</p>
-                <p className="text-sm">关注其他用户，当对方也关注你时，你们会自动成为好友</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {friends.map((friend) => (
-                  <UserCard key={friend.id} user={friend} type="friend" extra={{ reason: friend.reason }} />
-                ))}
-              </div>
-            )}
-            </TabsContent>
-          
+          ) : (
+            <div className="space-y-3">
+              {friends.map((friend) => (
+                <UserCard key={friend.id} user={friend} type="friend" extra={{ reason: friend.reason }} />
+              ))}
+            </div>
+          )}
+          </TabsContent>
           <TabsContent value="following" className="space-y-4 mt-4">
-
             <div className="text-sm text-gray-600 mb-4">
               你关注的用户列表。当对方也关注你时，你们会自动成为好友。
             </div>

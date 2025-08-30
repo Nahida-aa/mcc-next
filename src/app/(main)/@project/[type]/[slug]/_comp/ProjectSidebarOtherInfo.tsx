@@ -1,15 +1,15 @@
 import { formatVersionsForDisplay } from "@/lib/utils/version"
-import { ProjectDetail, ProjectMembers } from "@/server/apps/project/service"
 import mcData from "@/data/mc.json";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, BookOpen, Code, ExternalLink } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getAvatarUrl } from "@/components/aa/avatar_util";
+import { ProjectSelect } from "@/server/admin/db/service";
 
 export const ProjectSidebarOtherInfo = ({
   project,
 }: {
-  project: ProjectDetail 
+  project: ProjectSelect 
 }) => {
   return <>
   <section className='bg-card p-4 space-y-3 rounded-lg shadow-sm'>

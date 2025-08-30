@@ -5,13 +5,15 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import {ScrollShadow} from "@heroui/scroll-shadow";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { filterProjects } from "@/data/mock-projects"
+// import { filterProjects } from "@/data/mock-projects"
 import Image from "next/image"
-import type { ClientListProjectParams, ProjectListItem } from "@/server/apps/project/type"
+import type { ClientListProjectParams, ProjectListItem } from "@/server/project/type"
 import { useStyle } from "@/components/context/styleContext"
 import Link from "next/link";
+import { ProjectSelect } from "@/server/admin/db/service";
+import { ListProjectQuery } from "@/server/project/model";
 
-const ProjectCard = ({ project }: { project: ProjectListItem }) => {
+const ProjectCard = ({ project }: { project: ProjectSelect }) => {
   const { styleState } = useStyle();
   return (
     <Card className={`  bg-[#D7CCC8] hover:bg-[#BCAAA4] transition-all duration-200 p-2 gap-1 ${
@@ -21,7 +23,7 @@ const ProjectCard = ({ project }: { project: ProjectListItem }) => {
         <div className="flex items-start gap-3">
           <Link href={`/${project.type}/${project.slug}`}>
           <Image
-            src={project.iconUrl || "/placeholder.svg"}
+            src={project.icon || "/placeholder.svg"}
             alt={project.name}
             width={48}
             height={48}
@@ -33,7 +35,7 @@ const ProjectCard = ({ project }: { project: ProjectListItem }) => {
             <CardTitle className="text-sm font-bold text-[#5D4037]  truncate">{project.name}</CardTitle>
             </Link>
             <div className="flex flex-wrap gap-1 mt-1">
-              {project.tags.slice(0, 2).map((tag) => (
+              {project.categories.slice(0, 2).map((tag) => (
                 <Badge key={tag} variant="outline" className="text-xs border-[#8D6E63] text-[#5D4037] px-1">
                   {tag}
                 </Badge>
@@ -50,36 +52,38 @@ const ProjectCard = ({ project }: { project: ProjectListItem }) => {
 }
 
 export const ProjectList = ({
-  type,
-  page = 1,
-  sort = "relevance",
-  keyword,
-  tags,
+  type='mod',
+  q,
+  offset,
+  orderBy,
+  categories,
   gameVersions,
   loaders,
-  environment,
+  clientSide,
+  serverSide,
   isOpenSource,
-}: ClientListProjectParams) => {
-  const [projects, setProjects] = useState<ProjectListItem[]>([])
+}: ListProjectQuery) => {
+  const [projects, setProjects] = useState<ProjectSelect[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)
-    const filtered = filterProjects({
-      type,
-      limit: 40,
-      offset: (page - 1) * 20,
-      sort,
-      keyword,
-      tags,
-      gameVersions,
-      loaders,
-      environment,
-      isOpenSource,
-    })
-    setProjects(filtered)
+    // const filtered = filterProjects({
+    //   type,
+    //   limit: 40,
+    //   offset,
+    //   orderBy,
+    //   q,
+    //   categories,
+    //   gameVersions,
+    //   loaders,
+    //   clientSide,
+    //   serverSide,
+    //   isOpenSource,
+    // })
+    // setProjects(filtered)
     setLoading(false)
-  }, [type, page, sort, keyword, tags, gameVersions, loaders, environment, isOpenSource])
+  }, [type, q, offset, orderBy, categories, gameVersions, loaders, clientSide, serverSide, isOpenSource])
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

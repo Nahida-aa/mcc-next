@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { BetterTooltip } from '@/components/common/BetterTooltip';
 import { PlusIcon, VercelIcon } from '@/components/icons';
 // import { useSidebar } from '@/components/ui/sidebar';
-import { UserMeta, UserSidebarToggle } from '../sidebar/user-side-toggle';
+import {  UserSidebarToggle } from '../sidebar/user-side-toggle';
 import { ModeToggle } from '@/components/common/theme-toggle';
 import { Search, AlignRight, X, Sparkles, UserRound, House, ChevronLeft } from 'lucide-react';
 // import { useState } from 'react';
@@ -20,11 +20,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { MoreMenu } from './home-header';
+import { AuthUser } from '@/components/providers/auth-provider';
 
 export function SubHeader({
   user, className, children, justify,
 }: { 
-  user?: UserMeta, className?: string; children: React.ReactNode; 
+  user?: AuthUser, className?: string; children: React.ReactNode; 
   justify?: 'center' | 'between' | 'start' | 'end' | 'evenly' | 'around' ;
 }
   // { selectedModelId }: { selectedModelId: string }

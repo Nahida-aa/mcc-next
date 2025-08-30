@@ -65,7 +65,7 @@ export const ourFileRouter = {
     },
   })
     // .input(z.object({ foo: z.string() }))
-    .middleware(async({ req, files, input, res }) => {
+    .middleware(async({ req, files, input }) => {
       // Check some condition based on the incoming requrest
       // if (!req.headers.get("x-some-header")) {
       //   throw new Error("x-some-header is required");

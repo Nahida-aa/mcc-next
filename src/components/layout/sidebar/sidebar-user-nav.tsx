@@ -2,7 +2,6 @@
 import { ChevronUp } from 'lucide-react';
 import Image from 'next/image';
 // import type { User } from 'next-auth';
-import { signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 
@@ -18,11 +17,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { clientLogout, clientSignOut } from '@/app/(auth)/client';
-import { UserMeta } from '@/components/layout/sidebar/user-side-toggle';
+import { AuthUser } from '@/components/providers/auth-provider';
+import { useSignOut } from '@/components/providers/modal-provider';
 
 interface UserAvatarProps {
-  user?: UserMeta 
+  user?: AuthUser 
   className?: string;
   status?: string;
 }
@@ -49,7 +48,7 @@ ${status === "online" ? 'bg-green-500' : 'bg-gray-500'}
   )
 }
 export interface SidebarUserNavProps {
-  user?: UserMeta 
+  user?: AuthUser 
   className?: string;
   status?: string;
 }
@@ -60,9 +59,10 @@ export function SidebarUserNav({
 }: SidebarUserNavProps
 ) {
   const { setTheme, theme } = useTheme();
+  const showSignOut = useSignOut()
   const router = useRouter();
   const isGuest = !user;
-  const imgSrc = user?.image ?? `https://avatar.vercel.sh/${user?.email}`
+  // const imgSrc = user?.image ?? `https://avatar.vercel.sh/${user?.email}`
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -94,11 +94,7 @@ export function SidebarUserNav({
                     router.push('/sign-in'); // 导航到登录页面
                     // router.push('/login'); // 导航到登录页面
                   } else {
-                    // signOut({
-                    // clientSignOut({
-                    clientLogout({
-                      redirectTo: '/',
-                    })
+                    showSignOut()
                   }
                 }}
               >

@@ -5,11 +5,12 @@ import { Card } from "@/components/ui/card"
 import { ProjectList } from "../@project/[type]/_comp/ProjectList"
 import { SearchBar } from "../@project/[type]/_comp/SearchBar"
 import { useListIsExpandContext } from "../@project/[type]/_comp/ListWithSearchContext"
-import { ClientListProjectParams } from "@/server/apps/project/type"
+import { ListProjectQuery } from "@/server/project/model"
 
 export const ProjectUI = ({
-  type, page=1, sort="relevance", keyword, tags, gameVersions, loaders, environment, isOpenSource,
-}: ClientListProjectParams) => {
+  type, 
+  offset, orderBy="relevance", q, categories, gameVersions, loaders, clientSide, serverSide, isOpenSource,
+}: ListProjectQuery) => {
     const {state: isExpanded, setState: setIsExpanded} = useListIsExpandContext()
     const { styleState } = useStyle();
   return <>
@@ -23,12 +24,13 @@ export const ProjectUI = ({
             type={type}
             gameVersions={gameVersions}
             isOpenSource={isOpenSource}
-            page={page}
-            sort={sort}
-            keyword={keyword}
-            tags={tags}
+            q={q}
+            offset={offset}
+            orderBy={orderBy}
+            categories={categories}
+            clientSide={clientSide}
             loaders={loaders}
-            environment={environment}
+            serverSide={serverSide}
           />
         </div>
     </Card>

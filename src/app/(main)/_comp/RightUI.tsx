@@ -23,7 +23,8 @@ export const RightUI = ({
             /> 
             {/* 区域 右3 */}
             <Card
-              className={`border-0   transition-all duration-500 p-0 overflow-hidden flex flex-col ${
+              className={`border-0  shadow-lg hover:shadow-xl
+    transition-all duration-500 p-0 overflow-hidden flex flex-col ${
                 isExpanded ? "opacity-0 mt-0" : "opacity-100"
               }`}
             >

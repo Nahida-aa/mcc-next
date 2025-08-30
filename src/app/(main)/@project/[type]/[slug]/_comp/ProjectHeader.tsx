@@ -1,31 +1,36 @@
-import { ProjectDetail } from "@/server/apps/project/service"
-import { Download, EllipsisVertical, Heart, Package, Star, TagsIcon } from "lucide-react"
+import { Box, Download, EllipsisVertical, Heart, Package, Star, TagsIcon } from "lucide-react"
 import NextImage from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { BetterTooltip } from "@/components/common/BetterTooltip";
 import { formatSize } from "@/app/aa/or";
 import { Button } from "@/components/ui/button";
+import { ProjectSelect } from "@/server/admin/db/service";
+
+export const ProjectIcon = ({ icon, name, size }: { icon?: string|null; name: string, size: number }) => {
+  return icon ? (
+    <NextImage 
+      src={icon} 
+      alt={name}
+      width={size}
+      height={size}
+      className="w-24 h-24 rounded-lg object-cover border"
+    />
+  ) : (
+    <div className="w-24 h-24 rounded-lg bg-muted flex items-center justify-center border">
+      <Box className="text-muted-foreground" size={size} />
+    </div>
+  )
+}
 
 export const ProjectHeader = ({
   project,
 }: {
-  project: ProjectDetail
+  project: ProjectSelect
 }) => {
   return <div aria-label='Header' className="grid grid-cols-1 gap-x-8 gap-y-6 border-0 border-b border-solid border-divider pb-4 my-4 lg:grid-cols-[1fr_auto]">
         <div className="flex flex-row gap-4">
-          {project.iconUrl ? (
-            <NextImage 
-              src={project.iconUrl} 
-              alt={project.name}
-              width={96}
-              height={96}
-              className="w-24 h-24 rounded-lg object-cover border"
-            />
-          ) : (
-            <div className="w-24 h-24 rounded-lg bg-muted flex items-center justify-center border">
-              <Package className="w-16 h-16 text-muted-foreground" />
-            </div>
-          )}
+          <ProjectIcon icon={project.icon} name={project.name} size={96} />
+          
           <div  className="flex flex-col gap-1" aria-label='ProjectBaseInfo'>
             <div className='flex gap-4'>
               <h2 className="text-2xl leading-none font-bold ">{project.name}</h2>

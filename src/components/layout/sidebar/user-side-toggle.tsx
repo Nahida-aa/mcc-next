@@ -18,17 +18,13 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { Skeleton } from '@/components/ui/skeleton';
+import { UserBase, UserSelect } from '@/server/auth/model';
+import { AuthSession } from '@/components/providers/auth-provider';
 
 
-export type UserMeta = {
-  id: string;
-  email?: string;
-  name: string;
-  nickname?: string;
-  image: string;
-}
+
 interface UserSidebarToggleProps {
-  user?: UserMeta 
+  user?: AuthSession['user']; // 使用 AuthSession 的 user 类型
   className?: string;
   status?: string;
 }

@@ -2,7 +2,7 @@
 // 1. new group
 import { CreateGroupReq } from "@/server/routes/groups/create";
 import { localhostV0, session_token } from "./user";
-import { db } from "@/server/db";
+import { db } from "@/server/apps/admin/db";
 import { link_chat_user_table } from "@/db/schema/message";
 
 const listFriend = async () => {

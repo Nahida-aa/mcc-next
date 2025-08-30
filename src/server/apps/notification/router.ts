@@ -1,11 +1,11 @@
-import { createSubApp } from "@/server/createApp";
+import { createSubApp } from "@/api/create.app";
 import { createRoute, z } from "@hono/zod-openapi";
-import {jsonContent, resWith401} from "@/server/apps/openapi/helpers/json-content";
+import {jsonContent, resWith401} from "@/server/openapi/helpers/json-content";
 
-import { requiredAuthMiddleware } from "@/server/apps/auth/middleware";
-import { messageObjectSchema, validationErrorSchema } from "@/server/apps/openapi/schemas/res";
+import { requiredAuthMiddleware } from "@/server/auth/middleware";
+import { messageObjectSchema, validationErrorSchema } from "@/server/openapi/schemas/res";
 import { listNotification } from "./service";
-import { reqQueryLimitAndOffset } from "../openapi/schemas/req";
+import { reqQueryLimitAndOffset } from "../apps/openapi/schemas/req";
 import { notificationSchema } from "./model";
 
 

@@ -5,7 +5,6 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from "@/components/ui/sonner"
 import { SocketProvider } from "@/components/providers/socket-provider";
 import { AuthSessionProvider } from "@/components/providers/auth-provider";
-// import { serverAuth } from "./(auth)/auth";
 import { ProgressBar } from "@/components/layout/header/ProgressBar";
 import { UIProviders } from "@/components/providers/HeroUIProvider";
 import { DebugPanel } from "@/components/common/debug-panel";

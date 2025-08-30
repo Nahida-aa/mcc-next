@@ -1,5 +1,5 @@
 import { handle } from 'hono/vercel'
-import app from '@/server/app'
+import app from '@/api/app'
 
 // export const dynamic = 'force-dynamic'
 // export const runtime = 'edge' // "nodejs"

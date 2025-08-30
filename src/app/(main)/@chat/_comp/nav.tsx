@@ -9,6 +9,7 @@ import { useAuthSession } from "@/components/providers/auth-provider"
 import { User } from "@/components/aa/User"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { NewButton } from "./new"
+import { BetterTooltip } from "@/components/common/BetterTooltip"
 
 export const ChatNav = ({children,
 }:{
@@ -16,10 +17,10 @@ export const ChatNav = ({children,
 }) => {
   const pathname = usePathname()
   const router = useRouter()
-    const { data: session,
-      status, update
-    } = useAuthSession()
-  
+  const { data: session,
+    status, update
+  } = useAuthSession()
+
   // 导航项配置
   const topNavItems = [
     { 
@@ -67,7 +68,7 @@ export const ChatNav = ({children,
   ]
 
   const NavButton = ({ item, isActive }: { item: typeof topNavItems[0], isActive: boolean }) => (
-    <div className="relative group">
+    <BetterTooltip content={item.description}>
       <Button 
         variant={isActive ? "default" : "ghost"} 
         onClick={() => router.push(item.path)}
@@ -79,7 +80,7 @@ export const ChatNav = ({children,
           }
           group-hover:scale-105
         `}
-        title={item.description}
+        // title={item.description}
       >
         <item.icon className="w-4 h-4" />
         <span className="hidden sm:inline">{item.label}</span>
@@ -92,15 +93,11 @@ export const ChatNav = ({children,
           </Badge>
         )}
       </Button>
-      {/* Tooltip for mobile */}
-      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-popover text-popover-foreground text-xs rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none sm:hidden z-10">
-        {item.description}
-      </div>
-    </div>
+    </BetterTooltip>
   )
 
   return (
-    <div className="h-full max-h-full grid grid-rows-[48px_1px_auto_1px_48px] bg-background">
+    <div aria-label="ChatNav" className="h-full max-h-full grid grid-rows-[48px_auto_48px] ">
       {/* 顶部导航 - 响应式网格布局 */}
       <CardHeader className="p-1 bg-card ">
         <div className="grid grid-cols-[auto_1fr_auto] lg:grid-cols-[1fr_auto_1fr] items-center gap-2 lg:gap-4">
@@ -142,17 +139,17 @@ export const ChatNav = ({children,
       </CardHeader>
       
       {/* 分隔线 */}
-      <Separator className="bg-border" />
+      {/* <Separator className="bg-border" /> */}
       
-      {/* 主要内容区域 - 在需要时: 网格自动填充，处理溢出 */}
       {children}
+      {/* 主要内容区域 - 在需要时: 网格自动填充，处理溢出 */}
       {/* <ScrollArea hideScrollBar className="  h-full">
-      <CardContent aria-label="CardContent" className="p-0 h-full">
+      <CardContent aria-label="CardContent" className="p-0">
       </CardContent>
       </ScrollArea> */}
       
       {/* 分隔线 */}
-      <Separator className="bg-border" />
+      {/* <Separator className="bg-border" /> */}
       
       {/* 底部导航 - 响应式网格布局 */}
       <CardFooter className="p-1 bg-card border-t">

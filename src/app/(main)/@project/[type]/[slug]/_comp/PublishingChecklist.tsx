@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/collapsible"
 import { Asterisk, Check, ChevronRight, ChevronUp, Lightbulb, Scale } from "lucide-react"
 import Link from "next/link"
-import { ProjectDetail } from "@/server/apps/project/service"
+import { UserSelfProject } from "@/server/project/model"
 
 export const PublishingChecklist = ({project,
 }: {
-  project: ProjectDetail 
+  project: UserSelfProject 
 }) => {
   const [isOpen, setIsOpen] = useState(true)
 

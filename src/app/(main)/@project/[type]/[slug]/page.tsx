@@ -27,9 +27,8 @@ import {
   Code,
   BookOpen
 } from 'lucide-react';
-import { getProjectDetail, listProjectMember } from '@/server/apps/project/service';
+import { getProjectDetail } from '@/server/project/service';
 import { SearchBar } from '../_comp/SearchBar';
-import { querySchema } from '@/app/(main)/page';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { getAvatarUrl } from '@/components/aa/avatar_util';
 import {
@@ -100,6 +99,7 @@ function ProjectLoading() {
 
 import { MDXRemote } from 'next-mdx-remote-client/rsc'
 import { serverAuth } from '@/app/(auth)/auth';
+import { listProjectMember } from '@/server/project/service/member';
 
 export default async function ProjectPage({ params, searchParams
 
@@ -135,17 +135,26 @@ export default async function ProjectPage({ params, searchParams
   
   
   // 获取项目数据
-  const project = await getProjectDetail(type, slug)
+  const project = await getProjectDetail(slug)
   if (!project)  notFound();
   // 获取项目成员
-  const members = await listProjectMember(type, slug);
+  const members = await listProjectMember(project.id);
 
-  return (<section aria-label='ProjectDetail' className=" p-4 max-w-6xl rounded-2xl  bg-card">
-    <article className='markdown-body' >
+  return (<section aria-label='ProjectDetail' className="flex gap-3  max-w-6xl   ">
+    <article className='markdown-body p-4 bg-card rounded-lg' >
     {project.description && (
     <MDXRemote source={project.description} />
     )}
     </article>
     {/* {project.description} */}
+      <template data-note=" 右侧信息栏
+      兼容性:Minecraft,Platforms,Supported environments; ,link; 成员; Details:Licensed,Published,Updated
+      "></template>
+      <aside aria-label='Detail-side' className="space-y-3">
+        <ProjectSidebarCompatibility project={project} />
+        <ProjectSidebarLinks project={project} />
+        <ProjectSidebarMembers members={members} />
+        <ProjectSidebarOtherInfo project={project} />
+      </aside>
   </section>);
 }

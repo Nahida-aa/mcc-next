@@ -1,14 +1,15 @@
-"use client"
+// "use client"
 
-import { Button } from "@heroui/react"
 import { CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useRouter } from "next/navigation"
+import { redirect,
+  // useRouter 
+} from "next/navigation"
 import { useAuthSession } from "@/components/providers/auth-provider"
 import { NotLogin } from "../../_comp/notLogin"
-import { useState } from "react"
+// import { useState } from "react"
 import { 
   Plus,
   Search,
@@ -27,119 +28,139 @@ import {
   Trash2,
   FolderOpen
 } from "lucide-react"
-import { ProjectListItem } from "@/server/apps/project/type"
+import { ProjectListItem } from "@/server/project/type"
 import NextImage from 'next/image'
+import { UserSelfProject } from "@/server/project/model"
+import { ProjectIcon } from "@/app/(main)/@project/[type]/[slug]/_comp/ProjectHeader"
+import { serverAuth } from "@/app/(auth)/auth"
+import { listUserProject } from "@/server/project/service"
+import { Button } from "@heroui/button"
+import { SearchUserProject } from "./_comp/SearchUserProject"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
-export default function StudioProjectsPage() {
-  const router = useRouter()
-  const { data: session, status } = useAuthSession()
-  const [searchTerm, setSearchTerm] = useState("")
-  const [activeTab, setActiveTab] = useState("all")
+type SearchParams = {
+  q?: string
+  type?: string
+  status?: string
+}
+export default async function StudioProjectsPage({
+  searchParams
+}: {
+  searchParams: Promise<SearchParams>
+}) {
+  const session = await serverAuth();
+  if (!session) redirect("/sign_in"); // 服务端直接 307 跳转
+  const { q: searchTerm = '', type, status = '' } = await searchParams
+  // const [searchTerm, setSearchTerm] = useState("")
+  // const [activeTab, setActiveTab] = useState("all")
 
-  if (!session) {
-    router.push("/sign_in?callbackUrl=/studio/projects")
-    return 
-  }
+  // if (!session) {
+  //   router.push("/sign_in?callbackUrl=/studio/projects")
+  //   return 
+  // }
 
   // 模拟项目数据
-  const mockProjects: ProjectListItem[] = [
-    {
-      id: "1",
-      type: "mod",
-      slug: "optifine-hd",
-      name: "OptiFine HD",
-      summary: "Minecraft优化模组，提升游戏性能和画质",
-      iconUrl: "/project/icon/optifine.png",
-      category: "优化",
-      tags: ["性能", "光影", "优化"],
-      gameVersions: ["1.20.4", "1.20.1", "1.19.4"],
-      loaders: ["forge", "fabric"],
-      environment: "client",
-      status: "published",
-      isOpenSource: false,
-      license: "Custom",
-      owner: {
-        type: "user",
-        id: session.user?.id || "1",
-        name: session.user?.name || "You",
-        username: session.user?.username || "you"
-      },
-      downloadCount: 45670,
-      followCount: 1200,
-      createdAt: "2023-12-01T00:00:00Z",
-      updatedAt: "2024-01-15T00:00:00Z",
-      publishedAt: "2023-12-05T00:00:00Z",
-      latestVersionNumber: "HD U I5",
-      latestVersionId: "v1"
-    },
-    {
-      id: "2",
-      type: "resource_pack",
-      slug: "faithful-32x",
-      name: "Faithful 32x",
-      summary: "高清材质包，保持原版风格",
-      iconUrl: "/project/icon/faithful.png",
-      category: "材质",
-      tags: ["材质包", "高清", "原版风格"],
-      gameVersions: ["1.20.4", "1.20.1"],
-      loaders: ["vanilla"],
-      environment: "client",
-      status: "draft",
-      isOpenSource: true,
-      license: "CC BY-SA 4.0",
-      owner: {
-        type: "user",
-        id: session.user?.id || "1",
-        name: session.user?.name || "You",
-        username: session.user?.username || "you"
-      },
-      downloadCount: 0,
-      followCount: 45,
-      createdAt: "2024-01-10T00:00:00Z",
-      updatedAt: "2024-01-15T00:00:00Z",
-      latestVersionNumber: "1.0.0-beta",
-      latestVersionId: "v2"
-    },
-    {
-      id: "3",
-      type: "mod",
-      slug: "jei",
-      name: "JEI 物品管理器",
-      summary: "Just Enough Items - 物品查询和配方查看",
-      iconUrl: "/project/icon/jei.png",
-      category: "实用工具",
-      tags: ["物品", "配方", "查询", "JEI"],
-      gameVersions: ["1.20.4", "1.20.1", "1.19.4", "1.18.2"],
-      loaders: ["forge", "fabric"],
-      environment: "client",
-      status: "published",
-      isOpenSource: true,
-      license: "MIT",
-      owner: {
-        type: "user",
-        id: session.user?.id || "1",
-        name: session.user?.name || "You",
-        username: session.user?.username || "you"
-      },
-      downloadCount: 123456,
-      followCount: 2300,
-      createdAt: "2023-06-01T00:00:00Z",
-      updatedAt: "2024-01-10T00:00:00Z",
-      publishedAt: "2023-06-15T00:00:00Z",
-      latestVersionNumber: "15.2.0.27",
-      latestVersionId: "v3"
-    }
-  ]
+  const projects = await listUserProject(session.user.id, {
+    search: searchTerm,
+  })
+  // const mockProjects: ProjectSelect[] = [
+  //   {
+  //     id: "1",
+  //     type: "mod",
+  //     slug: "optifine-hd",
+  //     name: "OptiFine HD",
+  //     summary: "Minecraft优化模组，提升游戏性能和画质",
+  //     iconUrl: "/project/icon/optifine.png",
+  //     category: "优化",
+  //     tags: ["性能", "光影", "优化"],
+  //     gameVersions: ["1.20.4", "1.20.1", "1.19.4"],
+  //     loaders: ["forge", "fabric"],
+  //     environment: "client",
+  //     status: "published",
+  //     isOpenSource: false,
+  //     license: "Custom",
+  //     owner: {
+  //       type: "user",
+  //       id: session.user?.id || "1",
+  //       name: session.user?.name || "You",
+  //       username: session.user?.username || "you"
+  //     },
+  //     downloadCount: 45670,
+  //     followCount: 1200,
+  //     createdAt: "2023-12-01T00:00:00Z",
+  //     updatedAt: "2024-01-15T00:00:00Z",
+  //     publishedAt: "2023-12-05T00:00:00Z",
+  //     latestVersionNumber: "HD U I5",
+  //     latestVersionId: "v1"
+  //   },
+  //   {
+  //     id: "2",
+  //     type: "resource_pack",
+  //     slug: "faithful-32x",
+  //     name: "Faithful 32x",
+  //     summary: "高清材质包，保持原版风格",
+  //     iconUrl: "/project/icon/faithful.png",
+  //     category: "材质",
+  //     tags: ["材质包", "高清", "原版风格"],
+  //     gameVersions: ["1.20.4", "1.20.1"],
+  //     loaders: ["vanilla"],
+  //     environment: "client",
+  //     status: "draft",
+  //     isOpenSource: true,
+  //     license: "CC BY-SA 4.0",
+  //     owner: {
+  //       type: "user",
+  //       id: session.user?.id || "1",
+  //       name: session.user?.name || "You",
+  //       username: session.user?.username || "you"
+  //     },
+  //     downloadCount: 0,
+  //     followCount: 45,
+  //     createdAt: "2024-01-10T00:00:00Z",
+  //     updatedAt: "2024-01-15T00:00:00Z",
+  //     latestVersionNumber: "1.0.0-beta",
+  //     latestVersionId: "v2"
+  //   },
+  //   {
+  //     id: "3",
+  //     type: "mod",
+  //     slug: "jei",
+  //     name: "JEI 物品管理器",
+  //     summary: "Just Enough Items - 物品查询和配方查看",
+  //     iconUrl: "/project/icon/jei.png",
+  //     category: "实用工具",
+  //     tags: ["物品", "配方", "查询", "JEI"],
+  //     gameVersions: ["1.20.4", "1.20.1", "1.19.4", "1.18.2"],
+  //     loaders: ["forge", "fabric"],
+  //     environment: "client",
+  //     status: "published",
+  //     isOpenSource: true,
+  //     license: "MIT",
+  //     owner: {
+  //       type: "user",
+  //       id: session.user?.id || "1",
+  //       name: session.user?.name || "You",
+  //       username: session.user?.username || "you"
+  //     },
+  //     downloadCount: 123456,
+  //     followCount: 2300,
+  //     createdAt: "2022-06-15T00:00:00Z",
+  //     updatedAt: "2024-01-10T00:00:00Z",
+  //     publishedAt: "2023-06-15T00:00:00Z",
+  //     latestVersionNumber: "15.2.0.27",
+  //     latestVersionId: "v3"
+  //   }
+  // ]
 
   // 过滤项目
-  const filteredProjects = mockProjects.filter(project => {
+  const filteredProjects = projects.filter(project => {
     const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.summary.toLowerCase().includes(searchTerm.toLowerCase())
+                        project.summary.toLowerCase().includes(searchTerm.toLowerCase())
     
-    if (activeTab === "all") return matchesSearch
-    if (activeTab === "published") return matchesSearch && project.status === "published"
-    if (activeTab === "draft") return matchesSearch && project.status === "draft"
-    if (activeTab === "archived") return matchesSearch && project.status === "archived"
+    if (!status) return matchesSearch
+    if (status === "published") return matchesSearch && project.status === "published"
+    if (status === "draft") return matchesSearch && project.status === "draft"
+    if (status === "archived") return matchesSearch && project.status === "archived"
     
     return matchesSearch
   })
@@ -176,24 +197,12 @@ export default function StudioProjectsPage() {
     }
   }
 
-  const ProjectCard = ({ project }: { project: ProjectListItem }) => (
+  const ProjectCard = ({ project }: { project: UserSelfProject }) => (
     <div className="border rounded-lg p-4 bg-card hover:shadow-md transition-shadow">
       <div className="flex gap-4">
         {/* 项目图标 */}
         <div className="w-16 h-16 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
-          {project.iconUrl ? (
-            <NextImage
-              src={project.iconUrl}
-              alt={project.name}
-              width={64}
-              height={64}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
-              {project.name.charAt(0)}
-            </div>
-          )}
+          <ProjectIcon icon={project.icon} name={project.name} size={64} />
         </div>
 
         {/* 项目信息 */}
@@ -218,14 +227,14 @@ export default function StudioProjectsPage() {
               
               {/* 标签和版本信息 */}
               <div className="flex flex-wrap gap-1 mb-2">
-                {project.tags.slice(0, 3).map((tag) => (
+                {project.categories.slice(0, 3).map((tag) => (
                   <Badge key={tag} variant="secondary" className="text-xs">
                     {tag}
                   </Badge>
                 ))}
-                {project.tags.length > 3 && (
+                {project.categories.length > 3 && (
                   <Badge variant="secondary" className="text-xs">
-                    +{project.tags.length - 3}
+                    +{project.categories.length - 3}
                   </Badge>
                 )}
               </div>
@@ -240,10 +249,12 @@ export default function StudioProjectsPage() {
                   <Heart className="w-3 h-3" />
                   {project.followCount.toLocaleString()}
                 </div>
+                { project.updatedAt && (
                 <div className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" />
-                  {new Date(project.updatedAt).toLocaleDateString()}
+                  {(project.updatedAt).toLocaleDateString()}
                 </div>
+                )}
               </div>
             </div>
 
@@ -252,14 +263,14 @@ export default function StudioProjectsPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onPress={() => router.push(`/projects/${project.slug}`)}
+                // onPress={() => router.push(`/projects/${project.slug}`)}
               >
                 <Eye className="w-4 h-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                onPress={() => router.push(`/studio/projects/${project.slug}/edit`)}
+                // onPress={() => router.push(`/studio/projects/${project.slug}/edit`)}
               >
                 <Edit className="w-4 h-4" />
               </Button>
@@ -278,30 +289,28 @@ export default function StudioProjectsPage() {
 
   return (
     <CardContent className="h-full p-6 space-y-6 overflow-y-auto">
-      {/* 标题和创建按钮 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">我的项目</h1>
-          <p className="text-muted-foreground">管理你的所有项目</p>
-        </div>
-        <Button
-          className="bg-gradient-to-r from-blue-500 to-purple-600 text-white"
-          variant="shadow"
-          onPress={() => router.push("/studio/projects/create")}
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          创建项目
-        </Button>
-      </div>
 
       {/* 搜索和过滤 */}
+      <form action="/studio/projects" method="get" className="mb-4">
+        <input
+          type="text"
+          name="q"
+          defaultValue={searchTerm}
+          placeholder="搜索项目..."
+          className="border rounded px-3 py-1"
+        />
+        <button type="submit" className="ml-2 px-3 py-1 bg-blue-500 text-white rounded">
+          搜索
+        </button>
+      </form>
+      <SearchUserProject />
       <div className="flex gap-4">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="搜索项目..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            // value={searchTerm}
+            // onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
           />
         </div>
@@ -309,26 +318,41 @@ export default function StudioProjectsPage() {
           <Filter className="w-4 h-4 mr-2" />
           筛选
         </Button>
+        <Button
+          className="bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+          variant="shadow"
+          // onPress={() => router.push("/studio/projects/create")}
+        >
+          <Plus className="w-4 h-4 " />
+          创建项目
+        </Button>
       </div>
-
+      <Tooltip>
+        <TooltipTrigger>Hover</TooltipTrigger>
+        <TooltipContent>
+          <p>Add to library</p>
+        </TooltipContent>
+      </Tooltip>
       {/* 标签页 */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
+      <Tabs value={status} 
+      // onValueChange={setActiveTab}
+      >
+        {/* <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="all">
-            全部 ({mockProjects.length})
+            全部 ({projects.length})
           </TabsTrigger>
           <TabsTrigger value="published">
-            已发布 ({mockProjects.filter(p => p.status === "published").length})
+            已发布 ({projects.filter(p => p.status === "published").length})
           </TabsTrigger>
           <TabsTrigger value="draft">
-            草稿 ({mockProjects.filter(p => p.status === "draft").length})
+            草稿 ({projects.filter(p => p.status === "draft").length})
           </TabsTrigger>
           <TabsTrigger value="archived">
-            已归档 ({mockProjects.filter(p => p.status === "archived").length})
+            已归档 ({projects.filter(p => p.status === "archived").length})
           </TabsTrigger>
-        </TabsList>
+        </TabsList> */}
 
-        <TabsContent value={activeTab} className="space-y-4">
+        <TabsContent value={status} className="space-y-4">
           {filteredProjects.length === 0 ? (
             <div className="text-center py-12">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
@@ -347,7 +371,7 @@ export default function StudioProjectsPage() {
                 <Button
                   className="bg-gradient-to-r from-blue-500 to-purple-600 text-white"
                   variant="shadow"
-                  onPress={() => router.push("/studio/projects/create")}
+                  // onPress={() => router.push("/studio/projects/create")}
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   创建项目

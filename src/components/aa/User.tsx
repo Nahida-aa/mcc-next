@@ -1,3 +1,4 @@
+// "use client"
 import {
   HoverCard,
   HoverCardContent,
@@ -10,7 +11,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-import { CalendarIcon, Copy } from "lucide-react"
+import { Bell, BoxIcon, CalendarIcon, ChartColumnIcon, Copy, DollarSignIcon, LogOut, Settings, Star, UserRound, UsersRoundIcon } from "lucide-react"
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   DropdownMenu,
@@ -28,6 +29,30 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link";
 import { useSignOut } from "../providers/modal-provider";
+import { NoStyleLink } from "./Link";
+import { useAuthSession } from "../providers/auth-provider";
+
+const creatorItems = [
+  {
+    label: '项目',
+    key: '/studio/projects',
+    icon: BoxIcon
+  }, {
+    label: '团队',
+    key: '/studio/teams',
+    icon: UsersRoundIcon
+  }, {
+    label: '收入',
+    key: '/studio/revenue',
+    icon: DollarSignIcon
+  }, {
+    label: '统计',
+    key: '/studio/stats',
+    icon: ChartColumnIcon
+  }
+]
+
+export const buildImage = (image?: string | null, str?: string) =>  image || `https://avatar.vercel.sh/${str}` || `https://avatar.vercel.sh/Guest`
 
 export const User = ({
   image, status, displayName, email, onClick, className=''
@@ -40,11 +65,29 @@ export const User = ({
   className?: string;
 }) => {
   const showSignOut = useSignOut()
+  const { data: session, status: authstatus, update } = useAuthSession()
+  const UserItems = [
+    {
+      label: '主页',
+      key: `/user/${session?.user.username}`,
+      icon: UserRound
+    }, {
+      label: '通知',
+      key: '/studio/notifications',
+      icon: Bell
+    }, {
+      label: '收藏',
+      key: '/studio/collections',
+      icon: Star
+    }, {
+      label: '设置',
+      key: '/studio/settings',
+      icon: Settings
+    }
+  ]
   return <section className={`flex items-center gap-2 ${className}`}>
   <HoverCard>
   <DropdownMenu>
-
-  
     <DropdownMenuTrigger asChild>
     <HoverCardTrigger asChild>
       <Button
@@ -54,7 +97,7 @@ export const User = ({
         >
         <NextImage
           // loader={imageLoader}
-          src={image || `https://avatar.vercel.sh/${email}` || `https://avatar.vercel.sh/Guest`}
+          src={buildImage(image, email)}
           alt={displayName ?? 'User Avatar'}
           width={32}
           height={32}
@@ -74,53 +117,36 @@ export const User = ({
         )}
       </p>
     </div>
-    <DropdownMenuContent className="w-56" align="start">
-        {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+    <DropdownMenuContent className="w-36 flex flex-col" align="start">
+          {UserItems.map((item) => (
+          <DropdownMenuItem className="py-2 px-4 [&_svg]:size-5 text-base font-medium inline-flex" key={item.key} asChild>
+            <NoStyleLink href={`${item.key}`}  >
+            <item.icon className="size-5" />
+            <span className="relative top-[1.5px]">
+
+            {item.label}
+            </span>
+            </NoStyleLink>
+            {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            Billing
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Settings
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Keyboard shortcuts
-            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+          ))}
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem>Email</DropdownMenuItem>
-                <DropdownMenuItem>Message</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>More...</DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DropdownMenuItem>
-            New Team
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+          {creatorItems.map((item) => (
+          <DropdownMenuItem className="py-2 px-4 [&_svg]:size-5 text-base font-medium inline-flex" key={item.key} asChild>
+            <NoStyleLink href={`${item.key}`} >
+            <item.icon className="size-5" />
+            <span className="relative top-[1.5px]">
+              {item.label}
+            </span>
+            </NoStyleLink>
           </DropdownMenuItem>
-        </DropdownMenuGroup>
+          ))}
         <DropdownMenuSeparator />
-        <DropdownMenuItem>GitHub</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
-        <DropdownMenuItem disabled>API</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem  onClick={() => showSignOut()}>
-          Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        <DropdownMenuItem className="py-2 px-4 [&_svg]:size-5 text-base font-medium inline-flex text-destructive" onClick={() => showSignOut()}>
+          <LogOut />
+          <span className="relative top-[1.5px]">
+            退出登录
+          </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     <HoverCardContent className="w-60">

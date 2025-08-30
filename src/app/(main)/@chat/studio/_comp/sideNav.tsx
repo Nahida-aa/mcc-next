@@ -62,14 +62,14 @@ interface SideNavProps {
 }
 
 export const SideNav = ({ className = '' }: SideNavProps) => {
-  // const pathname = usePathname()
+  const pathname = usePathname()
   const router = useRouter()
   
   return (
     <div className={`h-full ${className}`}>
       <Tabs aria-label="Studio Navigation" 
         isVertical 
-        // selectedKey={pathname} 
+        selectedKey={pathname} 
         variant="light" color="primary"
         classNames={{
           base: "h-full",

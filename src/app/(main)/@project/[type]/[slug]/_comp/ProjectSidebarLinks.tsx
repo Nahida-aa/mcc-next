@@ -1,13 +1,13 @@
 import { formatVersionsForDisplay } from "@/lib/utils/version"
-import { ProjectDetail } from "@/server/apps/project/service"
 import mcData from "@/data/mc.json";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, BookOpen, Code, ExternalLink } from "lucide-react";
+import { ProjectSelect } from "@/server/admin/db/service";
 
 export const ProjectSidebarLinks = ({
   project,
 }: {
-  project: ProjectDetail
+  project: ProjectSelect
 }) => {
   return <>
         {(project.sourceUrl|| project.issuesUrl || project.wikiUrl || project.discordUrl) && (

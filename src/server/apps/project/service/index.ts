@@ -1,22 +1,22 @@
-import { createSubApp } from "@/server/createApp";
-import { requiredAuthMiddleware } from "../../auth/middleware";
+import { createSubApp } from "@/api/create.app";
+import { requiredAuthMiddleware } from "../../../auth/middleware";
 import { createRoute } from "@hono/zod-openapi";
 import { z } from "@hono/zod-openapi";
-import { jsonContent, jsonContentRequest, resWith401 } from "@/server/apps/openapi/helpers/json-content";
-import { messageObjectSchema } from "@/server/apps/openapi/schemas/res";
-import { db } from "@/server/db";
-import { user, organization } from "@/server/apps/auth/table";
-import { eq, and, like, desc, InferSelectModel, or } from "drizzle-orm";
-import { AppError, HTTPResponseError } from "@/server/apps/openapi/middlewares/on-error";
-import { project, projectMember } from "@/server/db/schema";
-import { CreateProjectSchema } from "../model";
+import { jsonContent, jsonContentRequest, resWith401 } from "@/server/openapi/helpers/json-content";
+import { messageObjectSchema } from "@/server/openapi/schemas/res";
+import { db } from "@/server/admin/db";
+import { eq, and, like, desc, or, sum } from "drizzle-orm";
+import { AppErr } from "@/server/openapi/middlewares/on-error";
+import { project, projectMember } from "@/server/admin/db/schema";
+import { CreateProject, ListUserSelfProjectQuery, ListUserSelfProject
+ } from "../model";
+import { projectOwnerPermissions } from "../model/member";
+import { insertProject, ProjectSelect } from "../../../admin/db/service";
+import { channel, community, communityMember } from "../../../community/table";
+import { _createCommunity } from "../../../community/service";
 
-export const projectOwnerPermissions = [
-  'upload_version', 'delete_version', 'edit_metadata', 'edit_body',
-  'manage_member', 'manage_invite', 'delete_project', 'view_analysis', 'view_revenue'
-];
 
-export const createProject = async (data: CreateProjectSchema, ownerId: string) => {
+export const createProject = async (data: CreateProject, ownerId: string) => {
   return await db.transaction(async (tx) => {
     // 插入新项目
     const [newProject] = await tx.insert(project).values({
@@ -43,8 +43,68 @@ export const createProject = async (data: CreateProjectSchema, ownerId: string) 
       joinMethod: 'system',
     });
 
+    // insert community , 暂时用于提供 一个社区空间
+    const newCommunity = await _createCommunity(tx, {
+      name: newProject.name,
+      summary: data.summary,
+      type: 'project',
+      entityId: newProject.id,
+      ownerId: ownerId,
+    });
+    // insert community channel TODO:
+    await tx.insert(channel).values([{
+      communityId: newCommunity.id,
+      name: '讨论',
+      type: 'forum',
+    }, {
+      communityId: newCommunity.id,
+      name: '攻略',
+      type: 'release',
+    }])
     return newProject;
   });
+}
+// R
+export const listUserProject = async (userId: string, query: ListUserSelfProjectQuery): Promise<ListUserSelfProject> => {
+  const {limit = 10, offset = 0, type, status, visibility, search} = query;
+  // 构建查询条件 - 使用 Select API
+  const conditions = [eq(project.ownerId, userId)];
+  
+  if (type) {
+    conditions.push(eq(project.type, type));
+  }
+  if (status) {
+    conditions.push(eq(project.status, status));
+  }
+  if (visibility) {
+    conditions.push(eq(project.visibility, visibility));
+  }
+  if (search) {
+    conditions.push(like(project.name, `%${search}%`));
+  }
+  // 获取项目列表 - 使用 Select API
+  const projects = await db
+    .select({
+      icon: project.icon,
+      id: project.id,
+      type: project.type,
+      slug: project.slug,
+      name: project.name,
+      status: project.status,
+      summary: project.summary,
+      categories: project.categories,
+      visibility: project.visibility,
+      downloadCount: project.downloadCount,
+      followCount: project.followCount,
+      createdAt: project.createdAt,
+      updatedAt: project.updatedAt,
+    })
+    .from(project)
+    .where(and(...conditions))
+    .orderBy(desc(project.updatedAt))
+    .limit(limit).offset(offset);
+
+  return projects;
 }
 
 export const getExistingProject = async (slug: string) => {
@@ -62,10 +122,21 @@ export const getExistingProject = async (slug: string) => {
   return null;
 }
 
-// 从 drizzle-orm 推断 类型
-export type ProjectDetail = InferSelectModel<typeof project>; // SELECT 出来的类型
-// type ProjectDetail =
-export const getProjectDetail = async (slug: string): Promise<ProjectDetail> => {
+export const getProjectBaseById = async (id: string) => {
+  const [projectItem] = await db
+    .select({
+      icon: project.icon,
+      slug: project.slug,
+      name: project.name,
+    })
+    .from(project)
+    .where(eq(project.id, id))
+    .limit(1);
+
+  return projectItem;
+}
+
+export const getProjectDetail = async (slug: string): Promise<ProjectSelect> => {
   // 查找项目 - 使用 Select API
   const projectDetails = await db
     .select()
@@ -73,83 +144,9 @@ export const getProjectDetail = async (slug: string): Promise<ProjectDetail> => 
     .where(eq(project.slug, slug))
     .limit(1);
   
-  if (projectDetails.length === 0) throw new AppError(404, "项目不存在");
+  if (projectDetails.length === 0) throw AppErr(404, "项目不存在");
   
   return projectDetails[0];
 }
 
-
-// 获取特定类型的项目成员（仅用户或仅组织）
-export const listProjectMembersByType = async (slug: string, entityType: 'user' | 'organization') => {
-  const existingProject = await getExistingProject(slug);
-  if (!existingProject) throw new AppError(404, "项目不存在");
-
-  if (entityType === 'user') {
-    return await db
-      .select({
-        id: user.id,
-        entityType: projectMember.entityType,
-        name: user.name,
-        username: user.username,
-        image: user.image,
-        role: projectMember.role,
-        permissions: projectMember.permissions,
-        status: projectMember.status,
-        joinMethod: projectMember.joinMethod,
-        createdAt: projectMember.createdAt,
-      })
-      .from(projectMember)
-      .innerJoin(user, eq(projectMember.entityId, user.id))
-      .where(
-        and(
-          eq(projectMember.projectId, existingProject.id),
-          eq(projectMember.entityType, 'user'),
-          eq(projectMember.status, 'active') // 仅返回活跃成员
-        )
-      )
-      .orderBy(projectMember.createdAt);
-  } else {
-    return await db
-      .select({
-        id: organization.id,
-        entityType: projectMember.entityType,
-        name: organization.name,
-        username: organization.slug,
-        image: organization.logo,
-        role: projectMember.role,
-        permissions: projectMember.permissions,
-        status: projectMember.status,
-        joinMethod: projectMember.joinMethod,
-        createdAt: projectMember.createdAt,
-      })
-      .from(projectMember)
-      .innerJoin(organization, eq(projectMember.entityId, organization.id))
-      .where(
-        and(
-          eq(projectMember.projectId, existingProject.id),
-          eq(projectMember.entityType, 'organization'),
-          eq(projectMember.status, 'active') // 仅返回活跃成员
-        )
-      )
-      .orderBy(projectMember.createdAt);
-  }
-}
-
-// 检查用户是否为项目成员
-export const isProjectMember = async (projectId: string, userId: string): Promise<boolean> => {
-  const member = await db
-    .select({ id: projectMember.id })
-    .from(projectMember)
-    .where(
-      and(
-        eq(projectMember.projectId, projectId),
-        eq(projectMember.entityType, 'user'),
-        eq(projectMember.entityId, userId),
-        eq(projectMember.status, 'active')
-      )
-    )
-    .limit(1);
-  
-  return member.length > 0;
-}
 

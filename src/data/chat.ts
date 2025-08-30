@@ -1,4 +1,4 @@
-import {  } from "@/server/apps/project/type";
+import {  } from "@/server/project/type";
 
 
 
